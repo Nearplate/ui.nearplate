@@ -1,21 +1,46 @@
-# Next.js template
+# ui.nearplate
 
-This is a Next.js template with shadcn/ui.
+NearPlate frontend: Next.js (App Router), React 19, Tailwind CSS 4, and a Nuxt UI-style design system.
 
-## Adding components
-
-To add components to your app, run the following command:
+## Getting started
 
 ```bash
-npx shadcn@latest add button
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-This will place the ui components in the `components` directory.
+| Script | Purpose |
+| --- | --- |
+| `npm run build` | Production build |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript check |
+| `npm run format` / `format:check` | Prettier |
 
-## Using components
+## Project structure
 
-To use the components in your app, import them as follows:
+```
+app/                  routing: layouts, pages
+components/ui/        design-system primitives
+components/providers/ context providers
+features/             domain modules
+hooks/  lib/  config/  types/
+```
+
+See [AGENTS.md](./AGENTS.md) for responsibilities and design-system rules.
+
+## Design system
+
+Semantic colors (`primary`, `secondary`, `success`, `info`, `warning`, `error`, `neutral`) and `--ui-*` tokens in `app/globals.css`, following Nuxt UI naming. Components take `color`, `variant` and `size`:
 
 ```tsx
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
+
+<Button color="primary" variant="soft" size="lg">Order now</Button>
+```
+
+## Docker
+
+```bash
+docker build -t ui-nearplate .
+docker run --rm -p 3000:3000 ui-nearplate
 ```
