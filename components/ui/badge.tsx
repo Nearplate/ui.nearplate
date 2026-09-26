@@ -4,7 +4,7 @@ import { tv, type VariantProps } from "tailwind-variants"
 import { cn } from "@/lib/utils"
 
 export const badgeTheme = tv({
-  base: "inline-flex items-center rounded-md font-medium",
+  base: "inline-flex items-center rounded-md font-mono font-medium tracking-wider uppercase",
   variants: {
     color: {
       primary: "[--badge-color:var(--ui-primary)]",
@@ -17,15 +17,15 @@ export const badgeTheme = tv({
     },
     variant: {
       solid: "text-inverted bg-(--badge-color)",
-      outline: "text-(--badge-color) ring ring-current ring-inset",
+      outline: "text-(--badge-color) ring-2 ring-current ring-inset",
       soft: "text-(--badge-color) bg-(--badge-color)/10",
       subtle:
-        "text-(--badge-color) bg-(--badge-color)/10 ring ring-(--badge-color)/25 ring-inset",
+        "text-(--badge-color) bg-(--badge-color)/10 ring-2 ring-(--badge-color)/25 ring-inset",
     },
     size: {
-      sm: "px-1.5 py-0.5 text-[10px]/3",
-      md: "px-2 py-1 text-xs",
-      lg: "px-2.5 py-1 text-sm",
+      sm: "px-1.5 py-0.5 text-[9px]/3",
+      md: "px-1.5 py-0.5 text-[10px]",
+      lg: "px-2 py-1 text-xs",
     },
   },
   compoundVariants: [
@@ -33,13 +33,13 @@ export const badgeTheme = tv({
     {
       color: "neutral",
       variant: "outline",
-      class: "text-default bg-default ring-accented",
+      class: "text-default bg-default ring-2 ring-accented",
     },
     { color: "neutral", variant: "soft", class: "text-default bg-elevated" },
     {
       color: "neutral",
       variant: "subtle",
-      class: "text-default bg-elevated ring-accented",
+      class: "text-default bg-elevated ring-2 ring-accented",
     },
   ],
   defaultVariants: { color: "primary", variant: "solid", size: "md" },

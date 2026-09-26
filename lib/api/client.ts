@@ -1,0 +1,55 @@
+import "server-only"
+
+import { env } from "@/config/env"
+
+const REQUEST_TIMEOUT_MS = 10_000
+const NO_CONTENT = 204
+const SERVICE_UNAVAILABLE = 503
+
+/** Thrown for any non-2xx answer. The API error body is only `{statusCode}`. */
+export class ApiError extends Error {
+  readonly status: number
+
+  constructor(status: number) {
+    super(`API request failed with status ${status}`)
+    this.name = "ApiError"
+    this.status = status
+  }
+}
+
+interface ApiRequestOptions {
+  method?: "GET" | "POST" | "PATCH"
+  body?: unknown
+  /** Sent as `Authorization: Bearer <token>`. */
+  token?: string
+}
+
+/**
+ * Server-to-server call to api.nearplate. Resolves to parsed JSON, or
+ * `undefined` for 204. Network failures and timeouts surface as a 503.
+ */
+export async function apiRequest(
+  path: string,
+  { method = "GET", body, token }: ApiRequestOptions = {}
+): Promise<unknown> {
+  const headers: Record<string, string> = { Accept: "application/json" }
+  if (body !== undefined) headers["Content-Type"] = "application/json"
+  if (token) headers.Authorization = `Bearer ${token}`
+
+  let response: Response
+  try {
+    response = await fetch(`${env.API_BASE_URL}${path}`, {
+      method,
+      headers,
+      body: body === undefined ? undefined : JSON.stringify(body),
+      cache: "no-store",
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    })
+  } catch {
+    throw new ApiError(SERVICE_UNAVAILABLE)
+  }
+
+  if (!response.ok) throw new ApiError(response.status)
+  if (response.status === NO_CONTENT) return undefined
+  return response.json()
+}

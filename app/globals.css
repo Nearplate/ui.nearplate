@@ -1,74 +1,49 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 /*
- * Design tokens follow the Nuxt UI model:
- *  - semantic colors (primary, secondary, success, info, warning, error)
- *    alias a Tailwind palette; light mode uses shade 500, dark mode 400
- *  - neutral tokens (--ui-bg-*, --ui-text-*, --ui-border-*) alias `slate`
- * Change a palette here to re-theme the whole app.
+ * Brutalist design tokens on the Nuxt UI model. Light mode only.
+ *  - primary is neutral (near-black); semantic colors are used for status
+ *  - --ui-highlight is the single lime accent, used sparingly
+ *  - square corners (--ui-radius: 0), 2px black borders, no soft shadows
+ * Change a value here to re-theme the whole app.
  */
 :root {
-  --ui-primary: var(--color-green-500);
-  --ui-secondary: var(--color-blue-500);
-  --ui-success: var(--color-green-500);
-  --ui-info: var(--color-blue-500);
-  --ui-warning: var(--color-yellow-500);
-  --ui-error: var(--color-red-500);
+  color-scheme: light;
 
-  --ui-text-dimmed: var(--color-slate-400);
-  --ui-text-muted: var(--color-slate-500);
-  --ui-text-toned: var(--color-slate-600);
-  --ui-text: var(--color-slate-700);
-  --ui-text-highlighted: var(--color-slate-900);
-  --ui-text-inverted: var(--color-white);
+  --ui-primary: var(--color-neutral-950);
+  --ui-secondary: var(--color-neutral-600);
+  --ui-success: var(--color-green-700);
+  --ui-info: var(--color-blue-700);
+  --ui-warning: var(--color-yellow-600);
+  --ui-error: var(--color-red-600);
+  --ui-highlight: #d4f53c;
 
-  --ui-bg: var(--color-white);
-  --ui-bg-muted: var(--color-slate-50);
-  --ui-bg-elevated: var(--color-slate-100);
-  --ui-bg-accented: var(--color-slate-200);
-  --ui-bg-inverted: var(--color-slate-900);
+  --ui-text-dimmed: var(--color-neutral-500);
+  --ui-text-muted: var(--color-neutral-600);
+  --ui-text-toned: var(--color-neutral-700);
+  --ui-text: var(--color-neutral-900);
+  --ui-text-highlighted: var(--color-neutral-950);
+  --ui-text-inverted: #f2f1ec;
 
-  --ui-border: var(--color-slate-200);
-  --ui-border-muted: var(--color-slate-200);
-  --ui-border-accented: var(--color-slate-300);
-  --ui-border-inverted: var(--color-slate-900);
+  --ui-bg: #f2f1ec;
+  --ui-bg-muted: #eae9e3;
+  --ui-bg-elevated: #e4e3dc;
+  --ui-bg-accented: #d6d5cd;
+  --ui-bg-inverted: var(--color-neutral-950);
 
-  --ui-radius: 0.25rem;
-}
+  --ui-border: var(--color-neutral-950);
+  --ui-border-muted: var(--color-neutral-300);
+  --ui-border-accented: var(--color-neutral-950);
+  --ui-border-inverted: var(--color-neutral-950);
 
-.dark {
-  --ui-primary: var(--color-green-400);
-  --ui-secondary: var(--color-blue-400);
-  --ui-success: var(--color-green-400);
-  --ui-info: var(--color-blue-400);
-  --ui-warning: var(--color-yellow-400);
-  --ui-error: var(--color-red-400);
-
-  --ui-text-dimmed: var(--color-slate-500);
-  --ui-text-muted: var(--color-slate-400);
-  --ui-text-toned: var(--color-slate-300);
-  --ui-text: var(--color-slate-200);
-  --ui-text-highlighted: var(--color-white);
-  --ui-text-inverted: var(--color-slate-900);
-
-  --ui-bg: var(--color-slate-900);
-  --ui-bg-muted: var(--color-slate-800);
-  --ui-bg-elevated: var(--color-slate-800);
-  --ui-bg-accented: var(--color-slate-700);
-  --ui-bg-inverted: var(--color-white);
-
-  --ui-border: var(--color-slate-800);
-  --ui-border-muted: var(--color-slate-700);
-  --ui-border-accented: var(--color-slate-700);
-  --ui-border-inverted: var(--color-white);
+  --ui-radius: 0rem;
 }
 
 @theme inline {
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
 
   --color-primary: var(--ui-primary);
   --color-secondary: var(--ui-secondary);
@@ -76,6 +51,7 @@
   --color-info: var(--ui-info);
   --color-warning: var(--ui-warning);
   --color-error: var(--ui-error);
+  --color-highlight: var(--ui-highlight);
 
   --radius-xs: calc(var(--ui-radius) * 0.5);
   --radius-sm: var(--ui-radius);
@@ -156,5 +132,10 @@
   body {
     background-color: var(--ui-bg);
     color: var(--ui-text);
+  }
+
+  ::selection {
+    background-color: var(--ui-highlight);
+    color: var(--color-neutral-950);
   }
 }

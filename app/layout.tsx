@@ -1,16 +1,19 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Anton, Geist, JetBrains_Mono } from "next/font/google"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/providers/theme-provider"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 
 const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" })
-
-const fontMono = Geist_Mono({
+const fontMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+})
+const fontDisplay = Anton({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-display",
 })
 
 export const metadata: Metadata = {
@@ -26,12 +29,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={cn("antialiased", fontSans.variable, fontMono.variable)}
+      className={cn(
+        "antialiased",
+        fontSans.variable,
+        fontMono.variable,
+        fontDisplay.variable
+      )}
     >
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }

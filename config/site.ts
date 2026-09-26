@@ -1,4 +1,4 @@
 export const siteConfig = {
   name: "NearPlate",
-  description: "Discover great food near you.",
+  description: "Zero-commission food delivery from local restaurants.",
 } as const
