@@ -9,6 +9,7 @@ import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 
+
 import {
   continueAsGuestAction,
   requestMagicLinkAction,
@@ -119,7 +120,7 @@ function AuthFormBody({
       </div>
 
       <GoogleButton role={role} onResult={setGoogleState} />
-
+      
       <form action={continueAsGuestAction}>
         <Button type="submit" variant="outline" color="neutral" block>
           Browse as guest

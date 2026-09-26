@@ -13,6 +13,10 @@ RUN --mount=type=cache,target=/root/.npm npm ci
 FROM node:${NODE_VERSION}-alpine AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
+# Public (non-secret) build-time config: inlined into the client bundle by
+# `next build`. Pass with `--build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=...`.
+ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_CLIENT_ID
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build

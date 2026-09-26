@@ -33,7 +33,11 @@ interface GoogleButtonProps {
   onResult: (state: AuthActionState) => void
 }
 
-/** Google Identity Services button. Renders nothing when no client id is set. */
+/**
+ * Google Identity Services button, with its "Or continue with" divider.
+ * Renders nothing when no client id is set, so the divider never appears
+ * without a button beneath it.
+ */
 export function GoogleButton({ role, onResult }: GoogleButtonProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const roleRef = useRef(role)
