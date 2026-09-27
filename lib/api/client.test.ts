@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 
-import { ApiError, apiRequest } from "./client"
+import { apiRedirectLocation, ApiError, apiRequest } from "./client"
 
 function stubFetch(response: Response | Error) {
   const fetchMock = vi.fn(async () => {
@@ -61,12 +61,60 @@ describe("apiRequest", () => {
       string,
       RequestInit,
     ]
-    expect(url).toBe("http://localhost:3000/v1/users/me")
+    expect(url).toBe("http://localhost:3030/v1/users/me")
     expect(init.method).toBe("PATCH")
     expect(init.body).toBe(JSON.stringify({ firstName: "Asha" }))
     expect(init.headers).toMatchObject({
       Authorization: "Bearer abc",
       "Content-Type": "application/json",
     })
+  })
+})
+
+describe("apiRedirectLocation", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it("returns the Location header for a 3xx response", async () => {
+    stubFetch(
+      new Response(null, {
+        status: 302,
+        headers: { Location: "https://accounts.google.com/auth" },
+      })
+    )
+
+    const location = await apiRedirectLocation("/auth/google")
+
+    expect(location).toBe("https://accounts.google.com/auth")
+  })
+
+  it("throws ApiError when the response is not a redirect", async () => {
+    stubFetch(Response.json({ statusCode: 400 }, { status: 400 }))
+
+    await expect(apiRedirectLocation("/auth/google")).rejects.toMatchObject({
+      name: "ApiError",
+      status: 400,
+    })
+  })
+
+  it("throws ApiError when a redirect has no Location header", async () => {
+    stubFetch(new Response(null, { status: 302 }))
+
+    await expect(apiRedirectLocation("/auth/google")).rejects.toMatchObject({
+      name: "ApiError",
+      status: 302,
+    })
+  })
+
+  it("maps network failures to a 503 ApiError", async () => {
+    stubFetch(new TypeError("fetch failed"))
+
+    const error = await apiRedirectLocation("/auth/google").catch(
+      (e: unknown) => e
+    )
+
+    expect(error).toBeInstanceOf(ApiError)
+    expect(error).toMatchObject({ status: 503 })
   })
 })

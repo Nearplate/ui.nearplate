@@ -1,12 +1,12 @@
 {
   "name": "ui.nearplate",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3400",
+    "dev": "next dev -p 3030",
     "build": "next build",
-    "start": "next start -p 3400",
+    "start": "next start -p 3030",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",

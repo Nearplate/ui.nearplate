@@ -8,7 +8,7 @@ import { AuthForm } from "./auth-form"
 vi.mock("../actions", () => ({
   requestMagicLinkAction: vi.fn(),
   continueAsGuestAction: vi.fn(),
-  loginWithGoogleAction: vi.fn(),
+  startGoogleAction: vi.fn(),
 }))
 
 describe("AuthForm", () => {
@@ -26,6 +26,18 @@ describe("AuthForm", () => {
     expect(
       screen.getByRole("button", { name: /browse as guest/i })
     ).toBeInTheDocument()
+  })
+
+  it("renders the Google button with the current role in a hidden field", () => {
+    const { container } = render(<AuthForm initialRole="restaurant" />)
+
+    expect(
+      screen.getByRole("button", { name: /continue with google/i })
+    ).toBeInTheDocument()
+    const roleInput = container.querySelector(
+      'input[name="role"][type="hidden"]'
+    )
+    expect(roleInput).toHaveValue("restaurant")
   })
 
   it("preselects the role from the initial prop and lets the user switch", async () => {

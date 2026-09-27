@@ -53,3 +53,30 @@ export async function apiRequest(
   if (response.status === NO_CONTENT) return undefined
   return response.json()
 }
+
+const REDIRECT_MIN = 300
+const REDIRECT_MAX = 400
+
+/**
+ * Server-to-server call for an endpoint that answers with a redirect (Google
+ * sign-in's `GET /auth/google`). Follows nothing itself -- the caller needs
+ * the `Location`, not the page it points at.
+ */
+export async function apiRedirectLocation(path: string): Promise<string> {
+  let response: Response
+  try {
+    response = await fetch(`${env.API_BASE_URL}${path}`, {
+      redirect: "manual",
+      cache: "no-store",
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    })
+  } catch {
+    throw new ApiError(SERVICE_UNAVAILABLE)
+  }
+
+  const location = response.headers.get("location")
+  const isRedirect =
+    response.status >= REDIRECT_MIN && response.status < REDIRECT_MAX
+  if (!isRedirect || !location) throw new ApiError(response.status)
+  return location
+}

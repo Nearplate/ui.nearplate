@@ -1,85 +1,45 @@
 "use client"
 
-import Script from "next/script"
-import { useEffect, useRef, useTransition } from "react"
+import { Button } from "@/components/ui/button"
 
-import { loginWithGoogleAction, type AuthActionState } from "../actions"
+import { startGoogleAction } from "../actions"
 import type { SignupRole } from "../schemas"
-
-interface GoogleIdentity {
-  accounts: {
-    id: {
-      initialize(config: {
-        client_id: string
-        callback: (response: { credential: string }) => void
-      }): void
-      renderButton(element: HTMLElement, options: Record<string, unknown>): void
-    }
-  }
-}
-
-declare global {
-  interface Window {
-    google?: GoogleIdentity
-  }
-}
-
-const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
-const GOOGLE_SCRIPT_SRC = "https://accounts.google.com/gsi/client"
-const FALLBACK_WIDTH_PX = 320
 
 interface GoogleButtonProps {
   role: SignupRole
-  onResult: (state: AuthActionState) => void
 }
 
 /**
- * Google Identity Services button, with its "Or continue with" divider.
- * Renders nothing when no client id is set, so the divider never appears
- * without a button beneath it.
+ * "Continue with Google" button, styled and behaving like "Browse as
+ * guest": a plain form submit that posts to a server action, which
+ * redirects the browser to Google. No client-side script or embedded
+ * widget -- the button always renders.
  */
-export function GoogleButton({ role, onResult }: GoogleButtonProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const roleRef = useRef(role)
-  const [, startTransition] = useTransition()
-
-  // The GIS callback is registered once; keep it pointed at the latest role.
-  useEffect(() => {
-    roleRef.current = role
-  }, [role])
-
-  if (!GOOGLE_CLIENT_ID) return null
-
-  function renderGoogleButton() {
-    const container = containerRef.current
-    const google = window.google
-    if (!container || !google || !GOOGLE_CLIENT_ID) return
-
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: ({ credential }) => {
-        startTransition(async () => {
-          onResult(await loginWithGoogleAction(credential, roleRef.current))
-        })
-      },
-    })
-    google.accounts.id.renderButton(container, {
-      type: "standard",
-      theme: "outline",
-      shape: "rectangular",
-      text: "continue_with",
-      width: container.offsetWidth || FALLBACK_WIDTH_PX,
-    })
-  }
-
+export function GoogleButton({ role }: GoogleButtonProps) {
   return (
-    <>
-      <Script
-        src={GOOGLE_SCRIPT_SRC}
-        strategy="afterInteractive"
-        onReady={renderGoogleButton}
-      />
-      <div ref={containerRef} className="flex min-h-10 justify-center" />
-    </>
+    <form action={startGoogleAction}>
+      <input type="hidden" name="role" value={role} />
+      <Button type="submit" variant="outline" color="neutral" block>
+        <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
+          <path
+            fill="#4285F4"
+            d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.82Z"
+          />
+          <path
+            fill="#34A853"
+            d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.88-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.95H1.27v3.11A12 12 0 0 0 12 24Z"
+          />
+          <path
+            fill="#FBBC05"
+            d="M5.27 14.29a7.2 7.2 0 0 1 0-4.58V6.6H1.27a12 12 0 0 0 0 10.8l4-3.11Z"
+          />
+          <path
+            fill="#EA4335"
+            d="M12 4.75c1.76 0 3.34.6 4.59 1.79l3.44-3.44A11.4 11.4 0 0 0 12 0 12 12 0 0 0 1.27 6.6l4 3.11C6.22 6.86 8.87 4.75 12 4.75Z"
+          />
+        </svg>
+        Continue with Google
+      </Button>
+    </form>
   )
 }

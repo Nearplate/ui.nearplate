@@ -9,7 +9,6 @@ import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 
-
 import {
   continueAsGuestAction,
   requestMagicLinkAction,
@@ -21,7 +20,7 @@ import { RoleToggle } from "./role-toggle"
 
 const IDLE: AuthActionState = { status: "idle" }
 
-const ROLE_LABELS: Record<string, string> = {
+export const ROLE_LABELS: Record<string, string> = {
   user: "a customer",
   restaurant: "a restaurant",
   admin: "an admin",
@@ -51,12 +50,10 @@ function AuthFormBody({
   onReset,
 }: AuthFormProps & { onReset: () => void }) {
   const [role, setRole] = useState<SignupRole>(initialRole)
-  const [magicState, formAction, isPending] = useActionState(
+  const [state, formAction, isPending] = useActionState(
     requestMagicLinkAction,
     IDLE
   )
-  const [googleState, setGoogleState] = useState<AuthActionState>(IDLE)
-  const state = googleState.status === "idle" ? magicState : googleState
 
   if (state.status === "sent") {
     return (
@@ -119,8 +116,8 @@ function AuthFormBody({
         <Separator className="flex-1" />
       </div>
 
-      <GoogleButton role={role} onResult={setGoogleState} />
-      
+      <GoogleButton role={role} />
+
       <form action={continueAsGuestAction}>
         <Button type="submit" variant="outline" color="neutral" block>
           Browse as guest

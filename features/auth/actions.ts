@@ -8,7 +8,7 @@ import { z } from "zod"
 import { ApiError } from "@/lib/api/client"
 
 import {
-  loginWithGoogle,
+  googleAuthorizeUrl,
   logout,
   requestGuestToken,
   requestMagicLink,
@@ -21,13 +21,14 @@ import {
   onboardFormSchema,
   signupRoleSchema,
   type AuthResult,
-  type SignupRole,
 } from "./schemas"
 import { establishSession, getAccessToken } from "./session"
 import {
   clearSessionCookies,
   GUEST_COOKIE,
   guestCookieOptions,
+  OAUTH_STATE_COOKIE,
+  oauthStateCookieOptions,
   REFRESH_COOKIE,
 } from "./session-cookies"
 
@@ -117,12 +118,30 @@ export async function verifyMagicLinkAction(
   return completeAuth(() => verifyMagicLink(token))
 }
 
-/** Signs in with a Google ID token (POST /auth/google). */
-export async function loginWithGoogleAction(
-  idToken: string,
-  role: SignupRole
-): Promise<AuthActionState> {
-  return completeAuth(() => loginWithGoogle(idToken, role))
+/**
+ * Starts the redirect flow (GET /auth/google): stashes the `state` Google
+ * will echo back in a short-lived httpOnly cookie (checked by the callback
+ * route as CSRF protection for the round trip), then sends the browser to
+ * Google. Falls back to the same "unavailable" notice as guest sign-in.
+ */
+export async function startGoogleAction(formData: FormData): Promise<void> {
+  const parsed = signupRoleSchema.safeParse(formData.get("role"))
+  const role = parsed.success ? parsed.data : "user"
+
+  let url: string
+  try {
+    url = await googleAuthorizeUrl(role)
+  } catch (error) {
+    errorMessage(error)
+    redirect("/auth?error=google")
+    return
+  }
+
+  const state = new URL(url).searchParams.get("state")
+  if (!state) redirect("/auth?error=google")
+
+  ;(await cookies()).set(OAUTH_STATE_COOKIE, state, oauthStateCookieOptions())
+  redirect(url)
 }
 
 /** Anonymous browsing (POST /auth/guest). */

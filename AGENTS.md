@@ -14,34 +14,34 @@ Frontend for NearPlate. Next.js (App Router) + React 19 + Tailwind CSS 4, styled
 
 ## Commands
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Dev server on :3400 (matches the API's CORS origin and magic-link URL) |
-| `npm run build` | Production build (`output: "standalone"`) |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm test` | Vitest + Testing Library |
-| `npm run format` / `format:check` | Prettier write / check |
+| Command                           | Purpose                                                                |
+| --------------------------------- | ---------------------------------------------------------------------- |
+| `npm run dev`                     | Dev server on :3400 (matches the API's CORS origin and magic-link URL) |
+| `npm run build`                   | Production build (`output: "standalone"`)                              |
+| `npm run lint`                    | ESLint                                                                 |
+| `npm run typecheck`               | `tsc --noEmit`                                                         |
+| `npm test`                        | Vitest + Testing Library                                               |
+| `npm run format` / `format:check` | Prettier write / check                                                 |
 
 Definition of done: `lint`, `typecheck`, `format:check`, `test` and `build` all pass.
 
-Environment: copy `.env.example`. `API_BASE_URL` (default `http://localhost:3000/v1`) points at `../api.nearplate`; `NEXT_PUBLIC_GOOGLE_CLIENT_ID` is optional and enables Google sign-in.
+Environment: copy `.env.example`. `API_BASE_URL` (default `http://localhost:3030/v1`) points at `../api.nearplate`. Google sign-in needs no client-side config: the API holds the OAuth client id/secret and redirects the browser directly.
 
 ## Structure and responsibilities
 
-| Path | Owns |
-| --- | --- |
-| `app/` | Routing only: layouts, pages, route handlers. Keep thin; compose components. |
-| `components/ui/` | Design-system primitives (Button, Badge, Card, Input, ...). No business logic or data fetching. |
-| `app/(site)/` | Pages with the site header/footer (home, account, onboarding). `app/(auth)/` is the split-screen auth shell; `app/(dev)/ui` is a component gallery (dev only). |
-| `components/layout/` | App shell pieces (header, footer, bento grid). |
-| `features/<domain>/` | Domain modules: their own components, hooks, api, types. `features/auth` holds the API client, server actions, session cookies and forms. |
-| `proxy.ts` | Next 16 proxy (formerly middleware): refreshes an expired access token and gates `/account`, `/onboarding`. Optimistic only. |
-| `test/` | Vitest setup. Tests live next to the code as `*.test.ts(x)`. |
-| `hooks/` | Shared, domain-agnostic React hooks. |
-| `lib/` | Pure utilities (`cn`) and theme constants (`lib/theme`). |
-| `config/` | Static app configuration (`site.ts`). |
-| `types/` | Shared TypeScript types. |
+| Path                 | Owns                                                                                                                                                           |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app/`               | Routing only: layouts, pages, route handlers. Keep thin; compose components.                                                                                   |
+| `components/ui/`     | Design-system primitives (Button, Badge, Card, Input, ...). No business logic or data fetching.                                                                |
+| `app/(site)/`        | Pages with the site header/footer (home, account, onboarding). `app/(auth)/` is the split-screen auth shell; `app/(dev)/ui` is a component gallery (dev only). |
+| `components/layout/` | App shell pieces (header, footer, bento grid).                                                                                                                 |
+| `features/<domain>/` | Domain modules: their own components, hooks, api, types. `features/auth` holds the API client, server actions, session cookies and forms.                      |
+| `proxy.ts`           | Next 16 proxy (formerly middleware): refreshes an expired access token and gates `/account`, `/onboarding`. Optimistic only.                                   |
+| `test/`              | Vitest setup. Tests live next to the code as `*.test.ts(x)`.                                                                                                   |
+| `hooks/`             | Shared, domain-agnostic React hooks.                                                                                                                           |
+| `lib/`               | Pure utilities (`cn`) and theme constants (`lib/theme`).                                                                                                       |
+| `config/`            | Static app configuration (`site.ts`).                                                                                                                          |
+| `types/`             | Shared TypeScript types.                                                                                                                                       |
 
 ## Design system
 
@@ -55,7 +55,7 @@ Environment: copy `.env.example`. `API_BASE_URL` (default `http://localhost:3000
 ## Auth (api.nearplate)
 
 - The browser never sees tokens. Server actions call the API server-to-server (`lib/api/client.ts`) and store `np_at` (access), `np_rt` (refresh) and `np_guest` in httpOnly cookies.
-- Supported: magic link (`/auth`, landing `/auth/magic?token=` posts the token from JS so link scanners can't burn it), Google ID token, guest, refresh (in `proxy.ts`), logout, `/users/me` read and update, onboarding.
+- Supported: magic link (`/auth`, landing `/auth/magic?token=` posts the token from JS so link scanners can't burn it), Google via Authorization Code + PKCE (`startGoogleAction` redirects to `GET /auth/google`, then `app/(auth)/auth/google/callback/route.ts` posts to `POST /auth/google/verify`), guest, refresh (in `proxy.ts`), logout, `/users/me` read and update, onboarding.
 - API errors are only `{statusCode}`; map status codes to messages in `features/auth/actions.ts`.
 - Signup role (`user` | `restaurant`) is chosen on `/auth`; `admin` is never sent.
 

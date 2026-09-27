@@ -3,23 +3,32 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { ApiError } from "@/lib/api/client"
 
 import {
-  loginWithGoogleAction,
   requestMagicLinkAction,
+  startGoogleAction,
   verifyMagicLinkAction,
 } from "./actions"
 import {
-  loginWithGoogle,
+  googleAuthorizeUrl,
   requestMagicLink,
   verifyMagicLink,
 } from "./api/auth-api"
 import { establishSession } from "./session"
+
+const cookieSet = vi.fn()
+const cookieDelete = vi.fn()
 
 vi.mock("next/navigation", () => ({
   redirect: vi.fn((url: string) => {
     throw new Error(`REDIRECT:${url}`)
   }),
 }))
-vi.mock("next/headers", () => ({ cookies: vi.fn() }))
+vi.mock("next/headers", () => ({
+  cookies: vi.fn(async () => ({
+    set: cookieSet,
+    delete: cookieDelete,
+    get: vi.fn(),
+  })),
+}))
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }))
 vi.mock("./api/auth-api")
 vi.mock("./api/user-api")
@@ -148,31 +157,58 @@ describe("verifyMagicLinkAction", () => {
   })
 })
 
-describe("loginWithGoogleAction", () => {
+describe("startGoogleAction", () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  it("reports unavailable when the API has no Google client (501)", async () => {
-    vi.mocked(loginWithGoogle).mockRejectedValue(new ApiError(501))
+  it("stores the state cookie and redirects to Google", async () => {
+    vi.mocked(googleAuthorizeUrl).mockResolvedValue(
+      "https://accounts.google.com/o/oauth2/v2/auth?state=abc123&other=1"
+    )
 
-    const state = await loginWithGoogleAction("id-token", "user")
+    await expect(
+      startGoogleAction(form({ role: "restaurant" }))
+    ).rejects.toThrow(
+      "REDIRECT:https://accounts.google.com/o/oauth2/v2/auth?state=abc123&other=1"
+    )
 
-    expect(state).toMatchObject({
-      status: "error",
-      message: expect.stringContaining("isn't available"),
-    })
+    expect(googleAuthorizeUrl).toHaveBeenCalledWith("restaurant")
+    expect(cookieSet).toHaveBeenCalledWith(
+      "np_oauth_state",
+      "abc123",
+      expect.any(Object)
+    )
   })
 
-  it("returns role_mismatch without creating a session", async () => {
-    vi.mocked(loginWithGoogle).mockResolvedValue({
-      status: "role_mismatch",
-      role: "restaurant",
-    })
+  it("defaults to the user role when none is given", async () => {
+    vi.mocked(googleAuthorizeUrl).mockResolvedValue(
+      "https://accounts.google.com/o/oauth2/v2/auth?state=xyz"
+    )
 
-    const state = await loginWithGoogleAction("id-token", "user")
+    await expect(startGoogleAction(form({}))).rejects.toThrow("REDIRECT:")
+    expect(googleAuthorizeUrl).toHaveBeenCalledWith("user")
+  })
 
-    expect(state).toEqual({ status: "role_mismatch", role: "restaurant" })
-    expect(establishSession).not.toHaveBeenCalled()
+  it("falls back to the unavailable notice on an API error", async () => {
+    vi.mocked(googleAuthorizeUrl).mockRejectedValue(new ApiError(503))
+
+    await expect(startGoogleAction(form({ role: "user" }))).rejects.toThrow(
+      "REDIRECT:/auth?error=google"
+    )
+
+    expect(cookieSet).not.toHaveBeenCalled()
+  })
+
+  it("falls back to the unavailable notice when no state is returned", async () => {
+    vi.mocked(googleAuthorizeUrl).mockResolvedValue(
+      "https://accounts.google.com/o/oauth2/v2/auth?other=1"
+    )
+
+    await expect(startGoogleAction(form({ role: "user" }))).rejects.toThrow(
+      "REDIRECT:/auth?error=google"
+    )
+
+    expect(cookieSet).not.toHaveBeenCalled()
   })
 })

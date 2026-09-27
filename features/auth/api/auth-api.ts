@@ -1,6 +1,6 @@
 import "server-only"
 
-import { apiRequest } from "@/lib/api/client"
+import { apiRedirectLocation, apiRequest } from "@/lib/api/client"
 
 import {
   authResultSchema,
@@ -35,14 +35,19 @@ export async function verifyMagicLink(token: string): Promise<AuthResult> {
   return authResultSchema.parse(data)
 }
 
-/** POST /auth/google: signs in with a Google ID token. */
-export async function loginWithGoogle(
-  idToken: string,
-  role: SignupRole
+/** GET /auth/google: the URL Google's consent screen redirects to. */
+export async function googleAuthorizeUrl(role: SignupRole): Promise<string> {
+  return apiRedirectLocation(`/auth/google?role=${encodeURIComponent(role)}`)
+}
+
+/** POST /auth/google/verify: exchanges the code Google returned for a session. */
+export async function verifyGoogle(
+  code: string,
+  state: string
 ): Promise<AuthResult> {
-  const data = await apiRequest("/auth/google", {
+  const data = await apiRequest("/auth/google/verify", {
     method: "POST",
-    body: { idToken, role },
+    body: { code, state },
   })
   return authResultSchema.parse(data)
 }
