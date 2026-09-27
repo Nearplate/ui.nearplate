@@ -5,7 +5,7 @@ import { cookies } from "next/headers"
 import { ApiError } from "@/lib/api/client"
 
 import { verifyGoogle } from "./api/auth-api"
-import { establishSession } from "./session"
+import { establishSession, getDeviceId } from "./session"
 import { OAUTH_STATE_COOKIE } from "./session-cookies"
 
 /**
@@ -37,7 +37,8 @@ export async function completeGoogleSignIn(
   }
 
   try {
-    const result = await verifyGoogle(code, state)
+    const deviceId = await getDeviceId()
+    const result = await verifyGoogle(code, state, deviceId)
     if (result.status === "role_mismatch") {
       return `/auth?error=role_mismatch&role=${encodeURIComponent(result.role)}`
     }

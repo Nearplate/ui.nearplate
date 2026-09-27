@@ -27,10 +27,14 @@ export async function requestMagicLink(
 }
 
 /** POST /auth/magic-link/verify: exchanges the emailed token for a session. */
-export async function verifyMagicLink(token: string): Promise<AuthResult> {
+export async function verifyMagicLink(
+  token: string,
+  deviceId: string | null
+): Promise<AuthResult> {
   const data = await apiRequest("/auth/magic-link/verify", {
     method: "POST",
     body: { token },
+    deviceId: deviceId ?? undefined,
   })
   return authResultSchema.parse(data)
 }
@@ -43,20 +47,26 @@ export async function googleAuthorizeUrl(role: SignupRole): Promise<string> {
 /** POST /auth/google/verify: exchanges the code Google returned for a session. */
 export async function verifyGoogle(
   code: string,
-  state: string
+  state: string,
+  deviceId: string | null
 ): Promise<AuthResult> {
   const data = await apiRequest("/auth/google/verify", {
     method: "POST",
     body: { code, state },
+    deviceId: deviceId ?? undefined,
   })
   return authResultSchema.parse(data)
 }
 
 /** POST /auth/refresh: rotates the refresh token. */
-export async function refreshTokens(refreshToken: string): Promise<Tokens> {
+export async function refreshTokens(
+  refreshToken: string,
+  deviceId: string | null
+): Promise<Tokens> {
   const data = await apiRequest("/auth/refresh", {
     method: "POST",
     body: { refreshToken },
+    deviceId: deviceId ?? undefined,
   })
   return tokensSchema.parse(data)
 }

@@ -22,6 +22,8 @@ interface ApiRequestOptions {
   body?: unknown
   /** Sent as `Authorization: Bearer <token>`. */
   token?: string
+  /** Sent as `X-Device-Id`; binds a session to the browser's `np_device` cookie. */
+  deviceId?: string
 }
 
 /**
@@ -30,11 +32,12 @@ interface ApiRequestOptions {
  */
 export async function apiRequest(
   path: string,
-  { method = "GET", body, token }: ApiRequestOptions = {}
+  { method = "GET", body, token, deviceId }: ApiRequestOptions = {}
 ): Promise<unknown> {
   const headers: Record<string, string> = { Accept: "application/json" }
   if (body !== undefined) headers["Content-Type"] = "application/json"
   if (token) headers.Authorization = `Bearer ${token}`
+  if (deviceId) headers["X-Device-Id"] = deviceId
 
   let response: Response
   try {

@@ -4,9 +4,11 @@ export const ACCESS_COOKIE = "np_at"
 export const REFRESH_COOKIE = "np_rt"
 export const GUEST_COOKIE = "np_guest"
 export const OAUTH_STATE_COOKIE = "np_oauth_state"
+export const DEVICE_COOKIE = "np_device"
 
 const REFRESH_MAX_AGE_SECONDS = 60 * 60 * 24 * 30
 const OAUTH_STATE_MAX_AGE_SECONDS = 60 * 10
+const DEVICE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365
 
 interface CookieOptions {
   httpOnly: true
@@ -31,6 +33,7 @@ export const refreshCookieOptions = () => baseOptions(REFRESH_MAX_AGE_SECONDS)
 export const guestCookieOptions = (expiresIn: number) => baseOptions(expiresIn)
 export const oauthStateCookieOptions = () =>
   baseOptions(OAUTH_STATE_MAX_AGE_SECONDS)
+export const deviceCookieOptions = () => baseOptions(DEVICE_MAX_AGE_SECONDS)
 
 /** Minimal cookie-jar shape shared by `cookies()` and `NextResponse.cookies`. */
 export interface CookieWriter {

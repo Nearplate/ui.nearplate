@@ -22,7 +22,7 @@ import {
   signupRoleSchema,
   type AuthResult,
 } from "./schemas"
-import { establishSession, getAccessToken } from "./session"
+import { establishSession, getAccessToken, getDeviceId } from "./session"
 import {
   clearSessionCookies,
   GUEST_COOKIE,
@@ -115,7 +115,8 @@ export async function requestMagicLinkAction(
 export async function verifyMagicLinkAction(
   token: string
 ): Promise<AuthActionState> {
-  return completeAuth(() => verifyMagicLink(token))
+  const deviceId = await getDeviceId()
+  return completeAuth(() => verifyMagicLink(token, deviceId))
 }
 
 /**

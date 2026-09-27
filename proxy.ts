@@ -4,6 +4,8 @@ import { refreshTokens } from "@/features/auth/api/auth-api"
 import {
   ACCESS_COOKIE,
   clearSessionCookies,
+  DEVICE_COOKIE,
+  deviceCookieOptions,
   REFRESH_COOKIE,
   writeSessionCookies,
 } from "@/features/auth/session-cookies"
@@ -32,30 +34,49 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   const refreshToken = request.cookies.get(REFRESH_COOKIE)?.value
   const needsAuth = isProtected(request.nextUrl.pathname)
 
-  if (accessToken) return NextResponse.next()
+  // Every browser gets a stable device id on its first request. It rides
+  // along on the request (so server actions and components see it via
+  // `cookies()`) and, once, on the response so the browser stores it.
+  const existingDeviceId = request.cookies.get(DEVICE_COOKIE)?.value
+  const deviceId = existingDeviceId ?? crypto.randomUUID()
+  if (!existingDeviceId) request.cookies.set(DEVICE_COOKIE, deviceId)
+
+  function withDeviceCookie(response: NextResponse): NextResponse {
+    if (!existingDeviceId) {
+      response.cookies.set(DEVICE_COOKIE, deviceId, deviceCookieOptions())
+    }
+    return response
+  }
+
+  if (accessToken) return withDeviceCookie(NextResponse.next({ request }))
 
   if (!refreshToken) {
-    return needsAuth ? redirectToAuth(request) : NextResponse.next()
+    const response = needsAuth
+      ? redirectToAuth(request)
+      : NextResponse.next({ request })
+    return withDeviceCookie(response)
   }
 
   try {
-    const tokens = await refreshTokens(refreshToken)
+    const tokens = await refreshTokens(refreshToken, deviceId)
 
     // Forward the new cookies to the downstream request, then to the browser.
     request.cookies.set(ACCESS_COOKIE, tokens.accessToken)
     request.cookies.set(REFRESH_COOKIE, tokens.refreshToken)
     const response = NextResponse.next({ request })
     writeSessionCookies(response.cookies, tokens)
-    return response
+    return withDeviceCookie(response)
   } catch (error) {
     if (!(error instanceof ApiError)) throw error
 
-    const response = needsAuth ? redirectToAuth(request) : NextResponse.next()
+    const response = needsAuth
+      ? redirectToAuth(request)
+      : NextResponse.next({ request })
     // Only a rejected token is final; an API outage (5xx) keeps the session.
     if (error.status === HTTP_UNAUTHORIZED || error.status === HTTP_FORBIDDEN) {
       clearSessionCookies(response.cookies)
     }
-    return response
+    return withDeviceCookie(response)
   }
 }
 

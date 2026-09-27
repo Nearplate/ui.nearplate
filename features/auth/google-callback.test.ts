@@ -18,6 +18,7 @@ vi.mock("next/headers", () => ({
 vi.mock("./api/auth-api")
 vi.mock("./session", () => ({
   establishSession: vi.fn(),
+  getDeviceId: vi.fn(),
 }))
 
 const AUTHENTICATED = {
@@ -55,7 +56,7 @@ describe("completeGoogleSignIn", () => {
       params({ code: "c1", state: "state123" })
     )
 
-    expect(verifyGoogle).toHaveBeenCalledWith("c1", "state123")
+    expect(verifyGoogle).toHaveBeenCalledWith("c1", "state123", undefined)
     expect(establishSession).toHaveBeenCalledWith(AUTHENTICATED)
     expect(path).toBe("/")
     expect(cookieDelete).toHaveBeenCalledWith("np_oauth_state")

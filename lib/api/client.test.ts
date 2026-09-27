@@ -69,6 +69,24 @@ describe("apiRequest", () => {
       "Content-Type": "application/json",
     })
   })
+
+  it("sends the device id header when given", async () => {
+    const fetchMock = stubFetch(Response.json({}))
+
+    await apiRequest("/auth/refresh", { method: "POST", deviceId: "d1" })
+
+    const [, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit]
+    expect(init.headers).toMatchObject({ "X-Device-Id": "d1" })
+  })
+
+  it("omits the device id header when not given", async () => {
+    const fetchMock = stubFetch(Response.json({}))
+
+    await apiRequest("/auth/refresh", { method: "POST" })
+
+    const [, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit]
+    expect(init.headers).not.toHaveProperty("X-Device-Id")
+  })
 })
 
 describe("apiRedirectLocation", () => {

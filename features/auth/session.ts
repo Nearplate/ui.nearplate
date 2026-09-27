@@ -9,6 +9,7 @@ import { getMe } from "./api/user-api"
 import type { AuthResult, User } from "./schemas"
 import {
   ACCESS_COOKIE,
+  DEVICE_COOKIE,
   GUEST_COOKIE,
   writeSessionCookies,
 } from "./session-cookies"
@@ -37,6 +38,11 @@ export async function getAccessToken(): Promise<string | null> {
 
 export async function isGuest(): Promise<boolean> {
   return (await cookies()).has(GUEST_COOKIE)
+}
+
+/** The browser's stable device id (set by `proxy.ts`), or null if absent. */
+export async function getDeviceId(): Promise<string | null> {
+  return (await cookies()).get(DEVICE_COOKIE)?.value ?? null
 }
 
 /** Stores the session cookies and returns where to send the user next. */

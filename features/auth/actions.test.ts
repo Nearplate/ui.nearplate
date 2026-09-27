@@ -35,6 +35,7 @@ vi.mock("./api/user-api")
 vi.mock("./session", () => ({
   establishSession: vi.fn(),
   getAccessToken: vi.fn(),
+  getDeviceId: vi.fn(),
 }))
 
 const IDLE = { status: "idle" } as const

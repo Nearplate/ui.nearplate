@@ -1,6 +1,7 @@
 "use client"
 
 import { ArrowRightIcon } from "lucide-react"
+import Link from "next/link"
 import { useActionState, useState } from "react"
 
 import { Alert } from "@/components/ui/alert"
@@ -125,8 +126,18 @@ function AuthFormBody({
       </form>
 
       <p className="text-center text-xs text-muted">
-        By continuing, you agree to NearPlate&apos;s terms of service and
-        privacy policy.
+        By continuing, you agree to NearPlate&apos;s{" "}
+        <Link href="/terms" className="underline hover:text-highlighted">
+          terms of service
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/privacy-policy"
+          className="underline hover:text-highlighted"
+        >
+          privacy policy
+        </Link>
+        .
       </p>
     </div>
   )

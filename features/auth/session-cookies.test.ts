@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest"
 import {
   ACCESS_COOKIE,
   clearSessionCookies,
+  deviceCookieOptions,
   REFRESH_COOKIE,
   writeSessionCookies,
 } from "./session-cookies"
@@ -46,5 +47,16 @@ describe("clearSessionCookies", () => {
     clearSessionCookies(jar)
 
     expect(jar.delete).toHaveBeenCalledTimes(3)
+  })
+})
+
+describe("deviceCookieOptions", () => {
+  it("is an httpOnly cookie that lasts a year", () => {
+    expect(deviceCookieOptions()).toMatchObject({
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+    })
   })
 })
