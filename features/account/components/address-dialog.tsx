@@ -10,10 +10,21 @@ import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import type { FormActionState } from "@/features/auth/actions"
 
+import { LocationFields } from "@/features/restaurant/components/location-fields"
+
 import { saveAddressAction } from "../actions"
 import type { AccountAddress } from "../schemas"
 
 const IDLE: FormActionState = { status: "idle" }
+const COUNTRY_PREFIX = "+91"
+
+/** The phone field shows +91 as a fixed prefix, so drop it from the saved value. */
+function initialAddressFrom(address: AccountAddress) {
+  const phoneNumber = address.phoneNumber?.startsWith(COUNTRY_PREFIX)
+    ? address.phoneNumber.slice(COUNTRY_PREFIX.length)
+    : (address.phoneNumber ?? "")
+  return { ...address, phoneNumber }
+}
 
 interface AddressFormBodyProps {
   address: AccountAddress | null
@@ -44,57 +55,13 @@ function AddressFormBody({ address, onSaved }: AddressFormBodyProps) {
         />
       </Field>
 
-      <Field label="Address line 1" htmlFor="address-line1">
-        <Input
-          id="address-line1"
-          name="line1"
-          defaultValue={address?.line1}
-          required
-        />
-      </Field>
-
-      <Field label="Address line 2 (optional)" htmlFor="address-line2">
-        <Input
-          id="address-line2"
-          name="line2"
-          defaultValue={address?.line2 ?? ""}
-        />
-      </Field>
-
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Field label="City" htmlFor="address-city">
-          <Input
-            id="address-city"
-            name="city"
-            defaultValue={address?.city}
-            required
-          />
-        </Field>
-        <Field label="State" htmlFor="address-state">
-          <Input
-            id="address-state"
-            name="state"
-            defaultValue={address?.state}
-            required
-          />
-        </Field>
-        <Field label="Zipcode" htmlFor="address-zipcode">
-          <Input
-            id="address-zipcode"
-            name="zipcode"
-            defaultValue={address?.zipcode}
-            required
-          />
-        </Field>
-        <Field label="Phone (optional)" htmlFor="address-phoneNumber">
-          <Input
-            id="address-phoneNumber"
-            name="phoneNumber"
-            inputMode="tel"
-            defaultValue={address?.phoneNumber ?? ""}
-          />
-        </Field>
-      </div>
+      <LocationFields
+        initialLat={address?.lat ?? null}
+        initialLng={address?.lng ?? null}
+        initialAddress={address ? initialAddressFrom(address) : undefined}
+        required
+        indianMobile
+      />
 
       <label className="flex items-center gap-2 font-mono text-xs tracking-wider uppercase">
         <Switch name="isDefault" defaultChecked={address?.isDefault ?? false} />

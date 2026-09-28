@@ -37,6 +37,7 @@ const ADDRESS_FORM = {
   city: "Mumbai",
   state: "MH",
   zipcode: "400001",
+  phoneNumber: "98765 43210",
 }
 
 beforeEach(() => {
@@ -123,6 +124,41 @@ describe("saveAddressAction", () => {
       "at",
       expect.objectContaining({ label: "Home", line1: ADDRESS_FORM.line1 })
     )
+  })
+
+  it("prefixes the phone with +91 and forwards the map pin", async () => {
+    vi.mocked(createAddress).mockResolvedValue({} as never)
+
+    await saveAddressAction(
+      IDLE,
+      form({ ...ADDRESS_FORM, lat: "19.076", lng: "72.8777" })
+    )
+
+    expect(createAddress).toHaveBeenCalledWith(
+      "at",
+      expect.objectContaining({
+        phoneNumber: "+919876543210",
+        lat: 19.076,
+        lng: 72.8777,
+      })
+    )
+  })
+
+  it("rejects an address without a valid phone", async () => {
+    const { label, line1, city, state, zipcode } = ADDRESS_FORM
+
+    const missing = await saveAddressAction(
+      IDLE,
+      form({ label, line1, city, state, zipcode })
+    )
+    const short = await saveAddressAction(
+      IDLE,
+      form({ ...ADDRESS_FORM, phoneNumber: "12345" })
+    )
+
+    expect(missing.status).toBe("error")
+    expect(short.status).toBe("error")
+    expect(createAddress).not.toHaveBeenCalled()
   })
 
   it("updates an existing address when addressId is set", async () => {

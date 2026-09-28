@@ -27,7 +27,12 @@ interface LocationFieldsProps {
   initialLng: number | null
   initialAddress?: Partial<Address>
   required: boolean
+  /** Constrain the phone to a 10-digit Indian mobile (after the fixed +91). */
+  indianMobile?: boolean
 }
+
+const INDIAN_MOBILE_PATTERN = "[6-9][0-9]{9}"
+const INDIAN_MOBILE_LENGTH = 10
 
 interface AddressDraft {
   line1: string
@@ -55,6 +60,7 @@ export function LocationFields({
   initialLng,
   initialAddress,
   required,
+  indianMobile = false,
 }: LocationFieldsProps) {
   const [coords, setCoords] = useState<[number, number] | null>(
     initialLat !== null && initialLng !== null ? [initialLat, initialLng] : null
@@ -145,6 +151,13 @@ export function LocationFields({
               inputMode="numeric"
               required={required}
               className="pl-10"
+              {...(indianMobile
+                ? {
+                    pattern: INDIAN_MOBILE_PATTERN,
+                    maxLength: INDIAN_MOBILE_LENGTH,
+                    title: "10-digit mobile number starting with 6-9",
+                  }
+                : {})}
               {...field("phoneNumber")}
             />
           </div>

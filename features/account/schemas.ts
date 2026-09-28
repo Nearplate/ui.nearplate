@@ -32,6 +32,10 @@ export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
 }
 
 const PHONE_REGEX = /^\+?[0-9]{10,15}$/
+/** `+91` followed by a 10-digit mobile starting 6-9, as the API stores it. */
+const INDIAN_MOBILE_REGEX = /^\+91[6-9][0-9]{9}$/
+const MAX_LAT = 90
+const MAX_LNG = 180
 
 const dateFieldSchema = z
   .string()
@@ -49,6 +53,19 @@ function nullableField<T extends z.ZodTypeAny>(schema: T) {
     (value) =>
       typeof value === "string" && value.trim() === "" ? null : value,
     schema.nullable()
+  )
+}
+
+/** A map coordinate within ±`limit`; missing or blank input (no pin picked) is `null`. */
+function coordinateField(limit: number) {
+  return z.preprocess(
+    (value) =>
+      value === undefined ||
+      value === null ||
+      (typeof value === "string" && value.trim() === "")
+        ? null
+        : value,
+    z.coerce.number().min(-limit).max(limit).nullable()
   )
 }
 
@@ -80,7 +97,11 @@ export const addressFormSchema = z.object({
   city: z.string().trim().min(1),
   state: z.string().trim().min(1),
   zipcode: z.string().trim().min(1),
-  phoneNumber: nullableField(z.string().trim().min(1)),
+  phoneNumber: z
+    .string()
+    .regex(INDIAN_MOBILE_REGEX, "Enter a valid 10-digit mobile number"),
+  lat: coordinateField(MAX_LAT),
+  lng: coordinateField(MAX_LNG),
   isDefault: z.boolean(),
 })
 export type AddressFormInput = z.infer<typeof addressFormSchema>
@@ -95,6 +116,8 @@ export const addressSchema = z.object({
   state: z.string(),
   zipcode: z.string(),
   phoneNumber: z.string().nullable(),
+  lat: z.number().nullable(),
+  lng: z.number().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
 })

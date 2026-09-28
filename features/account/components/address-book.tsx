@@ -45,7 +45,7 @@ export function AddressBook({ addresses }: AddressBookProps) {
         type="button"
         size="sm"
         onClick={() => setEditing(null)}
-        className="self-start"
+        className="self-end"
       >
         <PlusIcon aria-hidden className="size-3.5" />
         Add address

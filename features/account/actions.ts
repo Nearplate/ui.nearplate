@@ -11,9 +11,17 @@ import { errorMessage } from "@/lib/api/error-message"
 import { createAddress, deleteAddress, updateAddress } from "./api/address-api"
 import { addressFormSchema, profileFormSchema } from "./schemas"
 
+const INDIAN_MOBILE_LENGTH = 10
+
 function nullableText(value: FormDataEntryValue | null): string | null {
   const text = typeof value === "string" ? value.trim() : ""
   return text === "" ? null : text
+}
+
+/** Prefixes the 10 typed digits with +91; anything else is left for the schema to reject. */
+function toIndianPhone(value: FormDataEntryValue | null): string {
+  const digits = typeof value === "string" ? value.replace(/\D/g, "") : ""
+  return digits.length === INDIAN_MOBILE_LENGTH ? `+91${digits}` : digits
 }
 
 /** Updates the caller's profile fields. Every field is optional; a blank value clears it. */
@@ -63,7 +71,9 @@ export async function saveAddressAction(
     city: formData.get("city"),
     state: formData.get("state"),
     zipcode: formData.get("zipcode"),
-    phoneNumber: nullableText(formData.get("phoneNumber")),
+    phoneNumber: toIndianPhone(formData.get("phoneNumber")),
+    lat: formData.get("lat"),
+    lng: formData.get("lng"),
     isDefault: formData.get("isDefault") === "on",
   })
   if (!parsed.success) {

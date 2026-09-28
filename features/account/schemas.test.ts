@@ -89,13 +89,51 @@ describe("addressFormSchema", () => {
     city: "Mumbai",
     state: "MH",
     zipcode: "400001",
-    phoneNumber: null,
+    phoneNumber: "+919876543210",
     isDefault: false,
   }
 
   it("accepts a minimal valid address", () => {
     const result = addressFormSchema.safeParse(BASE)
     expect(result.success).toBe(true)
+  })
+
+  it.each([
+    ["missing", undefined],
+    ["blank", ""],
+    ["without +91", "9876543210"],
+    ["too short", "+9198765"],
+    ["not starting 6-9", "+915876543210"],
+  ])("rejects a %s phone number", (_name, phoneNumber) => {
+    const result = addressFormSchema.safeParse({ ...BASE, phoneNumber })
+    expect(result.success).toBe(false)
+  })
+
+  it("defaults the map pin to null when none was picked", () => {
+    const parsed = addressFormSchema.parse(BASE)
+    expect(parsed.lat).toBeNull()
+    expect(parsed.lng).toBeNull()
+  })
+
+  it("coerces form-data coordinate strings to numbers", () => {
+    const parsed = addressFormSchema.parse({
+      ...BASE,
+      lat: "12.9716",
+      lng: "77.5946",
+    })
+    expect(parsed.lat).toBe(12.9716)
+    expect(parsed.lng).toBe(77.5946)
+  })
+
+  it("treats blank coordinates as no pin", () => {
+    const parsed = addressFormSchema.parse({ ...BASE, lat: "", lng: "" })
+    expect(parsed.lat).toBeNull()
+    expect(parsed.lng).toBeNull()
+  })
+
+  it("rejects out-of-range coordinates", () => {
+    const result = addressFormSchema.safeParse({ ...BASE, lat: "91", lng: "0" })
+    expect(result.success).toBe(false)
   })
 
   it("rejects an empty label", () => {
