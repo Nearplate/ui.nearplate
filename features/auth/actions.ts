@@ -15,10 +15,9 @@ import {
   requestMagicLink,
   verifyMagicLink,
 } from "./api/auth-api"
-import { onboard, updateMe } from "./api/user-api"
+import { onboard } from "./api/user-api"
 import {
   emailSchema,
-  nameSchema,
   onboardFormSchema,
   signupRoleSchema,
   type AuthResult,
@@ -163,36 +162,6 @@ export async function onboardAction(
   }
   revalidatePath("/", "layout")
   redirect("/")
-}
-
-const profileFormSchema = z.object({
-  firstName: nameSchema.optional(),
-  lastName: nameSchema.optional(),
-})
-
-/** Updates the caller's names (PATCH /users/me). */
-export async function updateProfileAction(
-  _previous: FormActionState,
-  formData: FormData
-): Promise<FormActionState> {
-  const parsed = profileFormSchema.safeParse({
-    firstName: formData.get("firstName") || undefined,
-    lastName: formData.get("lastName") || undefined,
-  })
-  if (!parsed.success || Object.keys(parsed.data).length === 0) {
-    return { status: "error", message: "Enter a valid name to save." }
-  }
-
-  const accessToken = await getAccessToken()
-  if (!accessToken) redirect("/auth")
-
-  try {
-    await updateMe(accessToken, parsed.data)
-  } catch (error) {
-    return { status: "error", message: errorMessage(error) }
-  }
-  revalidatePath("/", "layout")
-  return { status: "success" }
 }
 
 /**

@@ -17,6 +17,7 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from "@/components/ui/menu"
 import { Select } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import {
   Tooltip,
@@ -159,6 +160,25 @@ export default function Page() {
               <TooltipContent>A helpful hint</TooltipContent>
             </Tooltip>
           </TooltipProvider>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <h2 className="font-semibold text-highlighted">Tabs</h2>
+        </CardHeader>
+        <Separator />
+        <CardBody>
+          <Tabs defaultValue="orders">
+            <TabsList>
+              <TabsTrigger value="orders">Orders</TabsTrigger>
+              <TabsTrigger value="addresses">Address book</TabsTrigger>
+              <TabsTrigger value="payments">Payment methods</TabsTrigger>
+            </TabsList>
+            <TabsContent value="orders">Orders panel</TabsContent>
+            <TabsContent value="addresses">Address book panel</TabsContent>
+            <TabsContent value="payments">Payment methods panel</TabsContent>
+          </Tabs>
         </CardBody>
       </Card>
     </main>
