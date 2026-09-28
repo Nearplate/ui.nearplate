@@ -61,7 +61,7 @@ describe("apiRequest", () => {
       string,
       RequestInit,
     ]
-    expect(url).toBe("http://localhost:3030/v1/users/me")
+    expect(url).toBe("http://localhost:8080/v1/users/me")
     expect(init.method).toBe("PATCH")
     expect(init.body).toBe(JSON.stringify({ firstName: "Asha" }))
     expect(init.headers).toMatchObject({

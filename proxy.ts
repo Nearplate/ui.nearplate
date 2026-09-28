@@ -11,7 +11,7 @@ import {
 } from "@/features/auth/session-cookies"
 import { ApiError } from "@/lib/api/client"
 
-const PROTECTED_PREFIXES = ["/account", "/onboarding"]
+const PROTECTED_PREFIXES = ["/account", "/onboarding", "/restaurant"]
 const HTTP_UNAUTHORIZED = 401
 const HTTP_FORBIDDEN = 403
 

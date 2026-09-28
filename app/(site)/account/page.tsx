@@ -14,6 +14,7 @@ export const metadata: Metadata = { title: "Account" }
 export default async function AccountPage() {
   const user = await getSession()
   if (!user) redirect("/auth")
+  if (user.role === "restaurant") redirect("/restaurant")
   if (!user.isOnboarded) redirect("/onboarding")
 
   return (

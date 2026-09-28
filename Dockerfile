@@ -12,7 +12,11 @@ RUN --mount=type=cache,target=/root/.npm npm ci
 # ---- builder: compile the standalone Next.js server ----
 FROM node:${NODE_VERSION}-alpine AS builder
 WORKDIR /app
-ENV NEXT_TELEMETRY_DISABLED=1
+ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+ARG NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY} \
+    NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID=${NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
