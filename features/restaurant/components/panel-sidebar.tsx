@@ -157,8 +157,12 @@ function AccountMenuItems() {
         <UserIcon className="size-3.5" />
         Profile
       </MenuItem>
-      <form action={logoutAction}>
-        <MenuItem nativeButton render={<button type="submit" />}>
+      <form action={logoutAction} className="block">
+        <MenuItem
+          nativeButton
+          render={<button type="submit" />}
+          className="w-full"
+        >
           <LogOutIcon className="size-3.5" />
           Log out
         </MenuItem>
