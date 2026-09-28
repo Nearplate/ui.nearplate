@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils"
 
 export const tabsTheme = tv({
   slots: {
-    list: "flex items-center gap-4 border-b-2 border-accented",
+    list: "flex items-center gap-0 border-b-2 border-accented",
     trigger:
-      "cursor-pointer border-b-2 border-transparent px-1 py-2 font-mono text-xs font-medium tracking-wider text-muted uppercase outline-none -mb-0.5 data-[selected]:border-inverted data-[selected]:text-default disabled:cursor-not-allowed disabled:opacity-50",
+      "cursor-pointer border-b-2 border-transparent px-3 py-2 font-mono text-xs font-medium tracking-wider text-muted uppercase outline-none -mb-0.5 data-[active]:border-inverted data-[active]:bg-inverted data-[active]:text-inverted disabled:cursor-not-allowed disabled:opacity-50",
     content: "pt-3",
   },
 })
