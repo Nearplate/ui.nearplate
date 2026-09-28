@@ -10,6 +10,7 @@ export const metadata: Metadata = { title: "Welcome" }
 export default async function OnboardingPage() {
   const user = await getSession()
   if (!user) redirect("/auth")
+  if (user.role === "restaurant") redirect("/restaurant/onboarding")
   if (user.isOnboarded) redirect("/")
 
   return (
@@ -20,7 +21,12 @@ export default async function OnboardingPage() {
           Tell us your name so restaurants know who to call.
         </p>
       </div>
-      <NameForm action={onboardAction} submitLabel="Finish" />
+      <NameForm
+        action={onboardAction}
+        submitLabel="Finish"
+        defaultFirstName={user.firstName ?? ""}
+        defaultLastName={user.lastName ?? ""}
+      />
     </section>
   )
 }

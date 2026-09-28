@@ -48,5 +48,6 @@ export async function getDeviceId(): Promise<string | null> {
 /** Stores the session cookies and returns where to send the user next. */
 export async function establishSession(result: Authenticated): Promise<string> {
   writeSessionCookies(await cookies(), result)
+  if (result.user.role === "restaurant") return "/restaurant"
   return result.user.isOnboarded ? "/" : "/onboarding"
 }

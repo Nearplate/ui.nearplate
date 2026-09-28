@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import { Anton, Geist, JetBrains_Mono } from "next/font/google"
 
 import "./globals.css"
+import { GlobalErrorListener } from "@/components/layout/global-error-listener"
+import { Toaster } from "@/components/ui/toast"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 
@@ -36,7 +38,11 @@ export default function RootLayout({
         fontDisplay.variable
       )}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <GlobalErrorListener />
+        <Toaster />
+      </body>
     </html>
   )
 }

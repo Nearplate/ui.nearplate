@@ -18,7 +18,7 @@ export class ApiError extends Error {
 }
 
 interface ApiRequestOptions {
-  method?: "GET" | "POST" | "PATCH"
+  method?: "GET" | "POST" | "PATCH" | "DELETE"
   body?: unknown
   /** Sent as `Authorization: Bearer <token>`. */
   token?: string

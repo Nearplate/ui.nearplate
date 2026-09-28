@@ -16,6 +16,11 @@ const CELL =
 export async function SiteHeader() {
   const user = await getSession()
   const accountLabel = user?.firstName ?? "Account"
+  const accountHref = user
+    ? user.role === "restaurant"
+      ? "/restaurant"
+      : "/account"
+    : "/auth"
 
   return (
     <header className="flex border-b-2 border-inverted bg-default">
@@ -38,7 +43,7 @@ export async function SiteHeader() {
           ))}
         </nav>
         <Link
-          href={user ? "/account" : "/auth"}
+          href={accountHref}
           className={`${CELL} hover:bg-inverted hover:text-inverted`}
         >
           {user ? accountLabel : "Log in"}

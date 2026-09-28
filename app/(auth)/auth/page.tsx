@@ -32,7 +32,7 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
     searchParams,
     getSession(),
   ])
-  if (user) redirect("/")
+  if (user) redirect(user.role === "restaurant" ? "/restaurant" : "/")
 
   const parsedRole = signupRoleSchema.safeParse(role)
 

@@ -1,5 +1,6 @@
 import { ArrowUpRightIcon, CheckIcon } from "lucide-react"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
 import { BentoCell, BentoGrid, BentoTitle } from "@/components/layout/bento"
 import { Button, buttonTheme } from "@/components/ui/button"
@@ -11,6 +12,7 @@ const PERKS = ["Browse nearby menus", "Order in a few taps", "Pay your way"]
 
 export default async function HomePage() {
   const user = await getSession()
+  if (user?.role === "restaurant") redirect("/restaurant")
 
   return (
     <>
