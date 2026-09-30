@@ -86,7 +86,7 @@ export async function HomeFeed({ location, filters }: HomeFeedProps) {
         id="restaurants"
         className="scroll-mt-32 border-b-2 border-inverted"
       >
-        <h2 className="px-4 pt-4 font-display text-3xl leading-none uppercase md:text-4xl">
+        <h2 className="px-4 pt-3 font-display text-2xl leading-none uppercase md:text-3xl">
           {filters.cuisine
             ? `${filters.cuisine} near you`
             : filters.veg
@@ -104,7 +104,7 @@ export async function HomeFeed({ location, filters }: HomeFeedProps) {
             showReset={isFiltered}
           />
         ) : (
-          <div className="p-4">
+          <div className="p-3">
             <RestaurantGrid restaurants={shown} />
           </div>
         )}

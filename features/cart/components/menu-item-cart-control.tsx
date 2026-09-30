@@ -10,12 +10,15 @@ import { QuantityStepper } from "./quantity-stepper"
 interface MenuItemCartControlProps {
   restaurant: RestaurantRef
   item: MenuItem
+  /** Sizing/layout for the button or stepper. */
+  className?: string
 }
 
 /** The "Add" button for a dish, which becomes a quantity stepper once it is in the cart. */
 export function MenuItemCartControl({
   restaurant,
   item,
+  className,
 }: MenuItemCartControlProps) {
   const { mode, quantityOf, add, setItemQuantity } = useCart()
   const quantity = quantityOf(restaurant.id, item.id)
@@ -29,6 +32,7 @@ export function MenuItemCartControl({
     <QuantityStepper
       quantity={quantity}
       itemName={item.name}
+      className={className}
       onIncrement={() =>
         add(restaurant, {
           id: item.id,

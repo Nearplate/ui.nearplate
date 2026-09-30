@@ -40,14 +40,18 @@ export function MenuItemCard({ restaurant, item }: MenuItemCardProps) {
           <p className="line-clamp-2 text-xs text-muted">{item.description}</p>
         ) : null}
       </div>
-      <div className="flex shrink-0 flex-col items-center gap-2">
+      <div className="flex w-20 shrink-0 flex-col gap-2">
         <RemoteImage
           src={item.imageUrl}
           alt={item.name}
           className="size-20 border-2 border-inverted bg-elevated"
           fallback={<FoodTypeMark foodType={item.foodType} />}
         />
-        <MenuItemCartControl restaurant={restaurant} item={item} />
+        <MenuItemCartControl
+          restaurant={restaurant}
+          item={item}
+          className="w-full"
+        />
       </div>
     </li>
   )

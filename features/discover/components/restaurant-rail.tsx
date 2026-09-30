@@ -20,9 +20,9 @@ export function RestaurantRail({
   if (restaurants.length === 0) return null
 
   return (
-    <section className="flex flex-col gap-4 border-b-2 border-inverted p-4">
+    <section className="flex flex-col gap-2.5 border-b-2 border-inverted px-4 py-3">
       <div className="flex items-end justify-between gap-2">
-        <h2 className="font-display text-3xl leading-none uppercase md:text-4xl">
+        <h2 className="font-display text-2xl leading-none uppercase md:text-3xl">
           {title}
         </h2>
         {seeAllHref ? (
@@ -36,12 +36,12 @@ export function RestaurantRail({
           </Link>
         ) : null}
       </div>
-      <div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pt-1 pr-5 pb-2">
+      <div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pr-5 pb-1">
         {restaurants.map((restaurant) => (
           <RestaurantCard
             key={restaurant.id}
             restaurant={restaurant}
-            className="w-64 shrink-0 snap-start"
+            className="w-56 shrink-0 snap-start"
           />
         ))}
       </div>

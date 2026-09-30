@@ -9,7 +9,7 @@ interface LocationBarProps {
 /** "Near {label} · N open now" strip with the change-location control. */
 export function LocationBar({ label, openCount }: LocationBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b-2 border-inverted bg-elevated px-4 py-2.5">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b-2 border-inverted bg-elevated px-4 py-1.5">
       <p className="min-w-0 truncate font-mono text-[11px] tracking-wider uppercase">
         <span className="text-muted">Near </span>
         <span className="font-medium text-highlighted">

@@ -1,6 +1,7 @@
 import { MinusIcon, PlusIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 interface QuantityStepperProps {
   quantity: number
@@ -11,6 +12,8 @@ interface QuantityStepperProps {
   disabled?: boolean
   /** Disables only "more" (sold out, or the per-line maximum is reached). */
   incrementDisabled?: boolean
+  /** Sizing/layout for the outer element, e.g. `w-full` to fill a column. */
+  className?: string
 }
 
 /** An "Add" button that becomes a − quantity + control once the item is in the cart. */
@@ -21,12 +24,14 @@ export function QuantityStepper({
   onDecrement,
   disabled = false,
   incrementDisabled = false,
+  className,
 }: QuantityStepperProps) {
   if (quantity === 0) {
     return (
       <Button
         type="button"
         size="sm"
+        className={className}
         disabled={disabled || incrementDisabled}
         onClick={onIncrement}
         aria-label={`Add ${itemName}`}
@@ -40,7 +45,10 @@ export function QuantityStepper({
     <div
       role="group"
       aria-label={`${itemName} quantity`}
-      className="inline-flex items-center border-2 border-inverted"
+      className={cn(
+        "inline-flex items-center justify-between border-2 border-inverted",
+        className
+      )}
     >
       <Button
         type="button"
@@ -56,7 +64,7 @@ export function QuantityStepper({
       </Button>
       <span
         aria-live="polite"
-        className="min-w-7 px-1 text-center font-mono text-xs"
+        className="min-w-7 flex-1 px-1 text-center font-mono text-xs"
       >
         {quantity}
       </span>

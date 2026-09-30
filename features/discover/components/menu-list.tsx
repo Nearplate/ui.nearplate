@@ -1,3 +1,8 @@
+"use client"
+
+import { UtensilsCrossedIcon } from "lucide-react"
+import { useState } from "react"
+
 import { MenuItemCartControl } from "@/features/cart/components/menu-item-cart-control"
 import type { RestaurantRef } from "@/features/cart/schemas"
 import { RemoteImage } from "@/features/restaurant/components/remote-image"
@@ -16,6 +21,10 @@ const FOOD_TYPE_DOT: Record<FoodType, string> = {
   egg: "border-warning text-warning",
   "non-veg": "border-error text-error",
 }
+
+type FoodFilter = "all" | FoodType
+
+const FILTER_ORDER: FoodType[] = ["veg", "non-veg", "egg"]
 
 function categoryId(category: string): string {
   return `menu-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`
@@ -69,18 +78,22 @@ function MenuRow({
           )}
         </p>
       </div>
-      <div className="flex shrink-0 flex-col items-end justify-between gap-2">
-        {item.imageUrl ? (
-          <div className="size-24 overflow-hidden border-2 border-inverted bg-elevated">
-            <RemoteImage
-              src={item.imageUrl}
-              alt={item.name}
-              className="size-full"
-              fallback={null}
-            />
-          </div>
-        ) : null}
-        <MenuItemCartControl restaurant={restaurant} item={item} />
+      <div className="flex w-24 shrink-0 flex-col justify-between gap-2">
+        <div className="size-24 overflow-hidden border-2 border-inverted bg-elevated">
+          <RemoteImage
+            src={item.imageUrl}
+            alt={item.name}
+            className="size-full"
+            fallback={
+              <UtensilsCrossedIcon className="size-8 text-muted" aria-hidden />
+            }
+          />
+        </div>
+        <MenuItemCartControl
+          restaurant={restaurant}
+          item={item}
+          className="w-full"
+        />
       </div>
     </li>
   )
@@ -94,9 +107,17 @@ export function MenuList({
   restaurant: RestaurantRef
   items: MenuItem[]
 }) {
-  const groups = groupMenuByCategory(items)
+  const [foodFilter, setFoodFilter] = useState<FoodFilter>("all")
+  const filterOptions = FILTER_ORDER.filter(
+    (type) => type !== "egg" || items.some((item) => item.foodType === "egg")
+  )
+  const visibleItems =
+    foodFilter === "all"
+      ? items
+      : items.filter((item) => item.foodType === foodFilter)
+  const groups = groupMenuByCategory(visibleItems)
 
-  if (groups.length === 0) {
+  if (items.length === 0) {
     return (
       <p className="p-4 py-10 font-mono text-sm tracking-wider text-muted uppercase">
         This menu is empty for now.
@@ -106,21 +127,55 @@ export function MenuList({
 
   return (
     <div>
-      <nav
-        aria-label="Menu categories"
-        className="sticky top-0 z-10 flex gap-2 overflow-x-auto border-b-2 border-inverted bg-default p-3"
-      >
-        {groups.map(({ category }) => (
-          <a
-            key={category}
-            href={`#${categoryId(category)}`}
-            className="shrink-0 border-2 border-inverted px-3 py-1 font-mono text-[11px] font-medium tracking-wider uppercase hover:bg-highlight hover:text-neutral-950"
-          >
-            {category}
-          </a>
-        ))}
-      </nav>
+      <div className="sticky top-0 z-10 flex items-center gap-2 overflow-x-auto border-b-2 border-inverted bg-default p-3">
+        <div
+          role="group"
+          aria-label="Filter by food type"
+          className="flex shrink-0 gap-2"
+        >
+          {(["all", ...filterOptions] as FoodFilter[]).map((option) => (
+            <button
+              key={option}
+              type="button"
+              aria-pressed={foodFilter === option}
+              onClick={() => setFoodFilter(option)}
+              className={cn(
+                "flex shrink-0 items-center gap-2 border-2 border-inverted px-3 py-1 font-mono text-[11px] font-medium tracking-wider uppercase",
+                foodFilter === option
+                  ? "bg-inverted text-inverted"
+                  : "hover:bg-highlight hover:text-neutral-950"
+              )}
+            >
+              {option === "all" ? (
+                "All"
+              ) : (
+                <>
+                  <FoodTypeMark foodType={option} />
+                  {FOOD_TYPE_LABELS[option]}
+                </>
+              )}
+            </button>
+          ))}
+        </div>
+        <span aria-hidden className="h-6 w-0.5 shrink-0 bg-inverted" />
+        <nav aria-label="Menu categories" className="flex shrink-0 gap-2">
+          {groups.map(({ category }) => (
+            <a
+              key={category}
+              href={`#${categoryId(category)}`}
+              className="shrink-0 border-2 border-inverted px-3 py-1 font-mono text-[11px] font-medium tracking-wider uppercase hover:bg-highlight hover:text-neutral-950"
+            >
+              {category}
+            </a>
+          ))}
+        </nav>
+      </div>
       <div className="flex flex-col gap-6 p-4">
+        {groups.length === 0 ? (
+          <p className="py-6 font-mono text-sm tracking-wider text-muted uppercase">
+            No items match this filter.
+          </p>
+        ) : null}
         {groups.map(({ category, items: groupItems }) => (
           <section
             key={category}

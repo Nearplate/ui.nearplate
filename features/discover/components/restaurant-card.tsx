@@ -33,37 +33,37 @@ export function RestaurantCard({ restaurant, className }: RestaurantCardProps) {
       )}
     >
       <div className="relative">
-        <div className="aspect-video overflow-hidden border-b-2 border-inverted bg-elevated">
+        <div className="aspect-[2/1] overflow-hidden border-b-2 border-inverted bg-elevated">
           <RemoteImage
             src={bannerUrl}
             alt=""
             className="size-full transition-transform duration-300 group-hover:scale-105"
-            fallback={<Initial name={name} className="text-6xl text-muted" />}
+            fallback={<Initial name={name} className="text-5xl text-muted" />}
           />
         </div>
-        <div className="absolute -bottom-5 left-3 size-12 overflow-hidden border-2 border-inverted bg-highlight">
+        <div className="absolute -bottom-4 left-2.5 size-10 overflow-hidden border-2 border-inverted bg-highlight">
           <RemoteImage
             src={logoUrl}
             alt=""
             className="size-full"
             fallback={
-              <Initial name={name} className="text-2xl text-neutral-950" />
+              <Initial name={name} className="text-xl text-neutral-950" />
             }
           />
         </div>
-        <span className="absolute top-2 left-2 bg-highlight px-1.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-neutral-950 uppercase">
+        <span className="absolute top-1.5 left-1.5 bg-highlight px-1.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-neutral-950 uppercase">
           Open
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col gap-1.5 p-3 pt-7">
+      <div className="flex flex-1 flex-col gap-1 p-2.5 pt-6">
         <h3 className="truncate font-display text-xl leading-none uppercase">
           {name}
         </h3>
         <p className="truncate font-mono text-[11px] tracking-wider text-muted uppercase">
           {cuisines.length > 0 ? cuisines.join(" · ") : "Local kitchen"}
         </p>
-        <div className="mt-auto flex items-center gap-1.5 pt-1">
+        <div className="mt-auto flex items-center gap-1.5 pt-0.5">
           <Badge color="neutral" variant="outline" size="sm">
             {formatDistance(restaurant.distanceMeters)}
           </Badge>
