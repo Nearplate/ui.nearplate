@@ -5,9 +5,13 @@ export const REFRESH_COOKIE = "np_rt"
 export const GUEST_COOKIE = "np_guest"
 export const OAUTH_STATE_COOKIE = "np_oauth_state"
 export const DEVICE_COOKIE = "np_device"
+/** Where to send a visitor after they sign in (see `safeReturnPath`). */
+export const RETURN_TO_COOKIE = "np_return_to"
 
 const REFRESH_MAX_AGE_SECONDS = 60 * 60 * 24 * 30
 const OAUTH_STATE_MAX_AGE_SECONDS = 60 * 10
+/** Long enough to cover the magic-link email round trip and onboarding. */
+const RETURN_TO_MAX_AGE_SECONDS = 60 * 30
 const DEVICE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365
 
 interface CookieOptions {
@@ -34,6 +38,8 @@ export const guestCookieOptions = (expiresIn: number) => baseOptions(expiresIn)
 export const oauthStateCookieOptions = () =>
   baseOptions(OAUTH_STATE_MAX_AGE_SECONDS)
 export const deviceCookieOptions = () => baseOptions(DEVICE_MAX_AGE_SECONDS)
+export const returnToCookieOptions = () =>
+  baseOptions(RETURN_TO_MAX_AGE_SECONDS)
 
 /** Minimal cookie-jar shape shared by `cookies()` and `NextResponse.cookies`. */
 export interface CookieWriter {

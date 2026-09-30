@@ -36,6 +36,7 @@ Environment: copy `.env.example`. `API_BASE_URL` (default `http://localhost:3030
 | `app/(site)/`        | Pages with the site header/footer (home, account, onboarding). `app/(auth)/` is the split-screen auth shell; `app/(dev)/ui` is a component gallery (dev only). |
 | `components/layout/` | App shell pieces (header, footer, bento grid).                                                                                                                 |
 | `features/<domain>/` | Domain modules: their own components, hooks, api, types. `features/auth` holds the API client, server actions, session cookies and forms.                      |
+| `features/discover/` | Customer discovery: home feed (nearby open restaurants, category chips, featured rails) and the public `/r/[slug]` page. The feed centre lives in the httpOnly `np_loc` cookie (`{lng, lat, label}`), falling back to the signed-in user's default address pin. |
 | `proxy.ts`           | Next 16 proxy (formerly middleware): refreshes an expired access token and gates `/account`, `/onboarding`. Optimistic only.                                   |
 | `test/`              | Vitest setup. Tests live next to the code as `*.test.ts(x)`.                                                                                                   |
 | `hooks/`             | Shared, domain-agnostic React hooks.                                                                                                                           |

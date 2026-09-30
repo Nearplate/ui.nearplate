@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
 import { getSession } from "@/features/auth/session"
+import { CartLink } from "@/features/cart/components/cart-link"
 
 const NAV_ITEMS = [
   { href: "/#restaurants", label: "Restaurants" },
@@ -15,7 +16,6 @@ const CELL =
 
 export async function SiteHeader() {
   const user = await getSession()
-  const accountLabel = user?.firstName ?? "Account"
   const accountHref = user
     ? user.role === "restaurant"
       ? "/restaurant"
@@ -42,16 +42,29 @@ export async function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <Link
-          href={accountHref}
-          className={`${CELL} hover:bg-inverted hover:text-inverted`}
-        >
-          {user ? accountLabel : "Log in"}
-        </Link>
-        <Link href="/auth" className={`${CELL} gap-1.5 bg-highlight`}>
-          Order now
-          <ArrowUpRightIcon aria-hidden className="size-3.5" />
-        </Link>
+        <CartLink className={`${CELL} hover:bg-inverted hover:text-inverted`} />
+        {user ? (
+          <Link href={accountHref} className={`${CELL} gap-1.5 bg-highlight`}>
+            Account
+            <ArrowUpRightIcon aria-hidden className="size-3.5" />
+          </Link>
+        ) : (
+          <>
+            <Link
+              href={accountHref}
+              className={`${CELL} hover:bg-inverted hover:text-inverted`}
+            >
+              Log in
+            </Link>
+            <Link
+              href="/#restaurants"
+              className={`${CELL} gap-1.5 bg-highlight`}
+            >
+              Order now
+              <ArrowUpRightIcon aria-hidden className="size-3.5" />
+            </Link>
+          </>
+        )}
       </div>
     </header>
   )

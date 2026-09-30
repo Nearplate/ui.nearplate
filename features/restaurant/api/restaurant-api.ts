@@ -19,6 +19,21 @@ import {
 
 const MENU_PAGE_SIZE = 100
 
+/** GET /restaurants/:slug (public; an offline restaurant is still returned). */
+export async function getPublicRestaurant(slug: string): Promise<Restaurant> {
+  return restaurantSchema.parse(
+    await apiRequest(`/restaurants/${encodeURIComponent(slug)}`)
+  )
+}
+
+/** GET /restaurants/:slug/menu (public), sorted by category then name. */
+export async function getPublicMenu(slug: string): Promise<MenuItem[]> {
+  const data = (await apiRequest(
+    `/restaurants/${encodeURIComponent(slug)}/menu`
+  )) as { items: unknown[] }
+  return data.items.map((item) => menuItemSchema.parse(item))
+}
+
 /** GET /restaurants/mine?limit=1 (one owner per account, in this panel). */
 export async function listMine(accessToken: string): Promise<Restaurant[]> {
   const data = (await apiRequest("/restaurants/mine?limit=1", {

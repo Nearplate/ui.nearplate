@@ -1,24 +1,38 @@
 import { ArrowUpRightIcon, CheckIcon } from "lucide-react"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import { Suspense } from "react"
 
 import { BentoCell, BentoGrid, BentoTitle } from "@/components/layout/bento"
 import { Button, buttonTheme } from "@/components/ui/button"
 import { continueAsGuestAction } from "@/features/auth/actions"
 import { getSession } from "@/features/auth/session"
+import { FeedEmpty } from "@/features/discover/components/feed-empty"
+import { FeedSkeleton } from "@/features/discover/components/feed-skeleton"
+import { HomeFeed } from "@/features/discover/components/home-feed"
+import { LocationBar } from "@/features/discover/components/location-bar"
+import { parseFeedFilters } from "@/features/discover/location"
+import { getFeedLocation } from "@/features/discover/resolve-location"
 
 const STEPS = ["Find a kitchen", "Pick your meal", "Place the order", "Eat"]
 const PERKS = ["Browse nearby menus", "Order in a few taps", "Pay your way"]
 
-export default async function HomePage() {
+interface HomePageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
   const user = await getSession()
   if (user?.role === "restaurant") redirect("/restaurant")
+
+  const filters = parseFeedFilters(await searchParams)
+  const location = await getFeedLocation()
 
   return (
     <>
       <section className="grid border-b-2 border-inverted md:grid-cols-[1.4fr_1fr]">
         <div className="flex flex-col justify-center gap-4 p-4 md:p-8">
-          <h1 className="font-display text-6xl leading-[0.9] uppercase md:text-8xl">
+          <h1 className="font-display text-5xl leading-[0.9] uppercase md:text-7xl">
             Hungry?
             <br />
             Food near you.
@@ -30,11 +44,8 @@ export default async function HomePage() {
             pay menu price.
           </p>
           <div className="flex flex-wrap items-center gap-2">
-            <Link
-              href={user ? "/account" : "/auth"}
-              className={buttonTheme({ size: "lg" })}
-            >
-              {user ? "Your account" : "Order now"}
+            <Link href="#restaurants" className={buttonTheme({ size: "lg" })}>
+              Order now
               <ArrowUpRightIcon aria-hidden />
             </Link>
             {user ? null : (
@@ -63,8 +74,30 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {location ? (
+        <Suspense
+          key={`${location.lng},${location.lat},${filters.cuisine ?? ""},${filters.veg}`}
+          fallback={
+            <>
+              <LocationBar label={location.label} openCount={null} />
+              <FeedSkeleton />
+            </>
+          }
+        >
+          <HomeFeed location={location} filters={filters} />
+        </Suspense>
+      ) : (
+        <>
+          <LocationBar label={null} openCount={null} />
+          <FeedEmpty
+            title="Where are you hungry?"
+            description="Share your location to see restaurants that are open near you right now."
+          />
+        </>
+      )}
+
       <BentoGrid>
-        <BentoCell id="restaurants">
+        <BentoCell>
           <BentoTitle>Local restaurants</BentoTitle>
           <p className="text-sm text-toned">
             Independent kitchens in your area. No chains required.

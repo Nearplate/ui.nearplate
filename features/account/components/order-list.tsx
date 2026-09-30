@@ -1,9 +1,11 @@
+import Link from "next/link"
+
 import { Badge } from "@/components/ui/badge"
 import { formatPaise } from "@/features/restaurant/money"
 
 import { ORDER_STATUS_LABELS, type OrderSummary } from "../schemas"
 
-const STATUS_COLOR: Record<
+export const STATUS_COLOR: Record<
   OrderSummary["status"],
   "neutral" | "success" | "error"
 > = {
@@ -32,7 +34,10 @@ export function OrderList({ orders }: OrderListProps) {
           key={order.id}
           className="flex items-center gap-2 border-b-2 border-muted py-2 last:border-b-0"
         >
-          <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <Link
+            href={`/account/orders/${order.id}`}
+            className="flex min-w-0 flex-1 flex-col gap-0.5 hover:underline"
+          >
             <span className="truncate font-medium">{order.restaurantName}</span>
             <span className="font-mono text-[11px] text-muted">
               {new Date(order.createdAt).toLocaleDateString("en-IN", {
@@ -41,7 +46,7 @@ export function OrderList({ orders }: OrderListProps) {
                 year: "numeric",
               })}
             </span>
-          </div>
+          </Link>
           <Badge color={STATUS_COLOR[order.status]} variant="soft">
             {ORDER_STATUS_LABELS[order.status]}
           </Badge>

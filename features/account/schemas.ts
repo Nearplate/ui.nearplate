@@ -124,6 +124,7 @@ export const addressSchema = z.object({
 export type AccountAddress = z.infer<typeof addressSchema>
 
 const orderAddressSchema = z.object({
+  label: z.string().nullable().optional(),
   line1: z.string(),
   line2: z.string().nullable(),
   city: z.string(),
@@ -143,6 +144,27 @@ export const orderSummarySchema = z.object({
   updatedAt: z.string(),
 })
 export type OrderSummary = z.infer<typeof orderSummarySchema>
+
+const orderItemSchema = z.object({
+  id: z.string(),
+  menuItemId: z.string().nullable(),
+  nameSnapshot: z.string(),
+  priceInPaiseSnapshot: z.number(),
+  quantity: z.number(),
+})
+
+/** One order with its lines (`GET /orders/:id`, and the checkout response). */
+export const orderDetailSchema = z.object({
+  id: z.string(),
+  restaurantId: z.string(),
+  status: z.enum(ORDER_STATUSES),
+  totalInPaise: z.number(),
+  deliveryAddress: orderAddressSchema,
+  items: z.array(orderItemSchema),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+})
+export type OrderDetail = z.infer<typeof orderDetailSchema>
 
 export const orderPageSchema = z.object({
   items: z.array(orderSummarySchema),

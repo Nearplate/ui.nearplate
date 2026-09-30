@@ -6,11 +6,13 @@ import { cache } from "react"
 import { ApiError } from "@/lib/api/client"
 
 import { getMe } from "./api/user-api"
+import { safeReturnPath } from "./return-to"
 import type { AuthResult, User } from "./schemas"
 import {
   ACCESS_COOKIE,
   DEVICE_COOKIE,
   GUEST_COOKIE,
+  RETURN_TO_COOKIE,
   writeSessionCookies,
 } from "./session-cookies"
 
@@ -45,9 +47,26 @@ export async function getDeviceId(): Promise<string | null> {
   return (await cookies()).get(DEVICE_COOKIE)?.value ?? null
 }
 
-/** Stores the session cookies and returns where to send the user next. */
+/**
+ * The page the visitor was headed to before signing in, or null. Reading it
+ * consumes the cookie, so it is honoured once.
+ */
+export async function takeReturnPath(): Promise<string | null> {
+  const jar = await cookies()
+  const value = jar.get(RETURN_TO_COOKIE)?.value
+  if (value === undefined) return null
+  jar.delete(RETURN_TO_COOKIE)
+  return safeReturnPath(value)
+}
+
+/**
+ * Stores the session cookies and returns where to send the user next. A
+ * customer who still has to onboard keeps the return cookie until onboarding
+ * finishes; restaurant accounts never use it.
+ */
 export async function establishSession(result: Authenticated): Promise<string> {
   writeSessionCookies(await cookies(), result)
   if (result.user.role === "restaurant") return "/restaurant"
-  return result.user.isOnboarded ? "/" : "/onboarding"
+  if (!result.user.isOnboarded) return "/onboarding"
+  return (await takeReturnPath()) ?? "/"
 }

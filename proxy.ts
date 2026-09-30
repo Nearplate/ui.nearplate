@@ -7,11 +7,19 @@ import {
   DEVICE_COOKIE,
   deviceCookieOptions,
   REFRESH_COOKIE,
+  RETURN_TO_COOKIE,
+  returnToCookieOptions,
   writeSessionCookies,
 } from "@/features/auth/session-cookies"
+import { safeReturnPath } from "@/features/auth/return-to"
 import { ApiError } from "@/lib/api/client"
 
-const PROTECTED_PREFIXES = ["/account", "/onboarding", "/restaurant"]
+const PROTECTED_PREFIXES = [
+  "/account",
+  "/onboarding",
+  "/restaurant",
+  "/checkout",
+]
 const HTTP_UNAUTHORIZED = 401
 const HTTP_FORBIDDEN = 403
 
@@ -19,8 +27,14 @@ function isProtected(pathname: string): boolean {
   return PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix))
 }
 
+/** Sends the visitor to sign in, remembering where they were headed. */
 function redirectToAuth(request: NextRequest): NextResponse {
-  return NextResponse.redirect(new URL("/auth", request.url))
+  const response = NextResponse.redirect(new URL("/auth", request.url))
+  const returnPath = safeReturnPath(request.nextUrl.pathname)
+  if (returnPath) {
+    response.cookies.set(RETURN_TO_COOKIE, returnPath, returnToCookieOptions())
+  }
+  return response
 }
 
 /**

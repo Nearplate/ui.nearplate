@@ -17,18 +17,20 @@ export function ShareButton({ title, url, ...props }: ShareButtonProps) {
   const [copied, setCopied] = useState(false)
 
   async function handleClick() {
+    // A site-relative path is accepted so callers need not know the origin.
+    const absoluteUrl = new URL(url, window.location.origin).toString()
     if (navigator.share) {
       try {
-        await navigator.share({ title, url })
+        await navigator.share({ title, url: absoluteUrl })
       } catch (error) {
         if (error instanceof Error && error.name === "AbortError") return
-        await navigator.clipboard.writeText(url)
+        await navigator.clipboard.writeText(absoluteUrl)
         setCopied(true)
         setTimeout(() => setCopied(false), RESET_DELAY_MS)
       }
       return
     }
-    await navigator.clipboard.writeText(url)
+    await navigator.clipboard.writeText(absoluteUrl)
     setCopied(true)
     setTimeout(() => setCopied(false), RESET_DELAY_MS)
   }

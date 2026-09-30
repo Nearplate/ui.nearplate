@@ -25,7 +25,34 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { RestaurantCard } from "@/features/discover/components/restaurant-card"
+import type { NearbyRestaurant } from "@/features/discover/schemas"
 import { BUTTON_VARIANTS, SEMANTIC_COLORS } from "@/lib/theme/colors"
+
+const SAMPLE_RESTAURANT: NearbyRestaurant = {
+  id: "sample",
+  slug: "spice-house",
+  name: "Spice House",
+  status: "online",
+  cuisines: ["biryani", "mughlai"],
+  isPureVeg: true,
+  description: null,
+  logoUrl: null,
+  bannerUrl: null,
+  coordinates: [77.2, 28.6],
+  address: {
+    id: "sample-address",
+    line1: "12 Main Street",
+    line2: null,
+    city: "Delhi",
+    state: "DL",
+    zipcode: "110001",
+    phoneNumber: null,
+  },
+  createdAt: "2026-01-01T00:00:00.000Z",
+  updatedAt: "2026-01-01T00:00:00.000Z",
+  distanceMeters: 850,
+}
 
 export default function Page() {
   // Component gallery for development only.
@@ -179,6 +206,16 @@ export default function Page() {
             <TabsContent value="addresses">Address book panel</TabsContent>
             <TabsContent value="payments">Payment methods panel</TabsContent>
           </Tabs>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <h2 className="font-semibold text-highlighted">Restaurant card</h2>
+        </CardHeader>
+        <Separator />
+        <CardBody>
+          <RestaurantCard restaurant={SAMPLE_RESTAURANT} className="max-w-64" />
         </CardBody>
       </Card>
     </main>

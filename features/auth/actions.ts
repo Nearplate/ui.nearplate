@@ -22,7 +22,12 @@ import {
   signupRoleSchema,
   type AuthResult,
 } from "./schemas"
-import { establishSession, getAccessToken, getDeviceId } from "./session"
+import {
+  establishSession,
+  getAccessToken,
+  getDeviceId,
+  takeReturnPath,
+} from "./session"
 import {
   clearSessionCookies,
   GUEST_COOKIE,
@@ -161,7 +166,7 @@ export async function onboardAction(
     return { status: "error", message: errorMessage(error) }
   }
   revalidatePath("/", "layout")
-  redirect("/")
+  redirect((await takeReturnPath()) ?? "/")
 }
 
 /**
