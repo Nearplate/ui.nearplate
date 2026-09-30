@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { getAccessToken, getSession } from "@/features/auth/session"
 import { listCarts } from "@/features/cart/api/cart-api"
 import { CartProvider, type CartMode } from "@/features/cart/cart-context"
+import { FloatingCart } from "@/features/cart/components/floating-cart"
 import type { Cart } from "@/features/cart/schemas"
 import { ApiError } from "@/lib/api/client"
 
@@ -38,6 +39,7 @@ export default async function SiteLayout({
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        <FloatingCart />
       </div>
     </CartProvider>
   )

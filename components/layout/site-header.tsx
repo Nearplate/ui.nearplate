@@ -42,7 +42,10 @@ export async function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <CartLink className={`${CELL} hover:bg-inverted hover:text-inverted`} />
+        {/* Below lg the cart lives in the floating bar at the bottom. */}
+        <CartLink
+          className={`${CELL} hidden hover:bg-inverted hover:text-inverted lg:flex`}
+        />
         {user ? (
           <Link href={accountHref} className={`${CELL} gap-1.5 bg-highlight`}>
             Account

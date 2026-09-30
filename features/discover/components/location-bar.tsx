@@ -21,7 +21,7 @@ export function LocationBar({ label, openCount }: LocationBarProps) {
           {openCount} open now
         </span>
       ) : null}
-      <div className="ml-auto">
+      <div className="ml-auto max-[359px]:ml-0">
         <LocationDialog
           triggerLabel={label ? "Change" : "Set location"}
           defaultOpen={label === null}

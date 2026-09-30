@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
+import { BackLink } from "@/components/layout/back-link"
 import { listAddresses } from "@/features/account/api/address-api"
 import { getAccessToken, getSession } from "@/features/auth/session"
 import { getCart } from "@/features/cart/api/cart-api"
@@ -41,6 +42,7 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
 
   return (
     <section className="mx-auto flex w-full max-w-3xl flex-col gap-3 p-4 md:p-6">
+      <BackLink href="/cart">Back to cart</BackLink>
       <h1 className="font-display text-4xl uppercase">Checkout</h1>
       <CheckoutForm cart={cart} addresses={addresses} />
     </section>

@@ -57,8 +57,10 @@ export async function HomeFeed({ location, filters }: HomeFeedProps) {
 
   return (
     <>
-      <LocationBar label={location.label} openCount={all.length} />
-      <CategoryRail cuisines={feed.cuisines} filters={filters} />
+      <div className="sticky top-0 z-20 bg-default">
+        <LocationBar label={location.label} openCount={all.length} />
+        <CategoryRail cuisines={feed.cuisines} filters={filters} />
+      </div>
 
       {isFiltered ? null : (
         <>
@@ -82,7 +84,7 @@ export async function HomeFeed({ location, filters }: HomeFeedProps) {
 
       <section
         id="restaurants"
-        className="scroll-mt-4 border-b-2 border-inverted"
+        className="scroll-mt-32 border-b-2 border-inverted"
       >
         <h2 className="px-4 pt-4 font-display text-3xl leading-none uppercase md:text-4xl">
           {filters.cuisine

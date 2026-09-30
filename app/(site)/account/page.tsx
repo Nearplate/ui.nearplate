@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
+import { BackLink } from "@/components/layout/back-link"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardBody, CardHeader } from "@/components/ui/card"
@@ -45,6 +46,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
   return (
     <section className="mx-auto flex w-full max-w-3xl flex-col gap-3 p-4 md:p-6">
+      <BackLink href="/">Home</BackLink>
       <div className="flex items-center justify-between">
         <h1 className="font-display text-4xl uppercase">Your account</h1>
         <form action={logoutAction}>

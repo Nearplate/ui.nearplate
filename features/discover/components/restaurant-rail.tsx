@@ -1,8 +1,6 @@
 import { ArrowUpRightIcon } from "lucide-react"
 import Link from "next/link"
 
-import { BentoTitle } from "@/components/layout/bento"
-
 import type { NearbyRestaurant } from "../schemas"
 import { RestaurantCard } from "./restaurant-card"
 
@@ -22,9 +20,11 @@ export function RestaurantRail({
   if (restaurants.length === 0) return null
 
   return (
-    <section className="flex flex-col gap-3 border-b-2 border-inverted p-4">
-      <div className="flex items-baseline justify-between gap-2">
-        <BentoTitle>{title}</BentoTitle>
+    <section className="flex flex-col gap-4 border-b-2 border-inverted p-4">
+      <div className="flex items-end justify-between gap-2">
+        <h2 className="font-display text-3xl leading-none uppercase md:text-4xl">
+          {title}
+        </h2>
         {seeAllHref ? (
           <Link
             href={seeAllHref}
@@ -36,7 +36,7 @@ export function RestaurantRail({
           </Link>
         ) : null}
       </div>
-      <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2">
+      <div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pt-1 pr-5 pb-2">
         {restaurants.map((restaurant) => (
           <RestaurantCard
             key={restaurant.id}

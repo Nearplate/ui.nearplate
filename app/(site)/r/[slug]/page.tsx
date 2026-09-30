@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { BackLink } from "@/components/layout/back-link"
 import {
   getMenuBySlug,
   getRestaurantBySlug,
@@ -52,6 +53,9 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 
   return (
     <>
+      <div className="border-b-2 border-inverted px-4 py-1.5">
+        <BackLink href="/#restaurants">All restaurants</BackLink>
+      </div>
       <RestaurantHero restaurant={restaurant} />
       <MenuList
         restaurant={{
