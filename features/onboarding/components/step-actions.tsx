@@ -28,7 +28,7 @@ export function StepActions({
 }: StepActionsProps) {
   const { pending } = useFormStatus()
   return (
-    <div className="sticky bottom-0 -mx-4 flex flex-col gap-3 border-t-2 border-inverted bg-default p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:-mx-6 sm:px-6 md:static md:mx-0 md:border-t-0 md:p-0">
+    <div className="sticky bottom-0 -mx-4 flex flex-col gap-3 border-t-2 border-inverted bg-default p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:-mx-6 sm:px-6 md:static md:mx-0 md:border-t-0 md:p-0 md:pb-12">
       {state.status === "error" ? (
         <Alert tone="error">{state.message}</Alert>
       ) : null}
