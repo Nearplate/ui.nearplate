@@ -220,6 +220,7 @@ describe("checkoutAction", () => {
       state: "MH",
       zipcode: "400001",
       phoneNumber: "+919876543210",
+      label: "Home",
     })
     expect(revalidatePath).toHaveBeenCalledWith("/account")
     expect(result).toEqual({ status: "ok", orderId: "order-1" })
