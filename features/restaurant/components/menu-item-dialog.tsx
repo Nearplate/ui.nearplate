@@ -20,6 +20,8 @@ import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import type { FormActionState } from "@/features/auth/actions"
 
+import { ImageDropzone } from "@/features/media/components/image-dropzone"
+
 import { saveMenuItemAction } from "../actions"
 import {
   DEFAULT_CATEGORIES,
@@ -156,15 +158,22 @@ function MenuItemFormBody({
         />
       </Field>
 
-      <Field label="Image URL" htmlFor="item-imageUrl">
-        <Input
-          id="item-imageUrl"
-          name="imageUrl"
-          type="url"
-          placeholder="https://..."
-          defaultValue={item?.imageUrl ?? ""}
-        />
-      </Field>
+      {item ? (
+        <div className="flex flex-col gap-1.5">
+          <span className="font-mono text-[11px] tracking-wider uppercase">
+            Photo
+          </span>
+          <ImageDropzone
+            target={{ restaurantId, kind: "menu_item", itemId: item.id }}
+            name={item.name}
+            currentUrl={item.imageUrl}
+          />
+        </div>
+      ) : (
+        <p className="font-mono text-[11px] tracking-wider text-muted uppercase">
+          Save the dish first, then add its photo.
+        </p>
+      )}
 
       <label className="flex items-center gap-2 font-mono text-xs tracking-wider uppercase">
         <Switch name="isAvailable" defaultChecked={item?.isAvailable ?? true} />

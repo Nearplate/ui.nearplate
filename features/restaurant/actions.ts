@@ -85,8 +85,6 @@ export async function createRestaurantAction(
     cuisines: parseCuisines(String(formData.get("cuisines") ?? "")),
     isPureVeg: formData.get("isPureVeg") === "on",
     description: nullableText(formData.get("description")),
-    logoUrl: nullableText(formData.get("logoUrl")) ?? "",
-    bannerUrl: nullableText(formData.get("bannerUrl")) ?? "",
     coordinates: coordinatesFromForm(formData),
     address: addressFromForm(formData),
   })
@@ -99,8 +97,6 @@ export async function createRestaurantAction(
   try {
     await createRestaurant(accessToken, {
       ...parsed.data,
-      logoUrl: parsed.data.logoUrl || null,
-      bannerUrl: parsed.data.bannerUrl || null,
     })
   } catch (error) {
     return { status: "error", message: errorMessage(error) }
@@ -124,8 +120,6 @@ export async function updateRestaurantAction(
     cuisines: parseCuisines(String(formData.get("cuisines") ?? "")),
     isPureVeg: formData.get("isPureVeg") === "on",
     description: nullableText(formData.get("description")),
-    logoUrl: nullableText(formData.get("logoUrl")) ?? "",
-    bannerUrl: nullableText(formData.get("bannerUrl")) ?? "",
     coordinates: coordinatesFromForm(formData),
     address: addressFormSchema.partial().parse(addressFromForm(formData)),
   })
@@ -138,8 +132,6 @@ export async function updateRestaurantAction(
   try {
     await updateRestaurant(accessToken, restaurantId, {
       ...parsed.data,
-      logoUrl: parsed.data.logoUrl || null,
-      bannerUrl: parsed.data.bannerUrl || null,
     })
   } catch (error) {
     return { status: "error", message: errorMessage(error) }
@@ -181,7 +173,6 @@ export async function saveMenuItemAction(
     name: formData.get("name"),
     category: formData.get("category"),
     description: nullableText(formData.get("description")),
-    imageUrl: nullableText(formData.get("imageUrl")) ?? "",
     priceInPaise,
     foodType: formData.get("foodType"),
     isAvailable: formData.get("isAvailable") === "on",
@@ -192,7 +183,7 @@ export async function saveMenuItemAction(
 
   const accessToken = await getAccessToken()
   if (!accessToken) redirect("/auth")
-  const input = { ...parsed.data, imageUrl: parsed.data.imageUrl || null }
+  const input = parsed.data
   try {
     if (typeof itemId === "string" && itemId) {
       await updateMenuItem(accessToken, restaurantId, itemId, input)

@@ -1,7 +1,10 @@
 import Link from "next/link"
 
 import { Badge } from "@/components/ui/badge"
-import { RemoteImage } from "@/features/restaurant/components/remote-image"
+import {
+  RestaurantBanner,
+  RestaurantLogo,
+} from "@/features/restaurant/components/remote-image"
 import { cn } from "@/lib/utils"
 
 import { formatDistance } from "../feed"
@@ -10,14 +13,6 @@ import type { NearbyRestaurant } from "../schemas"
 interface RestaurantCardProps {
   restaurant: NearbyRestaurant
   className?: string
-}
-
-function Initial({ name, className }: { name: string; className?: string }) {
-  return (
-    <span className={cn("font-display uppercase", className)}>
-      {name.trim().charAt(0)}
-    </span>
-  )
 }
 
 /** A discover-feed card: banner, overlapping logo, cuisines, distance. */
@@ -34,22 +29,14 @@ export function RestaurantCard({ restaurant, className }: RestaurantCardProps) {
     >
       <div className="relative">
         <div className="aspect-[2/1] overflow-hidden border-b-2 border-inverted bg-elevated">
-          <RemoteImage
+          <RestaurantBanner
             src={bannerUrl}
-            alt=""
-            className="size-full transition-transform duration-300 group-hover:scale-105"
-            fallback={<Initial name={name} className="text-5xl text-muted" />}
+            name={name}
+            className="transition-transform duration-300 group-hover:scale-105"
           />
         </div>
-        <div className="absolute -bottom-4 left-2.5 size-10 overflow-hidden border-2 border-inverted bg-highlight">
-          <RemoteImage
-            src={logoUrl}
-            alt=""
-            className="size-full"
-            fallback={
-              <Initial name={name} className="text-xl text-neutral-950" />
-            }
-          />
+        <div className="absolute -bottom-4 left-2.5 size-10 overflow-hidden border-2 border-inverted bg-elevated">
+          <RestaurantLogo src={logoUrl} name={name} className="text-xl" />
         </div>
         <span className="absolute top-1.5 left-1.5 bg-highlight px-1.5 py-0.5 font-mono text-[10px] font-medium tracking-wider text-neutral-950 uppercase">
           Open

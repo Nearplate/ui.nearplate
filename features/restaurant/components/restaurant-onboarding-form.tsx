@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import type { FormActionState } from "@/features/auth/actions"
 
 import { createRestaurantAction } from "../actions"
+import { DefaultAvatar, DefaultBanner } from "./default-image"
 import { LocationFields } from "./location-fields"
 
 const IDLE: FormActionState = { status: "idle" }
@@ -42,8 +43,6 @@ export function RestaurantOnboardingForm({
   const [stepIndex, setStepIndex] = useState(0)
   const step = steps[stepIndex]
   const isLastStep = stepIndex === steps.length - 1
-  const [logoUrl, setLogoUrl] = useState("")
-  const [bannerUrl, setBannerUrl] = useState("")
   const [name, setName] = useState("")
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -134,49 +133,25 @@ export function RestaurantOnboardingForm({
 
       <fieldset className="flex flex-col gap-3" hidden={step !== "brand"}>
         <legend className="font-mono text-xs tracking-wider uppercase">
-          Brand (optional, add it later if you like)
+          Brand
         </legend>
-        <Field label="Logo URL" htmlFor="logoUrl">
-          <Input
-            id="logoUrl"
-            name="logoUrl"
-            type="url"
-            placeholder="https://..."
-            value={logoUrl}
-            onChange={(e) => setLogoUrl(e.target.value)}
-          />
-        </Field>
-        <Field label="Banner URL" htmlFor="bannerUrl">
-          <Input
-            id="bannerUrl"
-            name="bannerUrl"
-            type="url"
-            placeholder="https://..."
-            value={bannerUrl}
-            onChange={(e) => setBannerUrl(e.target.value)}
-          />
-        </Field>
-        {(logoUrl || bannerUrl) && (
-          <div className="border-2 border-inverted">
-            <div
-              className="h-20 bg-elevated bg-cover bg-center"
-              style={
-                bannerUrl ? { backgroundImage: `url(${bannerUrl})` } : undefined
-              }
-            />
-            <div className="flex items-center gap-2 p-2">
-              <div
-                className="size-10 shrink-0 border-2 border-inverted bg-elevated bg-cover bg-center"
-                style={
-                  logoUrl ? { backgroundImage: `url(${logoUrl})` } : undefined
-                }
-              />
-              <span className="truncate font-display text-sm uppercase">
-                {name || "Your restaurant"}
-              </span>
-            </div>
+        <p className="text-sm text-toned">
+          Upload your logo, banner and dish photos from the Media tab once
+          you&apos;re set up. Until then, diners see this.
+        </p>
+        <div className="border-2 border-inverted">
+          <div className="h-20 bg-elevated">
+            <DefaultBanner name={name} />
           </div>
-        )}
+          <div className="flex items-center gap-2 p-2">
+            <div className="size-10 shrink-0 overflow-hidden border-2 border-inverted text-xl">
+              <DefaultAvatar name={name} />
+            </div>
+            <span className="truncate font-display text-sm uppercase">
+              {name || "Your restaurant"}
+            </span>
+          </div>
+        </div>
       </fieldset>
 
       <div className="flex justify-between gap-2">

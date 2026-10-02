@@ -1,11 +1,10 @@
 "use client"
 
-import { UtensilsCrossedIcon } from "lucide-react"
 import { useState } from "react"
 
 import { MenuItemCartControl } from "@/features/cart/components/menu-item-cart-control"
 import type { RestaurantRef } from "@/features/cart/schemas"
-import { RemoteImage } from "@/features/restaurant/components/remote-image"
+import { DishImage } from "@/features/restaurant/components/remote-image"
 import { formatPaise } from "@/features/restaurant/money"
 import {
   FOOD_TYPE_LABELS,
@@ -80,14 +79,7 @@ function MenuRow({
       </div>
       <div className="flex w-24 shrink-0 flex-col justify-between gap-2">
         <div className="size-24 overflow-hidden border-2 border-inverted bg-elevated">
-          <RemoteImage
-            src={item.imageUrl}
-            alt={item.name}
-            className="size-full"
-            fallback={
-              <UtensilsCrossedIcon className="size-8 text-muted" aria-hidden />
-            }
-          />
+          <DishImage src={item.imageUrl} name={item.name} />
         </div>
         <MenuItemCartControl
           restaurant={restaurant}

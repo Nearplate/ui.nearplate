@@ -24,7 +24,7 @@ import { logoutAction } from "@/features/auth/actions"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 
-import { RemoteImage } from "./remote-image"
+import { RestaurantLogo } from "./remote-image"
 
 const SIDEBAR_COOKIE = "np_sidebar"
 const NAV_ITEMS: ReadonlyArray<{
@@ -60,15 +60,10 @@ function Logo({
   restaurantName: string
 }) {
   return (
-    <RemoteImage
+    <RestaurantLogo
       src={logoUrl}
-      alt=""
-      className="size-7 shrink-0 border-2 border-inverted bg-elevated"
-      fallback={
-        <span className="font-display text-sm uppercase">
-          {restaurantName.charAt(0)}
-        </span>
-      }
+      name={restaurantName}
+      className="size-7 shrink-0 border-2 border-inverted text-sm"
     />
   )
 }

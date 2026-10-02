@@ -4,6 +4,8 @@ import { useState } from "react"
 
 import { cn } from "@/lib/utils"
 
+import { DefaultAvatar, DefaultBanner, DefaultDish } from "./default-image"
+
 interface RemoteImageProps {
   src: string | null
   alt: string
@@ -37,8 +39,52 @@ export function RemoteImage({
     <img
       src={src}
       alt={alt}
+      loading="lazy"
+      decoding="async"
       className={cn("object-cover", className)}
       onError={() => setFailed(true)}
+    />
+  )
+}
+
+interface NamedImageProps {
+  src: string | null
+  name: string
+  className?: string
+}
+
+/** A restaurant logo, or a coloured initial when it has none. */
+export function RestaurantLogo({ src, name, className }: NamedImageProps) {
+  return (
+    <RemoteImage
+      src={src}
+      alt={`${name} logo`}
+      className={cn("size-full", className)}
+      fallback={<DefaultAvatar name={name} />}
+    />
+  )
+}
+
+/** A restaurant banner (decorative), or a tinted pattern when it has none. */
+export function RestaurantBanner({ src, name, className }: NamedImageProps) {
+  return (
+    <RemoteImage
+      src={src}
+      alt=""
+      className={cn("size-full", className)}
+      fallback={<DefaultBanner name={name} />}
+    />
+  )
+}
+
+/** A dish photo, or a utensils tile when it has none. */
+export function DishImage({ src, name, className }: NamedImageProps) {
+  return (
+    <RemoteImage
+      src={src}
+      alt={name}
+      className={cn("size-full", className)}
+      fallback={<DefaultDish />}
     />
   )
 }

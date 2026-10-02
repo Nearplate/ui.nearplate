@@ -12,6 +12,8 @@ import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import type { FormActionState } from "@/features/auth/actions"
 
+import { ImageDropzone } from "@/features/media/components/image-dropzone"
+
 import { updateRestaurantAction } from "../actions"
 import type { Restaurant } from "../schemas"
 import { LocationFields } from "./location-fields"
@@ -95,24 +97,26 @@ export function RestaurantProfileForm({
         </CardHeader>
         <Separator />
         <CardBody className="flex flex-col gap-3">
-          <Field label="Logo URL" htmlFor="logoUrl">
-            <Input
-              id="logoUrl"
-              name="logoUrl"
-              type="url"
-              placeholder="https://..."
-              defaultValue={restaurant.logoUrl ?? ""}
+          <div className="flex flex-col gap-1.5">
+            <span className="font-mono text-[11px] tracking-wider uppercase">
+              Logo
+            </span>
+            <ImageDropzone
+              target={{ restaurantId: restaurant.id, kind: "logo" }}
+              name={restaurant.name}
+              currentUrl={restaurant.logoUrl}
             />
-          </Field>
-          <Field label="Banner URL" htmlFor="bannerUrl">
-            <Input
-              id="bannerUrl"
-              name="bannerUrl"
-              type="url"
-              placeholder="https://..."
-              defaultValue={restaurant.bannerUrl ?? ""}
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <span className="font-mono text-[11px] tracking-wider uppercase">
+              Banner
+            </span>
+            <ImageDropzone
+              target={{ restaurantId: restaurant.id, kind: "banner" }}
+              name={restaurant.name}
+              currentUrl={restaurant.bannerUrl}
             />
-          </Field>
+          </div>
         </CardBody>
       </Card>
 

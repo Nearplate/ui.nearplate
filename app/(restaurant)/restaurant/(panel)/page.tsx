@@ -9,7 +9,7 @@ import {
   listMenuItems,
 } from "@/features/restaurant/api/restaurant-api"
 import { CopyButton } from "@/features/restaurant/components/copy-button"
-import { RemoteImage } from "@/features/restaurant/components/remote-image"
+import { InlineImageEditor } from "@/features/media/components/inline-image-editor"
 import { ShareButton } from "@/features/restaurant/components/share-button"
 import { StatusToggle } from "@/features/restaurant/components/status-toggle"
 import { getMyRestaurant } from "@/features/restaurant/session"
@@ -64,30 +64,20 @@ export default async function RestaurantOverviewPage() {
   return (
     <div className="flex flex-col">
       <div className="relative">
-        <RemoteImage
-          src={restaurant.bannerUrl}
-          alt=""
-          className="h-24 w-full border-b-2 border-inverted bg-elevated md:h-32"
-          fallback={
-            <div
-              className="size-full"
-              style={{
-                backgroundImage:
-                  "repeating-linear-gradient(135deg, var(--ui-bg-accented) 0 12px, var(--ui-bg-elevated) 12px 24px)",
-              }}
-            />
-          }
+        <InlineImageEditor
+          restaurantId={restaurant.id}
+          kind="banner"
+          name={restaurant.name}
+          currentUrl={restaurant.bannerUrl}
+          className="h-24 border-b-2 border-inverted bg-elevated md:h-32"
         />
         <div className="flex items-center gap-3 px-4 md:px-6">
-          <RemoteImage
-            src={restaurant.logoUrl}
-            alt=""
+          <InlineImageEditor
+            restaurantId={restaurant.id}
+            kind="logo"
+            name={restaurant.name}
+            currentUrl={restaurant.logoUrl}
             className="-mt-8 size-16 shrink-0 border-2 border-inverted bg-default md:size-20"
-            fallback={
-              <span className="font-display text-2xl uppercase">
-                {restaurant.name.charAt(0)}
-              </span>
-            }
           />
           <h1 className="font-display text-2xl uppercase md:text-3xl">
             {restaurant.name}

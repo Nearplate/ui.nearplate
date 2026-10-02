@@ -1,40 +1,28 @@
 import { MapPinIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
-import { RemoteImage } from "@/features/restaurant/components/remote-image"
+import {
+  RestaurantBanner,
+  RestaurantLogo,
+} from "@/features/restaurant/components/remote-image"
 import type { Restaurant } from "@/features/restaurant/schemas"
 
 /** Banner, logo, name and facts at the top of the public restaurant page. */
 export function RestaurantHero({ restaurant }: { restaurant: Restaurant }) {
   const { name, cuisines, isPureVeg, description, address, status } = restaurant
   const isClosed = status === "offline"
-  const initial = name.trim().charAt(0)
 
   return (
     <header className="border-b-2 border-inverted">
       <div className="h-40 overflow-hidden border-b-2 border-inverted bg-elevated md:h-56">
-        <RemoteImage
-          src={restaurant.bannerUrl}
-          alt=""
-          className="size-full"
-          fallback={
-            <span className="font-display text-9xl text-muted uppercase">
-              {initial}
-            </span>
-          }
-        />
+        <RestaurantBanner src={restaurant.bannerUrl} name={name} />
       </div>
       <div className="flex flex-col gap-3 p-4 md:flex-row md:items-start md:gap-5">
-        <div className="-mt-12 size-20 shrink-0 overflow-hidden border-2 border-inverted bg-highlight md:mt-0 md:size-24">
-          <RemoteImage
+        <div className="-mt-12 size-20 shrink-0 overflow-hidden border-2 border-inverted bg-elevated md:mt-0 md:size-24">
+          <RestaurantLogo
             src={restaurant.logoUrl}
-            alt={`${name} logo`}
-            className="size-full"
-            fallback={
-              <span className="font-display text-4xl text-neutral-950 uppercase">
-                {initial}
-              </span>
-            }
+            name={name}
+            className="text-4xl"
           />
         </div>
         <div className="flex min-w-0 flex-col gap-2">

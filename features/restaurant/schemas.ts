@@ -7,7 +7,6 @@ const MAX_LINE = 200
 const MAX_SHORT = 40
 const MAX_CATEGORY = 60
 const MAX_DESCRIPTION = 500
-const MAX_URL = 2048
 
 export const RESTAURANT_STATUSES = ["online", "offline"] as const
 export type RestaurantStatus = (typeof RESTAURANT_STATUSES)[number]
@@ -110,12 +109,6 @@ const descriptionFormSchema = z
   .nullable()
   .optional()
 
-const imageUrlFormSchema = z.union([
-  z.url().max(MAX_URL),
-  z.literal(""),
-  z.null(),
-])
-
 export const nameFormSchema = z.string().trim().min(1).max(MAX_NAME)
 
 export const createRestaurantFormSchema = z.object({
@@ -123,8 +116,6 @@ export const createRestaurantFormSchema = z.object({
   cuisines: cuisinesFormSchema,
   isPureVeg: z.boolean(),
   description: descriptionFormSchema,
-  logoUrl: imageUrlFormSchema.optional(),
-  bannerUrl: imageUrlFormSchema.optional(),
   coordinates: coordinatesFormSchema,
   address: addressFormSchema,
 })
@@ -135,8 +126,6 @@ export const updateRestaurantFormSchema = z.object({
   cuisines: cuisinesFormSchema.optional(),
   isPureVeg: z.boolean().optional(),
   description: descriptionFormSchema,
-  logoUrl: imageUrlFormSchema.optional(),
-  bannerUrl: imageUrlFormSchema.optional(),
   coordinates: coordinatesFormSchema.optional(),
   address: addressFormSchema.partial().optional(),
 })
@@ -148,7 +137,6 @@ export const menuItemFormSchema = z.object({
   name: nameFormSchema,
   category: categoryFormSchema,
   description: descriptionFormSchema,
-  imageUrl: imageUrlFormSchema.optional(),
   priceInPaise: z.number().int().min(0),
   foodType: z.enum(FOOD_TYPES),
   isAvailable: z.boolean(),
