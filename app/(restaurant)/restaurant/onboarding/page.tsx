@@ -1,63 +1,102 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { redirect } from "next/navigation"
 
-import { siteConfig } from "@/config/site"
-import { RestaurantOnboardingForm } from "@/features/restaurant/components/restaurant-onboarding-form"
+import { getAccessToken } from "@/features/auth/session"
+import { BankStep } from "@/features/onboarding/components/bank-step"
+import { DetailsStep } from "@/features/onboarding/components/details-step"
+import { IdentityStep } from "@/features/onboarding/components/identity-step"
+import { OnboardingShell } from "@/features/onboarding/components/onboarding-shell"
+import { ReviewStep } from "@/features/onboarding/components/review-step"
+import { WizardStepper } from "@/features/onboarding/components/wizard-stepper"
+import { getKyc, listDocuments } from "@/features/onboarding/api/onboarding-api"
+import { STEP_LABELS, ONBOARDING_STEPS } from "@/features/onboarding/constants"
+import { clampStep, onboardingProgress } from "@/features/onboarding/progress"
+import { onboardingRedirect } from "@/features/onboarding/routing"
+import { EMPTY_KYC, stepSchema } from "@/features/onboarding/schemas"
 import {
   getMyRestaurant,
   requireRestaurantOwner,
 } from "@/features/restaurant/session"
+import { Alert } from "@/components/ui/alert"
 
 export const metadata: Metadata = { title: "Set up your restaurant" }
 
-const STEPS = ["You", "Restaurant", "Location", "Brand"] as const
+interface OnboardingPageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
-export default async function RestaurantOnboardingPage() {
+export default async function RestaurantOnboardingPage({
+  searchParams,
+}: OnboardingPageProps) {
   const user = await requireRestaurantOwner()
   const restaurant = await getMyRestaurant()
-  if (restaurant) redirect("/restaurant")
+  const redirectTo = onboardingRedirect(
+    restaurant?.verificationStatus ?? null,
+    "wizard"
+  )
+  if (redirectTo) redirect(redirectTo)
+
+  const accessToken = await getAccessToken()
+  if (!accessToken) redirect("/auth")
+  const [kyc, documents] = restaurant
+    ? await Promise.all([
+        getKyc(accessToken, restaurant.id),
+        listDocuments(accessToken, restaurant.id),
+      ])
+    : [EMPTY_KYC, []]
+
+  const progress = onboardingProgress({ restaurant, kyc, documents })
+  const requested = stepSchema.safeParse((await searchParams).step)
+  const step = clampStep(
+    requested.success ? requested.data : undefined,
+    progress.firstIncomplete
+  )
+  const completed = ONBOARDING_STEPS.filter((s) => progress.completed[s])
 
   return (
-    <main className="grid min-h-svh lg:grid-cols-2">
-      <aside className="hidden flex-col justify-between border-r-2 border-inverted bg-inverted p-6 text-inverted lg:flex">
-        <Link
-          href="/"
-          className="font-display text-3xl tracking-tight uppercase"
-        >
-          {siteConfig.name}
-        </Link>
-        <div className="flex flex-col gap-4">
-          <p className="font-display text-5xl leading-none uppercase">
-            Put your
-            <br />
-            kitchen on
-            <br />
-            <span className="bg-highlight px-2 text-neutral-950">the map.</span>
-          </p>
-          <ol className="flex flex-col gap-1 font-mono text-xs tracking-wider uppercase">
-            {STEPS.map((label, i) => (
-              <li key={label} className="flex items-center gap-2">
-                <span className="flex size-5 items-center justify-center border-2 border-inverted text-[10px]">
-                  {i + 1}
-                </span>
-                {label}
-              </li>
-            ))}
-          </ol>
-        </div>
-      </aside>
-      <section className="flex flex-1 items-center justify-center p-6">
-        <div className="flex w-full max-w-md flex-col gap-4">
-          <div className="flex flex-col gap-1 lg:hidden">
-            <Link href="/" className="font-display text-2xl uppercase">
-              {siteConfig.name}
-            </Link>
-          </div>
-          <h1 className="font-display text-3xl uppercase">One last thing</h1>
-          <RestaurantOnboardingForm needsName={!user.isOnboarded} />
-        </div>
-      </section>
-    </main>
+    <OnboardingShell
+      aside={
+        <WizardStepper variant="aside" current={step} completed={completed} />
+      }
+    >
+      <WizardStepper variant="inline" current={step} completed={completed} />
+      <h1 className="font-display text-3xl uppercase">{STEP_LABELS[step]}</h1>
+
+      {restaurant?.verificationStatus === "rejected" ? (
+        <Alert tone="error">
+          Your submission was rejected
+          {restaurant.rejectionReason
+            ? `: ${restaurant.rejectionReason}`
+            : "."}{" "}
+          Fix the details below and submit again.
+        </Alert>
+      ) : null}
+
+      {step === "details" ? (
+        <DetailsStep restaurant={restaurant} needsName={!user.isOnboarded} />
+      ) : null}
+      {restaurant && step === "identity" ? (
+        <IdentityStep
+          restaurantId={restaurant.id}
+          kyc={kyc}
+          documents={documents}
+        />
+      ) : null}
+      {restaurant && step === "bank" ? (
+        <BankStep
+          restaurantId={restaurant.id}
+          kyc={kyc}
+          documents={documents}
+        />
+      ) : null}
+      {restaurant && step === "review" ? (
+        <ReviewStep
+          restaurant={restaurant}
+          kyc={kyc}
+          documents={documents}
+          missing={progress.missing}
+        />
+      ) : null}
+    </OnboardingShell>
   )
 }

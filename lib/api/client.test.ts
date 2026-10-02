@@ -30,6 +30,29 @@ describe("apiRequest", () => {
     expect(await apiRequest("/auth/logout", { method: "POST" })).toBeUndefined()
   })
 
+  it("carries the catalogue code from the error body", async () => {
+    stubFetch(
+      Response.json(
+        { statusCode: 409, code: "RESTAURANT_ONBOARDING_LOCKED" },
+        { status: 409 }
+      )
+    )
+
+    await expect(apiRequest("/restaurants/1/kyc")).rejects.toMatchObject({
+      status: 409,
+      code: "RESTAURANT_ONBOARDING_LOCKED",
+    })
+  })
+
+  it("tolerates a non-JSON error body", async () => {
+    stubFetch(new Response("<html>", { status: 502 }))
+
+    await expect(apiRequest("/x")).rejects.toMatchObject({
+      status: 502,
+      code: undefined,
+    })
+  })
+
   it("throws ApiError carrying the status for non-2xx", async () => {
     stubFetch(Response.json({ statusCode: 429 }, { status: 429 }))
 

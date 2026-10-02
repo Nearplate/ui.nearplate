@@ -11,6 +11,14 @@ const MAX_DESCRIPTION = 500
 export const RESTAURANT_STATUSES = ["online", "offline"] as const
 export type RestaurantStatus = (typeof RESTAURANT_STATUSES)[number]
 
+export const VERIFICATION_STATUSES = [
+  "draft",
+  "pending_review",
+  "approved",
+  "rejected",
+] as const
+export type VerificationStatus = (typeof VERIFICATION_STATUSES)[number]
+
 export const FOOD_TYPES = ["veg", "egg", "non-veg"] as const
 export type FoodType = (typeof FOOD_TYPES)[number]
 
@@ -56,6 +64,13 @@ export const restaurantSchema = z.object({
   updatedAt: z.string(),
 })
 export type Restaurant = z.infer<typeof restaurantSchema>
+
+/** The owner's view (`restaurants/mine` and the owner write routes). */
+export const ownerRestaurantSchema = restaurantSchema.extend({
+  verificationStatus: z.enum(VERIFICATION_STATUSES),
+  rejectionReason: z.string().nullable(),
+})
+export type OwnerRestaurant = z.infer<typeof ownerRestaurantSchema>
 
 export const menuItemSchema = z.object({
   id: z.string(),

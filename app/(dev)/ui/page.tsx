@@ -12,10 +12,13 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@/components/ui/menu"
+import { Progress } from "@/components/ui/progress"
 import { Select } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
+import { Stepper } from "@/components/ui/stepper"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
@@ -206,6 +209,62 @@ export default function Page() {
             <TabsContent value="addresses">Address book panel</TabsContent>
             <TabsContent value="payments">Payment methods panel</TabsContent>
           </Tabs>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <h2 className="font-semibold text-highlighted">Stepper</h2>
+        </CardHeader>
+        <Separator />
+        <CardBody className="flex flex-col gap-6">
+          <Stepper
+            steps={[
+              { id: "details", label: "Details", href: "#" },
+              { id: "identity", label: "Identity", href: "#" },
+              { id: "bank", label: "Bank", href: "#" },
+              { id: "review", label: "Review", href: "#" },
+            ]}
+            current="identity"
+            completed={["details"]}
+          />
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <h2 className="font-semibold text-highlighted">Progress</h2>
+        </CardHeader>
+        <Separator />
+        <CardBody className="flex flex-col gap-3">
+          <Progress value={35} label="Uploading" size="sm" />
+          <Progress value={80} label="Uploading" />
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <h2 className="font-semibold text-highlighted">
+            Field hint and error
+          </h2>
+        </CardHeader>
+        <Separator />
+        <CardBody className="flex flex-col gap-4">
+          <Field label="PAN number" htmlFor="gallery-pan" hint="10 characters">
+            <Input id="gallery-pan" aria-describedby="gallery-pan-hint" />
+          </Field>
+          <Field
+            label="IFSC code"
+            htmlFor="gallery-ifsc"
+            error="Enter a valid IFSC, like HDFC0001234."
+          >
+            <Input
+              id="gallery-ifsc"
+              aria-invalid
+              aria-describedby="gallery-ifsc-error"
+              defaultValue="HDFC1"
+            />
+          </Field>
         </CardBody>
       </Card>
 

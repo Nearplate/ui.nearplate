@@ -1,6 +1,7 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
+import { onboardingRedirect } from "@/features/onboarding/routing"
 import { PanelSidebar } from "@/features/restaurant/components/panel-sidebar"
 import {
   getMyRestaurant,
@@ -14,7 +15,13 @@ export default async function RestaurantPanelLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   await requireRestaurantOwner()
   const restaurant = await getMyRestaurant()
-  if (!restaurant) redirect("/restaurant/onboarding")
+  const redirectTo = onboardingRedirect(
+    restaurant?.verificationStatus ?? null,
+    "panel"
+  )
+  if (redirectTo || !restaurant) {
+    redirect(redirectTo ?? "/restaurant/onboarding")
+  }
 
   const collapsedCookie = (await cookies()).get(SIDEBAR_COOKIE)?.value
   const defaultCollapsed = collapsedCookie === "1"

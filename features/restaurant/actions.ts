@@ -2,16 +2,13 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { z } from "zod"
 
 import type { FormActionState } from "@/features/auth/actions"
-import { onboard } from "@/features/auth/api/user-api"
-import { getAccessToken, getSession } from "@/features/auth/session"
+import { getAccessToken } from "@/features/auth/session"
 import { errorMessage } from "@/lib/api/error-message"
 
 import {
   createMenuItem,
-  createRestaurant,
   deleteMenuItem,
   setMenuItemAvailability,
   setStatus,
@@ -22,9 +19,7 @@ import { parseCuisines } from "./cuisines"
 import { rupeesToPaise } from "./money"
 import {
   addressFormSchema,
-  createRestaurantFormSchema,
   menuItemFormSchema,
-  nameFormSchema,
   updateRestaurantFormSchema,
   type RestaurantStatus,
 } from "./schemas"
@@ -48,61 +43,6 @@ function addressFromForm(formData: FormData) {
 
 function coordinatesFromForm(formData: FormData): [number, number] {
   return [Number(formData.get("lng")), Number(formData.get("lat"))]
-}
-
-/**
- * Creates the caller's restaurant. Also fills in the owner's name (via
- * `onboard`) when they haven't set it yet, so onboarding is one submit.
- */
-export async function createRestaurantAction(
-  _previous: FormActionState,
-  formData: FormData
-): Promise<FormActionState> {
-  const user = await getSession()
-  if (!user) redirect("/auth")
-
-  if (!user.isOnboarded) {
-    const names = z
-      .object({ firstName: nameFormSchema, lastName: nameFormSchema })
-      .safeParse({
-        firstName: formData.get("firstName"),
-        lastName: formData.get("lastName"),
-      })
-    if (!names.success) {
-      return { status: "error", message: "Enter your first and last name." }
-    }
-    const accessToken = await getAccessToken()
-    if (!accessToken) redirect("/auth")
-    try {
-      await onboard(accessToken, names.data)
-    } catch (error) {
-      return { status: "error", message: errorMessage(error) }
-    }
-  }
-
-  const parsed = createRestaurantFormSchema.safeParse({
-    name: formData.get("name"),
-    cuisines: parseCuisines(String(formData.get("cuisines") ?? "")),
-    isPureVeg: formData.get("isPureVeg") === "on",
-    description: nullableText(formData.get("description")),
-    coordinates: coordinatesFromForm(formData),
-    address: addressFromForm(formData),
-  })
-  if (!parsed.success) {
-    return { status: "error", message: "Check your details and try again." }
-  }
-
-  const accessToken = await getAccessToken()
-  if (!accessToken) redirect("/auth")
-  try {
-    await createRestaurant(accessToken, {
-      ...parsed.data,
-    })
-  } catch (error) {
-    return { status: "error", message: errorMessage(error) }
-  }
-  revalidatePath("/restaurant", "layout")
-  redirect("/restaurant")
 }
 
 /** Updates the caller's restaurant profile: identity, brand and location. */

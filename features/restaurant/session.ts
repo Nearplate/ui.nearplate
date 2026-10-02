@@ -7,7 +7,7 @@ import { getAccessToken, getSession } from "@/features/auth/session"
 import type { User } from "@/features/auth/schemas"
 
 import { listMine } from "./api/restaurant-api"
-import type { Restaurant } from "./schemas"
+import type { OwnerRestaurant } from "./schemas"
 
 /**
  * The signed-in restaurant owner, or redirects. No session goes to `/auth`;
@@ -22,9 +22,11 @@ export async function requireRestaurantOwner(): Promise<User> {
 }
 
 /** The caller's restaurant, or null if they haven't onboarded one yet. */
-export const getMyRestaurant = cache(async (): Promise<Restaurant | null> => {
-  const accessToken = await getAccessToken()
-  if (!accessToken) return null
-  const restaurants = await listMine(accessToken)
-  return restaurants[0] ?? null
-})
+export const getMyRestaurant = cache(
+  async (): Promise<OwnerRestaurant | null> => {
+    const accessToken = await getAccessToken()
+    if (!accessToken) return null
+    const restaurants = await listMine(accessToken)
+    return restaurants[0] ?? null
+  }
+)

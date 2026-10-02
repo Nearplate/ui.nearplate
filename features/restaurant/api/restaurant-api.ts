@@ -11,8 +11,10 @@ import type {
 import {
   menuItemSchema,
   qrCodeSchema,
+  ownerRestaurantSchema,
   restaurantSchema,
   type MenuItem,
+  type OwnerRestaurant,
   type QrCode,
   type Restaurant,
 } from "../schemas"
@@ -35,19 +37,21 @@ export async function getPublicMenu(slug: string): Promise<MenuItem[]> {
 }
 
 /** GET /restaurants/mine?limit=1 (one owner per account, in this panel). */
-export async function listMine(accessToken: string): Promise<Restaurant[]> {
+export async function listMine(
+  accessToken: string
+): Promise<OwnerRestaurant[]> {
   const data = (await apiRequest("/restaurants/mine?limit=1", {
     token: accessToken,
   })) as { items: unknown[] }
-  return data.items.map((item) => restaurantSchema.parse(item))
+  return data.items.map((item) => ownerRestaurantSchema.parse(item))
 }
 
 /** POST /restaurants */
 export async function createRestaurant(
   accessToken: string,
   input: CreateRestaurantForm
-): Promise<Restaurant> {
-  return restaurantSchema.parse(
+): Promise<OwnerRestaurant> {
+  return ownerRestaurantSchema.parse(
     await apiRequest("/restaurants", {
       method: "POST",
       body: input,
@@ -61,8 +65,8 @@ export async function updateRestaurant(
   accessToken: string,
   id: string,
   patch: UpdateRestaurantForm
-): Promise<Restaurant> {
-  return restaurantSchema.parse(
+): Promise<OwnerRestaurant> {
+  return ownerRestaurantSchema.parse(
     await apiRequest(`/restaurants/${id}`, {
       method: "PATCH",
       body: patch,
@@ -76,8 +80,8 @@ export async function setStatus(
   accessToken: string,
   id: string,
   status: RestaurantStatus
-): Promise<Restaurant> {
-  return restaurantSchema.parse(
+): Promise<OwnerRestaurant> {
+  return ownerRestaurantSchema.parse(
     await apiRequest(`/restaurants/${id}/status`, {
       method: "PATCH",
       body: { status },

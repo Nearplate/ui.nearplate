@@ -57,7 +57,7 @@ Environment: copy `.env.example`. `API_BASE_URL` (default `http://localhost:3030
 
 - The browser never sees tokens. Server actions call the API server-to-server (`lib/api/client.ts`) and store `np_at` (access), `np_rt` (refresh) and `np_guest` in httpOnly cookies.
 - Supported: magic link (`/auth`, landing `/auth/magic?token=` posts the token from JS so link scanners can't burn it), Google via Authorization Code + PKCE (`startGoogleAction` redirects to `GET /auth/google`, then `app/(auth)/auth/google/callback/route.ts` posts to `POST /auth/google/verify`), guest, refresh (in `proxy.ts`), logout, `/users/me` read and update, onboarding.
-- API errors are only `{statusCode}`; map status codes to messages in `features/auth/actions.ts`.
+- API errors are `{statusCode}`, plus a `code` for catalogue errors (e.g. `RESTAURANT_ONBOARDING_LOCKED`); `ApiError` carries both. Map them to messages in `lib/api/error-message.ts`.
 - Signup role (`user` | `restaurant`) is chosen on `/auth`; `admin` is never sent.
 
 ## Conventions

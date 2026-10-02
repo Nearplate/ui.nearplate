@@ -1,19 +1,39 @@
 import "server-only"
 
+import { z } from "zod"
+
 import { env } from "@/config/env"
 
 const REQUEST_TIMEOUT_MS = 10_000
 const NO_CONTENT = 204
 const SERVICE_UNAVAILABLE = 503
 
-/** Thrown for any non-2xx answer. The API error body is only `{statusCode}`. */
+const errorBodySchema = z.object({ code: z.string().optional() })
+
+/**
+ * Thrown for any non-2xx answer. The body is `{statusCode}`, plus a `code`
+ * for errors from the API's catalogue (e.g. `RESTAURANT_ONBOARDING_LOCKED`).
+ */
 export class ApiError extends Error {
   readonly status: number
+  readonly code?: string
 
-  constructor(status: number) {
+  constructor(status: number, code?: string) {
     super(`API request failed with status ${status}`)
     this.name = "ApiError"
     this.status = status
+    this.code = code
+  }
+}
+
+/** The catalogue `code` from an error body, or undefined if there is none. */
+async function readErrorCode(response: Response): Promise<string | undefined> {
+  try {
+    const body: unknown = await response.json()
+    const parsed = errorBodySchema.safeParse(body)
+    return parsed.success ? parsed.data.code : undefined
+  } catch {
+    return undefined
   }
 }
 
@@ -52,7 +72,9 @@ export async function apiRequest(
     throw new ApiError(SERVICE_UNAVAILABLE)
   }
 
-  if (!response.ok) throw new ApiError(response.status)
+  if (!response.ok) {
+    throw new ApiError(response.status, await readErrorCode(response))
+  }
   if (response.status === NO_CONTENT) return undefined
   return response.json()
 }
