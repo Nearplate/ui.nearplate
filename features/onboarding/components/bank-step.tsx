@@ -27,8 +27,8 @@ export function BankStep({ restaurantId, kyc, documents }: BankStepProps) {
     <form action={formAction} className="flex flex-col gap-8">
       <input type="hidden" name="restaurantId" value={restaurantId} />
 
-      <fieldset className="flex flex-col gap-3">
-        <legend className="mb-1 font-mono text-xs tracking-wider uppercase">
+      <fieldset className="flex flex-col gap-4 border-2 border-inverted p-4 sm:p-5">
+        <legend className="-ml-1 bg-default px-1 font-display text-2xl uppercase">
           Bank account
         </legend>
         <Field
@@ -116,8 +116,8 @@ export function BankStep({ restaurantId, kyc, documents }: BankStepProps) {
         </div>
       </fieldset>
 
-      <fieldset className="flex flex-col gap-3">
-        <legend className="mb-1 font-mono text-xs tracking-wider uppercase">
+      <fieldset className="flex flex-col gap-4 border-2 border-inverted p-4 sm:p-5">
+        <legend className="-ml-1 bg-default px-1 font-display text-2xl uppercase">
           Proof
         </legend>
         <p className="text-sm text-toned">

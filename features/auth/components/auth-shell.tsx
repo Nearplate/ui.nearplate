@@ -1,6 +1,7 @@
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
+import { ReceiptCard } from "@/features/marketing/components/receipt-card"
 
 interface AuthShellProps {
   children: React.ReactNode
@@ -10,24 +11,40 @@ interface AuthShellProps {
 export function AuthShell({ children }: AuthShellProps) {
   return (
     <main className="grid min-h-svh lg:grid-cols-2">
-      <aside className="hidden flex-col justify-between border-r-2 border-inverted bg-inverted p-6 text-inverted lg:flex">
+      <aside className="relative hidden flex-col justify-between overflow-hidden border-r-2 border-inverted bg-inverted p-6 text-inverted lg:flex xl:p-10">
         <Link
           href="/"
-          className="font-display text-3xl tracking-tight uppercase"
+          className="flex items-center gap-2 font-display text-3xl tracking-tight uppercase"
         >
+          <span
+            aria-hidden
+            className="grid size-8 place-items-center bg-highlight text-xl text-neutral-950"
+          >
+            N
+          </span>
           {siteConfig.name}
         </Link>
-        <div className="flex flex-col gap-3">
-          <p className="font-display text-6xl leading-none uppercase">
+        <ReceiptCard className="absolute top-1/2 right-[-3rem] -translate-y-1/2 rotate-6 shadow-[8px_8px_0_var(--ui-highlight)] xl:right-10" />
+        <div className="relative flex flex-col gap-4">
+          <p className="font-display text-6xl leading-[0.95] uppercase xl:text-7xl">
             Food from
             <br />
             places you
             <br />
-            <span className="bg-highlight px-2 text-neutral-950">know.</span>
+            <span className="mark-highlight">know.</span>
           </p>
-          <p className="max-w-xs font-mono text-xs tracking-wider uppercase">
-            Zero commission. Local kitchens. Straight to your door.
-          </p>
+          <ul className="flex flex-wrap gap-2 font-mono text-[11px] tracking-wider uppercase">
+            {["Zero commission", "Local kitchens", "Menu prices"].map(
+              (perk) => (
+                <li
+                  key={perk}
+                  className="border-2 border-current px-2 py-1 opacity-90"
+                >
+                  {perk}
+                </li>
+              )
+            )}
+          </ul>
         </div>
       </aside>
 
