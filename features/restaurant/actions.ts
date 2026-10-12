@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
+import { ORDER_STATUSES, type OrderStatus } from "@/features/account/schemas"
 import type { FormActionState } from "@/features/auth/actions"
 import { getAccessToken } from "@/features/auth/session"
 import { errorMessage } from "@/lib/api/error-message"
@@ -15,6 +16,7 @@ import {
   updateMenuItem,
   updateRestaurant,
 } from "./api/restaurant-api"
+import { updateRestaurantOrderStatus } from "./api/order-api"
 import { parseCuisines } from "./cuisines"
 import { rupeesToPaise } from "./money"
 import {
@@ -158,4 +160,30 @@ export async function deleteMenuItemAction(
   if (!accessToken) redirect("/auth")
   await deleteMenuItem(accessToken, restaurantId, itemId)
   revalidatePath("/restaurant/menu", "page")
+}
+
+/** Moves one incoming order to its next status from the orders board. */
+export async function updateOrderStatusAction(
+  restaurantId: string,
+  orderId: string,
+  status: OrderStatus
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  if (!ORDER_STATUSES.includes(status)) {
+    return { ok: false, message: "Unknown order status." }
+  }
+  const accessToken = await getAccessToken()
+  if (!accessToken) redirect("/auth")
+  try {
+    await updateRestaurantOrderStatus(
+      accessToken,
+      restaurantId,
+      orderId,
+      status
+    )
+  } catch (error) {
+    return { ok: false, message: errorMessage(error) }
+  }
+  revalidatePath("/restaurant/orders", "page")
+  revalidatePath("/restaurant", "page")
+  return { ok: true }
 }

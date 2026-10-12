@@ -6,6 +6,8 @@ import {
   LogOutIcon,
   PanelLeftCloseIcon,
   PanelLeftOpenIcon,
+  ReceiptTextIcon,
+  StoreIcon,
   UserIcon,
   UtensilsIcon,
 } from "lucide-react"
@@ -33,7 +35,9 @@ const NAV_ITEMS: ReadonlyArray<{
   icon: ComponentType<{ className?: string }>
 }> = [
   { href: "/restaurant", label: "Overview", icon: LayoutGridIcon },
+  { href: "/restaurant/orders", label: "Orders", icon: ReceiptTextIcon },
   { href: "/restaurant/menu", label: "Menu", icon: UtensilsIcon },
+  { href: "/restaurant/profile", label: "Profile", icon: StoreIcon },
 ]
 
 interface PanelSidebarProps {
@@ -262,7 +266,16 @@ export function PanelSidebar({
           )}
         >
           {!collapsed && (
-            <Link href="/" className="font-display text-lg uppercase">
+            <Link
+              href="/"
+              className="flex items-center gap-1.5 font-display text-lg uppercase"
+            >
+              <span
+                aria-hidden
+                className="ring-inverted grid size-6 place-items-center bg-highlight text-sm text-neutral-950 ring-2"
+              >
+                N
+              </span>
               {siteConfig.name}
             </Link>
           )}
