@@ -7,6 +7,8 @@ import { buttonTheme } from "@/components/ui/button"
 import { Card, CardBody, CardHeader } from "@/components/ui/card"
 import { getMyOrder } from "@/features/account/api/order-api"
 import { STATUS_COLOR } from "@/features/account/components/order-list"
+import { OrderTracker } from "@/features/account/components/order-tracker"
+import { BackLink } from "@/components/layout/back-link"
 import {
   ORDER_STATUS_LABELS,
   type OrderDetail,
@@ -19,6 +21,15 @@ export const metadata: Metadata = { title: "Order" }
 
 const HTTP_NOT_FOUND = 404
 const SHORT_ID_LENGTH = 8
+
+const HEADLINES: Record<OrderDetail["status"], string> = {
+  placed: "Order placed",
+  accepted: "Order accepted",
+  preparing: "In the kitchen",
+  out_for_delivery: "On its way",
+  delivered: "Delivered. Enjoy!",
+  cancelled: "Order cancelled",
+}
 
 interface OrderPageProps {
   params: Promise<{ id: string }>
@@ -47,10 +58,19 @@ export default async function OrderPage({ params }: OrderPageProps) {
   const { deliveryAddress: address } = order
 
   return (
-    <section className="mx-auto flex w-full max-w-3xl flex-col gap-3 p-4 md:p-6">
-      <h1 className="font-display text-4xl uppercase">Order placed</h1>
+    <section className="mx-auto flex w-full max-w-3xl flex-col gap-4 p-4 md:p-6">
+      <BackLink href="/account">Your orders</BackLink>
+      <div className="flex flex-col gap-1">
+        <p className="font-mono text-[11px] tracking-wider text-muted uppercase">
+          Your order
+        </p>
+        <h1 className="font-display text-5xl leading-none uppercase md:text-6xl">
+          {HEADLINES[order.status]}
+        </h1>
+      </div>
+      <OrderTracker status={order.status} />
 
-      <Card>
+      <Card className="shadow-brutal">
         <CardHeader className="flex items-center justify-between gap-2 border-b-2 border-default">
           <div className="flex flex-col gap-0.5">
             <span className="font-mono text-sm uppercase">

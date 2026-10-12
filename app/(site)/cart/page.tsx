@@ -7,9 +7,11 @@ export const metadata: Metadata = { title: "Your cart" }
 
 export default function CartPage() {
   return (
-    <section className="mx-auto flex w-full max-w-3xl flex-col gap-3 p-4 md:p-6">
+    <section className="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4 md:p-6">
       <BackLink href="/#restaurants">Keep browsing</BackLink>
-      <h1 className="font-display text-4xl uppercase">Your cart</h1>
+      <h1 className="font-display text-5xl leading-none uppercase md:text-6xl">
+        Your cart
+      </h1>
       <CartsView />
     </section>
   )

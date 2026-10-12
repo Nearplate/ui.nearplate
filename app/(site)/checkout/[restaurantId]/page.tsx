@@ -43,7 +43,9 @@ export default async function CheckoutPage({ params }: CheckoutPageProps) {
   return (
     <section className="mx-auto flex w-full max-w-3xl flex-col gap-3 p-4 md:p-6">
       <BackLink href="/cart">Back to cart</BackLink>
-      <h1 className="font-display text-4xl uppercase">Checkout</h1>
+      <h1 className="font-display text-5xl leading-none uppercase md:text-6xl">
+        Checkout
+      </h1>
       <CheckoutForm cart={cart} addresses={addresses} />
     </section>
   )

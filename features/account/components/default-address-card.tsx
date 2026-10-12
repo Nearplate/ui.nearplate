@@ -14,8 +14,10 @@ interface DefaultAddressCardProps {
 export function DefaultAddressCard({ address }: DefaultAddressCardProps) {
   return (
     <Card>
-      <CardBody className="flex items-center gap-2 py-2.5">
-        <MapPinIcon aria-hidden className="size-4 shrink-0 text-muted" />
+      <CardBody className="flex items-center gap-3 py-3">
+        <span className="grid size-8 shrink-0 place-items-center bg-inverted text-highlight">
+          <MapPinIcon aria-hidden className="size-4" />
+        </span>
         {address ? (
           <>
             <Badge color="neutral" variant="soft" className="shrink-0">

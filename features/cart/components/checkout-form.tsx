@@ -64,15 +64,17 @@ export function CheckoutForm({ cart, addresses }: CheckoutFormProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <Card>
-        <CardHeader className="border-b-2 border-default font-display text-2xl uppercase">
+      <Card className="shadow-brutal">
+        <CardHeader className="border-b-2 border-default bg-inverted font-display text-2xl text-inverted uppercase">
           {cart.restaurant.name}
         </CardHeader>
         <CardBody className="flex flex-col gap-3">
           <CartLines cart={cart} editable={false} />
-          <div className="flex items-center justify-between border-t-2 border-dashed border-default pt-3 font-mono text-sm">
+          <div className="flex items-end justify-between border-t-2 border-dashed border-default pt-3 font-mono text-sm">
             <span className="tracking-wider uppercase">Total</span>
-            <span>{formatPaise(cart.totalInPaise)}</span>
+            <span className="font-display text-2xl leading-none">
+              {formatPaise(cart.totalInPaise)}
+            </span>
           </div>
         </CardBody>
       </Card>
@@ -103,7 +105,7 @@ export function CheckoutForm({ cart, addresses }: CheckoutFormProps) {
               {addresses.map((address) => (
                 <label
                   key={address.id}
-                  className="flex cursor-pointer items-start gap-3 border-2 border-accented p-3 has-checked:border-inverted"
+                  className="flex cursor-pointer items-start gap-3 border-2 border-muted p-3 transition-colors hover:border-inverted has-checked:border-inverted has-checked:bg-highlight/30 has-checked:shadow-brutal-sm"
                 >
                   <input
                     type="radio"
@@ -154,6 +156,7 @@ export function CheckoutForm({ cart, addresses }: CheckoutFormProps) {
           onClick={placeOrder}
           loading={isPending}
           disabled={!cart.canCheckout || !selectedId}
+          size="lg"
         >
           Place order
         </Button>
