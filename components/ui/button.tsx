@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
  * `neutral` uses surface tokens instead of a palette and overrides below.
  */
 export const buttonTheme = tv({
-  base: "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md font-mono font-medium tracking-wider whitespace-nowrap uppercase transition-colors select-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-75 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  base: "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md font-mono font-medium tracking-wider whitespace-nowrap uppercase transition-[color,background-color,box-shadow,transform] duration-150 select-none motion-safe:enabled:active:translate-px focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-75 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   variants: {
     color: {
       primary: "[--btn-color:var(--ui-primary)]",
@@ -23,7 +23,7 @@ export const buttonTheme = tv({
     },
     variant: {
       solid:
-        "text-inverted bg-(--btn-color) hover:bg-(--btn-color)/75 focus-visible:outline-(--btn-color)",
+        "text-inverted bg-(--btn-color) hover:bg-(--btn-color)/85 focus-visible:outline-(--btn-color)",
       outline:
         "text-(--btn-color) ring-2 ring-current ring-inset hover:bg-(--btn-color)/10 focus-visible:outline-(--btn-color)",
       soft: "text-(--btn-color) bg-(--btn-color)/10 hover:bg-(--btn-color)/15 focus-visible:outline-(--btn-color)",
@@ -45,16 +45,22 @@ export const buttonTheme = tv({
   },
   compoundVariants: [
     {
+      color: "primary",
+      variant: "solid",
+      class:
+        "hover:bg-(--btn-color) hover:shadow-[3px_3px_0_var(--ui-highlight)]",
+    },
+    {
       color: "neutral",
       variant: "solid",
       class:
-        "text-inverted bg-inverted hover:bg-inverted/90 focus-visible:outline-inverted",
+        "text-inverted bg-inverted hover:shadow-[3px_3px_0_var(--ui-highlight)] focus-visible:outline-inverted",
     },
     {
       color: "neutral",
       variant: "outline",
       class:
-        "text-default bg-default ring-2 ring-accented hover:bg-elevated focus-visible:outline-inverted",
+        "text-default bg-default ring-2 ring-accented hover:bg-highlight hover:text-neutral-950 focus-visible:outline-inverted",
     },
     {
       color: "neutral",

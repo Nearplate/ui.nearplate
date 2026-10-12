@@ -37,6 +37,7 @@ Environment: copy `.env.example`. `API_BASE_URL` (default `http://localhost:3030
 | `components/layout/` | App shell pieces (header, footer, bento grid).                                                                                                                 |
 | `features/<domain>/` | Domain modules: their own components, hooks, api, types. `features/auth` holds the API client, server actions, session cookies and forms.                      |
 | `features/discover/` | Customer discovery: home feed (nearby open restaurants, category chips, featured rails) and the public `/r/[slug]` page. The feed centre lives in the httpOnly `np_loc` cookie (`{lng, lat, label}`), falling back to the signed-in user's default address pin. |
+| `features/marketing/` | Landing and partner page sections (hero, receipt card, cuisine marquee, how it works, partner band). Static content only, no data fetching. |
 | `proxy.ts`           | Next 16 proxy (formerly middleware): refreshes an expired access token and gates `/account`, `/onboarding`. Optimistic only.                                   |
 | `test/`              | Vitest setup. Tests live next to the code as `*.test.ts(x)`.                                                                                                   |
 | `hooks/`             | Shared, domain-agnostic React hooks.                                                                                                                           |
@@ -49,6 +50,8 @@ Environment: copy `.env.example`. `API_BASE_URL` (default `http://localhost:3030
 - Style with **semantic tokens only**: `bg-default`, `bg-elevated`, `text-muted`, `text-highlighted`, `border-accented`, `bg-primary`, `text-error`, ... Never use raw palette classes (`bg-slate-800`) or hex values in components.
 - Tokens live in `app/globals.css` (`--ui-*`). To re-theme, change the palette aliases there.
 - Look: **compact brutalist**. Light mode only, neutral (near-black) primary on a paper background, square corners (`--ui-radius: 0`), 2px black borders, no soft shadows. `bg-highlight` (lime) is the single accent; use it sparingly. Display type is `font-display` (Anton, uppercase), labels and buttons are `font-mono` uppercase.
+- Hard offset shadows are `shadow-brutal-sm` / `shadow-brutal` / `shadow-brutal-lg` (theme values, so they compose with `ring-*`); hover-lift cards use the `lift` utility. Highlighted display type uses `mark-highlight` rather than `bg-highlight`, so it stays inside tight line heights.
+- The site header is sticky; bars that stick below it use `top-(--ui-header-height)`.
 - Each component defines its theme with `tailwind-variants` (`tv`) next to the component, exposing `color`, `variant`, `size`. Colors set a CSS variable (e.g. `--btn-color`) so variants are written once. Export the theme (`buttonTheme`) and prop types.
 - Merge classes with `cn()` from `@/lib/utils`; the consumer's `className` always goes last.
 - Colors and variants are enumerated in `lib/theme/colors.ts`.

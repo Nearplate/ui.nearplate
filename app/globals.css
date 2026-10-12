@@ -38,9 +38,20 @@
   --ui-border-inverted: var(--color-neutral-950);
 
   --ui-radius: 0rem;
+
+  /* Height of the sticky site header; sticky bars below it offset by this. */
+  --ui-header-height: 3rem;
 }
 
 @theme inline {
+  /* Hard offset shadows; theme values so they compose with ring-*. */
+  --shadow-brutal-sm: 2px 2px 0 var(--ui-border);
+  --shadow-brutal: 4px 4px 0 var(--ui-border);
+  --shadow-brutal-lg: 8px 8px 0 var(--ui-border);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-rise: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-display: var(--font-display);
@@ -60,6 +71,78 @@
   --radius-xl: calc(var(--ui-radius) * 3);
   --radius-2xl: calc(var(--ui-radius) * 4);
   --radius-3xl: calc(var(--ui-radius) * 6);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* A card that lifts toward the top-left on hover and focus. */
+@utility lift {
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease;
+  &:hover,
+  &:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--ui-border);
+  }
+  &:active {
+    transform: translate(0, 0);
+    box-shadow: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+/*
+ * Highlighter mark for display type. A painted band rather than a plain
+ * background, so it stays inside tight (< 1) line heights without covering
+ * the line above, and it repeats on each wrapped line.
+ */
+@utility mark-highlight {
+  color: var(--color-neutral-950);
+  background-image: linear-gradient(var(--ui-highlight), var(--ui-highlight));
+  background-repeat: no-repeat;
+  background-size: 100% 0.9em;
+  background-position: 0 60%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding-inline: 0.12em;
+}
+
+/* Dotted paper texture for empty panels. */
+@utility bg-dots {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--ui-border) 22%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 14px 14px;
+}
+
+/* Horizontal scrollers without a visible scrollbar. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Nuxt UI utility names: bg-default, text-muted, border-accented, ... */
@@ -127,6 +210,13 @@
 
   html {
     font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {

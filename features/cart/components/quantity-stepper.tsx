@@ -46,7 +46,7 @@ export function QuantityStepper({
       role="group"
       aria-label={`${itemName} quantity`}
       className={cn(
-        "inline-flex items-center justify-between border-2 border-inverted",
+        "inline-flex items-center justify-between border-2 border-inverted bg-default",
         className
       )}
     >
