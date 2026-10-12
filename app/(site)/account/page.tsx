@@ -48,18 +48,18 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
   return (
     <>
-      <section className="border-b-2 border-inverted">
+      <section className="border-b border-default">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 p-4 md:p-6">
           <BackLink href="/">Home</BackLink>
           <div className="flex flex-wrap items-center gap-4">
             <span
               aria-hidden
-              className="grid size-16 shrink-0 place-items-center border-2 border-inverted bg-highlight font-display text-4xl text-neutral-950 shadow-brutal md:size-20 md:text-5xl"
+              className="grid size-16 shrink-0 place-items-center rounded-lg border border-default bg-highlight font-display text-4xl font-light tracking-tight text-highlighted shadow-soft md:size-20 md:text-5xl"
             >
               {initialsOf(user.firstName, user.email)}
             </span>
             <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <h1 className="font-display text-4xl leading-none uppercase md:text-6xl">
+              <h1 className="font-display text-4xl leading-none font-light tracking-tight md:text-6xl">
                 {user.firstName ? `Hi, ${user.firstName}` : "Your account"}
               </h1>
               <p className="truncate font-mono text-xs tracking-wider text-muted">
@@ -73,20 +73,20 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               </Button>
             </form>
           </div>
-          <dl className="grid max-w-md grid-cols-2 border-2 border-inverted">
+          <dl className="grid max-w-md grid-cols-2 rounded-lg border border-default">
             <div className="flex flex-col-reverse gap-1 p-3">
               <dt className="font-mono text-[10px] tracking-wider text-muted uppercase">
                 Orders placed
               </dt>
-              <dd className="font-display text-3xl leading-none">
+              <dd className="font-display text-3xl leading-none tracking-tight">
                 {orderPage.total}
               </dd>
             </div>
-            <div className="flex flex-col-reverse gap-1 border-l-2 border-inverted bg-inverted p-3 text-inverted">
+            <div className="flex flex-col-reverse gap-1 border-l border-inverted bg-inverted p-3 text-inverted">
               <dt className="font-mono text-[10px] tracking-wider uppercase opacity-80">
                 Commission paid
               </dt>
-              <dd className="font-display text-3xl leading-none text-highlight">
+              <dd className="font-display text-3xl leading-none tracking-tight text-highlight">
                 ₹0
               </dd>
             </div>
@@ -97,7 +97,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
       <div className="mx-auto grid w-full max-w-6xl gap-6 p-4 md:p-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="flex min-w-0 flex-col gap-4">
           <DefaultAddressCard address={defaultAddress} />
-          <section className="border-2 border-inverted bg-default p-4 md:p-6">
+          <section className="rounded-lg border border-default bg-default p-4 md:p-6">
             <AccountTabs
               orders={
                 <div className="flex flex-col gap-3">
@@ -114,8 +114,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           </section>
         </div>
 
-        <aside className="flex flex-col self-start border-2 border-inverted bg-default lg:sticky lg:top-[calc(var(--ui-header-height)+1.5rem)]">
-          <h2 className="border-b-2 border-inverted bg-inverted px-4 py-3 font-display text-xl text-inverted uppercase">
+        <aside className="flex flex-col self-start overflow-hidden rounded-lg border border-default bg-default lg:sticky lg:top-[calc(var(--ui-header-height)+1.5rem)]">
+          <h2 className="border-b border-inverted bg-inverted px-4 py-3 font-display text-xl tracking-tight text-inverted">
             Profile
           </h2>
           <div className="@container p-4">

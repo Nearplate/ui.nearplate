@@ -10,12 +10,12 @@ import { cn } from "@/lib/utils"
 export const toastManager = ToastPrimitive.createToastManager()
 
 export const toastTheme = tv({
-  base: "pointer-events-auto flex w-[--toast-width,100%] flex-col gap-1 border-2 border-inverted bg-default p-3 shadow-[4px_4px_0_var(--ui-border)] data-[ending-style]:opacity-0 data-[starting-style]:translate-y-1/2 data-[starting-style]:opacity-0 data-[swiping]:transition-none",
+  base: "pointer-events-auto flex w-[--toast-width,100%] flex-col gap-1 border border-default bg-default p-3 shadow-soft-lg data-[ending-style]:opacity-0 data-[starting-style]:translate-y-1/2 data-[starting-style]:opacity-0 data-[swiping]:transition-none rounded-lg",
   variants: {
     type: {
       error: "border-error text-error",
       success: "border-success text-success",
-      info: "border-inverted text-default",
+      info: "border-default text-default",
     },
   },
   defaultVariants: { type: "info" },
@@ -49,7 +49,7 @@ function ToastList() {
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-col gap-0.5">
           {toast.title ? (
-            <ToastPrimitive.Title className="font-mono text-xs font-medium uppercase" />
+            <ToastPrimitive.Title className="text-sm font-medium text-highlighted" />
           ) : null}
           {toast.description ? (
             <ToastPrimitive.Description className="text-xs text-muted" />

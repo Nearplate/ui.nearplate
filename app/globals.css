@@ -2,59 +2,70 @@
 @import "tw-animate-css";
 
 /*
- * Brutalist design tokens on the Nuxt UI model. Light mode only.
- *  - primary is neutral (near-black); semantic colors are used for status
- *  - --ui-highlight is the single lime accent, used sparingly
- *  - square corners (--ui-radius: 0), 2px black borders, no soft shadows
+ * "Forest" design tokens on the Nuxt UI model. Light mode only.
+ *  - primary is forest green; semantic colors are used for status
+ *  - --ui-highlight is the single mint accent; the three tints (mint, peach,
+ *    sky) are soft washes for status areas such as order lanes
+ *  - page is warm cream (--ui-bg-page), surfaces are paper (--ui-bg)
+ *  - soft corners, 1px warm hairlines, soft shadows
  * Change a value here to re-theme the whole app.
  */
 :root {
   color-scheme: light;
 
-  --ui-primary: var(--color-neutral-950);
-  --ui-secondary: var(--color-neutral-600);
-  --ui-success: var(--color-green-700);
-  --ui-info: var(--color-blue-700);
-  --ui-warning: var(--color-yellow-600);
-  --ui-error: var(--color-red-600);
-  --ui-highlight: #d4f53c;
+  --ui-primary: #142a22;
+  --ui-secondary: #5c6e65;
+  --ui-success: #3f8f68;
+  --ui-info: #4a6fb5;
+  --ui-warning: #c8741f;
+  --ui-error: #c4574b;
+  --ui-highlight: #70d2a3;
 
-  --ui-text-dimmed: var(--color-neutral-500);
-  --ui-text-muted: var(--color-neutral-600);
-  --ui-text-toned: var(--color-neutral-700);
-  --ui-text: var(--color-neutral-900);
-  --ui-text-highlighted: var(--color-neutral-950);
-  --ui-text-inverted: #f2f1ec;
+  --ui-tint-mint: #e1f3e9;
+  --ui-tint-peach: #f4e3d5;
+  --ui-tint-sky: #e0e8f6;
 
-  --ui-bg: #f2f1ec;
-  --ui-bg-muted: #eae9e3;
-  --ui-bg-elevated: #e4e3dc;
-  --ui-bg-accented: #d6d5cd;
-  --ui-bg-inverted: var(--color-neutral-950);
+  --ui-text-dimmed: #8a978f;
+  --ui-text-muted: #5c6e65;
+  --ui-text-toned: #3d5048;
+  --ui-text: #1f3329;
+  --ui-text-highlighted: #142a22;
+  --ui-text-inverted: #fbf9f4;
 
-  --ui-border: var(--color-neutral-950);
-  --ui-border-muted: var(--color-neutral-300);
-  --ui-border-accented: var(--color-neutral-950);
-  --ui-border-inverted: var(--color-neutral-950);
+  --ui-bg-page: #f4f0e8;
+  --ui-bg: #fbf9f4;
+  --ui-bg-muted: #f4f0e8;
+  --ui-bg-elevated: #efe9dd;
+  --ui-bg-accented: #e4dccc;
+  --ui-bg-inverted: #142a22;
+  /* Raised surface on an inverted (forest) band. */
+  --ui-bg-inverted-elevated: #1e3a2e;
 
-  --ui-radius: 0rem;
+  --ui-border: #ddd5c6;
+  --ui-border-muted: #e9e3d6;
+  --ui-border-accented: #c4b9a5;
+  --ui-border-inverted: #142a22;
+
+  --ui-radius: 0.375rem;
 
   /* Height of the sticky site header; sticky bars below it offset by this. */
-  --ui-header-height: 3rem;
+  --ui-header-height: 3.5rem;
 }
 
 @theme inline {
-  /* Hard offset shadows; theme values so they compose with ring-*. */
-  --shadow-brutal-sm: 2px 2px 0 var(--ui-border);
-  --shadow-brutal: 4px 4px 0 var(--ui-border);
-  --shadow-brutal-lg: 8px 8px 0 var(--ui-border);
+  /* Soft forest-tinted shadows; theme values so they compose with ring-*. */
+  --shadow-soft-sm: 0 1px 2px rgb(20 42 34 / 0.06);
+  --shadow-soft:
+    0 1px 2px rgb(20 42 34 / 0.05), 0 4px 12px -4px rgb(20 42 34 / 0.12);
+  --shadow-soft-lg:
+    0 2px 4px rgb(20 42 34 / 0.04), 0 16px 40px -12px rgb(20 42 34 / 0.24);
 
   --animate-marquee: marquee 40s linear infinite;
   --animate-rise: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
-  --font-display: var(--font-display);
+  --font-display: var(--font-sans);
 
   --color-primary: var(--ui-primary);
   --color-secondary: var(--ui-secondary);
@@ -63,6 +74,9 @@
   --color-warning: var(--ui-warning);
   --color-error: var(--ui-error);
   --color-highlight: var(--ui-highlight);
+  --color-tint-mint: var(--ui-tint-mint);
+  --color-tint-peach: var(--ui-tint-peach);
+  --color-tint-sky: var(--ui-tint-sky);
 
   --radius-xs: calc(var(--ui-radius) * 0.5);
   --radius-sm: var(--ui-radius);
@@ -93,18 +107,20 @@
   }
 }
 
-/* A card that lifts toward the top-left on hover and focus. */
+/* A card that rises on hover and focus, its border turning leaf green. */
 @utility lift {
   transition:
     transform 150ms ease,
-    box-shadow 150ms ease;
+    box-shadow 150ms ease,
+    border-color 150ms ease;
   &:hover,
   &:focus-visible {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 var(--ui-border);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+    border-color: var(--ui-success);
   }
   &:active {
-    transform: translate(0, 0);
+    transform: translateY(0);
     box-shadow: none;
   }
   @media (prefers-reduced-motion: reduce) {
@@ -118,8 +134,11 @@
  * the line above, and it repeats on each wrapped line.
  */
 @utility mark-highlight {
-  color: var(--color-neutral-950);
-  background-image: linear-gradient(var(--ui-highlight), var(--ui-highlight));
+  color: var(--ui-text-highlighted);
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--ui-highlight) 55%, transparent),
+    color-mix(in srgb, var(--ui-highlight) 55%, transparent)
+  );
   background-repeat: no-repeat;
   background-size: 100% 0.9em;
   background-position: 0 60%;
@@ -180,6 +199,12 @@
 @utility bg-inverted {
   background-color: var(--ui-bg-inverted);
 }
+@utility bg-inverted-elevated {
+  background-color: var(--ui-bg-inverted-elevated);
+}
+@utility bg-page {
+  background-color: var(--ui-bg-page);
+}
 
 @utility border-default {
   border-color: var(--ui-border);
@@ -220,12 +245,12 @@
   }
 
   body {
-    background-color: var(--ui-bg);
+    background-color: var(--ui-bg-page);
     color: var(--ui-text);
   }
 
   ::selection {
     background-color: var(--ui-highlight);
-    color: var(--color-neutral-950);
+    color: var(--ui-text-highlighted);
   }
 }

@@ -14,12 +14,12 @@ export function RestaurantHero({ restaurant }: { restaurant: Restaurant }) {
   const isClosed = status === "offline"
 
   return (
-    <header className="border-b-2 border-inverted">
-      <div className="h-40 overflow-hidden border-b-2 border-inverted bg-elevated md:h-60">
+    <header className="border-b border-default">
+      <div className="h-40 overflow-hidden border-b border-default bg-elevated md:h-60">
         <RestaurantBanner src={restaurant.bannerUrl} name={name} />
       </div>
       <div className="grid gap-4 p-4 md:grid-cols-[auto_1fr_auto] md:items-end md:gap-6 md:p-6">
-        <div className="relative -mt-16 size-24 shrink-0 overflow-hidden border-2 border-inverted bg-elevated shadow-brutal md:-mt-20 md:size-32">
+        <div className="relative -mt-16 size-24 shrink-0 overflow-hidden rounded-lg border border-default bg-elevated shadow-soft md:-mt-20 md:size-32">
           <RestaurantLogo
             src={restaurant.logoUrl}
             name={name}
@@ -36,11 +36,11 @@ export function RestaurantHero({ restaurant }: { restaurant: Restaurant }) {
               <Badge
                 color="neutral"
                 size="lg"
-                className="gap-1.5 bg-highlight text-neutral-950"
+                className="gap-1.5 bg-highlight text-highlighted"
               >
                 <span
                   aria-hidden
-                  className="size-1.5 rounded-full bg-neutral-950"
+                  className="size-1.5 rounded-full bg-inverted"
                 />
                 Open now
               </Badge>
@@ -51,7 +51,7 @@ export function RestaurantHero({ restaurant }: { restaurant: Restaurant }) {
               </Badge>
             ) : null}
           </div>
-          <h1 className="font-display text-5xl leading-[0.9] uppercase md:text-7xl">
+          <h1 className="font-display text-5xl leading-[1.05] font-light tracking-tight md:text-7xl">
             {name}
           </h1>
           {cuisines.length > 0 ? (
@@ -75,7 +75,7 @@ export function RestaurantHero({ restaurant }: { restaurant: Restaurant }) {
             color="neutral"
             size="md"
           />
-          <p className="inline-flex items-center gap-1.5 border-2 border-inverted bg-inverted px-2 py-1 font-mono text-[10px] tracking-wider text-inverted uppercase">
+          <p className="inline-flex items-center gap-1.5 rounded-lg border border-inverted bg-inverted px-2 py-1 font-mono text-[10px] tracking-wider text-inverted uppercase">
             <PercentIcon aria-hidden className="size-3 text-highlight" />
             Menu prices, no markup
           </p>

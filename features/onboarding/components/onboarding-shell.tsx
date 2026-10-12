@@ -18,38 +18,41 @@ interface OnboardingShellProps {
 export function OnboardingShell({ aside, children }: OnboardingShellProps) {
   return (
     <main className="grid min-h-svh lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-      <aside className="sticky top-0 hidden h-svh flex-col justify-between gap-8 overflow-y-auto border-r-2 border-inverted bg-inverted p-6 text-inverted lg:flex xl:p-10">
+      <aside className="sticky top-0 hidden h-svh flex-col justify-between gap-8 overflow-y-auto border-r border-inverted bg-inverted p-6 text-inverted lg:flex xl:p-10">
         <Link
           href="/"
-          className="flex items-center gap-2 font-display text-3xl tracking-tight uppercase"
+          className="flex items-center gap-2 font-display text-3xl tracking-tight"
         >
           <span
             aria-hidden
-            className="grid size-8 place-items-center bg-highlight text-xl text-neutral-950"
+            className="grid size-8 place-items-center rounded-md bg-highlight text-base font-semibold text-highlighted"
           >
             N
           </span>
           {siteConfig.name}
         </Link>
         <div className="flex flex-col gap-8">
-          <p className="font-display text-5xl leading-[0.95] uppercase xl:text-6xl">
+          <p className="font-display text-5xl leading-[1.05] font-light tracking-tight xl:text-6xl">
             Put your
             <br />
             kitchen on
             <br />
-            <span className="mark-highlight">the map.</span>
+            <span className="text-highlight">the map.</span>
           </p>
           {aside}
         </div>
-        <p className="flex items-start gap-2 border-t-2 border-dashed border-current pt-4 font-mono text-[11px] leading-relaxed tracking-wider uppercase opacity-80">
+        <p className="flex items-start gap-2 border-t border-dashed border-current pt-4 font-mono text-[11px] leading-relaxed tracking-wider uppercase opacity-80">
           <LockIcon aria-hidden className="mt-0.5 size-3.5 shrink-0" />
           Documents go to a private bucket. Bank and PAN numbers are encrypted
           at rest.
         </p>
       </aside>
       <section className="flex min-w-0 flex-col">
-        <header className="flex items-center justify-between border-b-2 border-inverted p-4 sm:px-6 lg:justify-end">
-          <Link href="/" className="font-display text-2xl uppercase lg:hidden">
+        <header className="flex items-center justify-between border-b border-default p-4 sm:px-6 lg:justify-end">
+          <Link
+            href="/"
+            className="font-display text-2xl tracking-tight lg:hidden"
+          >
             {siteConfig.name}
           </Link>
           <form action={logoutAction}>

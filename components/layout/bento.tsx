@@ -4,12 +4,12 @@ import { tv, type VariantProps } from "tailwind-variants"
 import { cn } from "@/lib/utils"
 
 const bentoCellTheme = tv({
-  base: "flex flex-col gap-2 border-b-2 border-inverted p-4 md:border-r-2 md:last:border-r-0",
+  base: "flex flex-col gap-2 border-b border-default p-4 md:border-r md:last:border-r-0",
   variants: {
     tone: {
       default: "bg-default text-default",
       dark: "bg-inverted text-inverted",
-      highlight: "bg-highlight text-neutral-950",
+      highlight: "bg-highlight text-highlighted",
     },
   },
   defaultVariants: { tone: "default" },

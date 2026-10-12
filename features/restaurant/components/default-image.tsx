@@ -14,9 +14,9 @@ const NAME_TONES: readonly NameTone[] = [
   { avatarClass: "bg-secondary text-inverted", cssVar: "--ui-secondary" },
   { avatarClass: "bg-success text-inverted", cssVar: "--ui-success" },
   { avatarClass: "bg-info text-inverted", cssVar: "--ui-info" },
-  { avatarClass: "bg-warning text-neutral-950", cssVar: "--ui-warning" },
+  { avatarClass: "bg-warning text-highlighted", cssVar: "--ui-warning" },
   { avatarClass: "bg-error text-inverted", cssVar: "--ui-error" },
-  { avatarClass: "bg-highlight text-neutral-950", cssVar: "--ui-highlight" },
+  { avatarClass: "bg-highlight text-highlighted", cssVar: "--ui-highlight" },
 ]
 
 const HASH_MULTIPLIER = 31
@@ -48,7 +48,7 @@ export function DefaultAvatar({ name, className }: DefaultAvatarProps) {
     <span
       aria-hidden
       className={cn(
-        "flex size-full items-center justify-center font-display uppercase",
+        "flex size-full items-center justify-center font-display tracking-tight",
         tone.avatarClass,
         className
       )}
@@ -73,7 +73,7 @@ export function DefaultBanner({ name }: { name: string }) {
       }}
     >
       <span
-        className="absolute right-3 bottom-0 font-display text-[9rem] leading-[0.75] uppercase select-none"
+        className="absolute right-3 bottom-0 font-display text-[9rem] leading-[1.05] tracking-tight select-none"
         style={{
           color: `color-mix(in srgb, var(${cssVar}) 45%, transparent)`,
         }}

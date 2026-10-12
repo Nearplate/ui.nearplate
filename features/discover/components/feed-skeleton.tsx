@@ -8,8 +8,11 @@ export function FeedSkeleton() {
       className="grid gap-4 p-4 sm:grid-cols-2 md:gap-5 md:p-6 lg:grid-cols-4"
     >
       {Array.from({ length: PLACEHOLDERS }, (_, index) => (
-        <div key={index} className="flex flex-col border-2 border-inverted">
-          <div className="aspect-[16/9] animate-pulse border-b-2 border-inverted bg-elevated" />
+        <div
+          key={index}
+          className="flex flex-col overflow-hidden rounded-lg border border-default"
+        >
+          <div className="aspect-[16/9] animate-pulse border-b border-default bg-elevated" />
           <div className="flex flex-col gap-2 p-3 pt-7">
             <div className="h-6 w-2/3 animate-pulse bg-accented" />
             <div className="h-3 w-1/2 animate-pulse bg-elevated" />

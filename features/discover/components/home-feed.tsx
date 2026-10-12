@@ -70,10 +70,10 @@ export async function HomeFeed({ location, filters }: HomeFeedProps) {
 
       <section
         id="restaurants"
-        className="scroll-mt-40 border-b-2 border-inverted"
+        className="scroll-mt-40 border-b border-default"
       >
         <div className="flex flex-wrap items-end justify-between gap-2 px-4 pt-6 md:px-6">
-          <h2 className="font-display text-4xl leading-none uppercase md:text-5xl">
+          <h2 className="font-display text-4xl leading-none font-light tracking-tight md:text-5xl">
             {filters.cuisine
               ? `${filters.cuisine} near you`
               : filters.veg

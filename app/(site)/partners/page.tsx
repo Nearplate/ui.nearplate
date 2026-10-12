@@ -93,17 +93,17 @@ const FAQ = [
 export default function PartnersPage() {
   return (
     <>
-      <section className="grid border-b-2 border-inverted bg-inverted text-inverted lg:grid-cols-[1.4fr_1fr]">
+      <section className="grid border-b border-inverted bg-inverted text-inverted lg:grid-cols-[1.4fr_1fr]">
         <div className="flex flex-col gap-6 p-4 py-12 md:p-10 md:py-16">
           <p className="font-mono text-[11px] tracking-wider text-highlight uppercase">
             NearPlate for restaurants
           </p>
-          <h1 className="font-display text-6xl leading-[0.92] uppercase md:text-8xl">
+          <h1 className="font-display text-6xl leading-[1.05] font-light tracking-tight md:text-8xl">
             Your kitchen.
             <br />
             Your margin.
             <br />
-            <span className="mark-highlight">Zero commission.</span>
+            <span className="text-highlight">Zero commission.</span>
           </h1>
           <p className="max-w-lg text-base opacity-80">
             Take orders from customers nearby without handing a cut of every
@@ -117,7 +117,7 @@ export default function PartnersPage() {
                 color: "neutral",
                 variant: "outline",
                 className:
-                  "bg-highlight text-neutral-950 ring-highlight hover:bg-default",
+                  "bg-highlight text-highlighted ring-highlight hover:bg-default",
               })}
             >
               List your kitchen
@@ -131,9 +131,9 @@ export default function PartnersPage() {
             </Link>
           </div>
         </div>
-        <div className="flex items-center justify-center border-t-2 border-inverted bg-highlight p-8 text-neutral-950 lg:border-t-0 lg:border-l-2">
+        <div className="flex items-center justify-center border-t border-default bg-highlight p-8 text-highlighted lg:border-t-0 lg:border-l">
           <div className="flex flex-col items-center gap-2 text-center">
-            <p className="font-display text-[10rem] leading-[0.8] md:text-[14rem]">
+            <p className="font-display text-[10rem] leading-[1.05] tracking-tight md:text-[14rem]">
               0%
             </p>
             <p className="font-mono text-xs tracking-wider uppercase">
@@ -158,12 +158,12 @@ export default function PartnersPage() {
 
       <section
         aria-labelledby="partner-steps"
-        className="border-b-2 border-inverted"
+        className="border-b border-default"
       >
-        <div className="flex flex-wrap items-end justify-between gap-2 border-b-2 border-inverted px-4 py-5 md:px-6">
+        <div className="flex flex-wrap items-end justify-between gap-2 border-b border-default px-4 py-5 md:px-6">
           <h2
             id="partner-steps"
-            className="font-display text-4xl leading-none uppercase md:text-5xl"
+            className="font-display text-4xl leading-none font-light tracking-tight md:text-5xl"
           >
             Live in four steps
           </h2>
@@ -177,17 +177,17 @@ export default function PartnersPage() {
             return (
               <li
                 key={step.title}
-                className="flex flex-col gap-4 border-b-2 border-inverted p-4 sm:odd:border-r-2 md:p-6 lg:border-r-2 lg:border-b-0 lg:last:border-r-0"
+                className="flex flex-col gap-4 border-b border-default p-4 sm:odd:border-r md:p-6 lg:border-r lg:border-b-0 lg:last:border-r-0"
               >
                 <div className="flex items-start justify-between">
-                  <span className="font-display text-6xl leading-none">
+                  <span className="font-display text-6xl leading-none font-light tracking-tight">
                     0{index + 1}
                   </span>
                   <span className="grid size-10 place-items-center bg-inverted text-highlight">
                     <Icon aria-hidden className="size-5" />
                   </span>
                 </div>
-                <h3 className="font-display text-2xl uppercase">
+                <h3 className="font-display text-2xl tracking-tight">
                   {step.title}
                 </h3>
                 <p className="text-sm text-toned">{step.body}</p>
@@ -199,12 +199,12 @@ export default function PartnersPage() {
 
       <section
         aria-labelledby="partner-tools"
-        className="grid border-b-2 border-inverted lg:grid-cols-[1fr_2fr]"
+        className="grid border-b border-default lg:grid-cols-[1fr_2fr]"
       >
-        <div className="flex flex-col gap-3 border-b-2 border-inverted p-4 md:p-8 lg:border-r-2 lg:border-b-0">
+        <div className="flex flex-col gap-3 border-b border-default p-4 md:p-8 lg:border-r lg:border-b-0">
           <h2
             id="partner-tools"
-            className="font-display text-5xl leading-[0.9] uppercase md:text-6xl"
+            className="font-display text-5xl leading-[1.05] font-light tracking-tight md:text-6xl"
           >
             Everything to run the pass.
           </h2>
@@ -220,18 +220,18 @@ export default function PartnersPage() {
               <li
                 key={feature.title}
                 className={
-                  "flex gap-4 border-inverted p-4 md:p-6 " +
-                  (index % 2 === 0 ? "sm:border-r-2 " : "") +
+                  "flex gap-4 border-default p-4 md:p-6 " +
+                  (index % 2 === 0 ? "sm:border-r " : "") +
                   (index < 2
-                    ? "border-b-2"
-                    : "max-sm:border-b-2 max-sm:last:border-b-0")
+                    ? "border-b"
+                    : "max-sm:border-b max-sm:last:border-b-0")
                 }
               >
-                <span className="grid size-10 shrink-0 place-items-center border-2 border-inverted bg-highlight text-neutral-950">
+                <span className="grid size-10 shrink-0 place-items-center rounded-lg border border-default bg-highlight text-highlighted">
                   <Icon aria-hidden className="size-5" />
                 </span>
                 <div className="flex flex-col gap-1">
-                  <h3 className="font-display text-2xl uppercase">
+                  <h3 className="font-display text-2xl tracking-tight">
                     {feature.title}
                   </h3>
                   <p className="text-sm text-toned">{feature.body}</p>
@@ -244,11 +244,11 @@ export default function PartnersPage() {
 
       <section
         aria-labelledby="partner-faq"
-        className="grid border-b-2 border-inverted lg:grid-cols-[1fr_2fr]"
+        className="grid border-b border-default lg:grid-cols-[1fr_2fr]"
       >
         <h2
           id="partner-faq"
-          className="border-b-2 border-inverted p-4 font-display text-5xl leading-none uppercase md:p-8 lg:border-r-2 lg:border-b-0"
+          className="border-b border-default p-4 font-display text-5xl leading-none font-light tracking-tight md:p-8 lg:border-r lg:border-b-0"
         >
           Questions
         </h2>
@@ -256,9 +256,9 @@ export default function PartnersPage() {
           {FAQ.map((item) => (
             <details
               key={item.question}
-              className="group border-b-2 border-inverted last:border-b-0"
+              className="group border-b border-default last:border-b-0"
             >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-4 font-display text-2xl uppercase hover:bg-highlight hover:text-neutral-950 md:px-8 [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-4 font-display text-2xl tracking-tight hover:bg-highlight hover:text-highlighted md:px-8 [&::-webkit-details-marker]:hidden">
                 {item.question}
                 <span
                   aria-hidden

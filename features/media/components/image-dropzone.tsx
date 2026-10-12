@@ -102,7 +102,7 @@ export function ImageDropzone({
           pick(event.dataTransfer.files[0])
         }}
         className={cn(
-          "relative overflow-hidden border-2 border-inverted bg-elevated",
+          "relative overflow-hidden rounded-lg border border-default bg-elevated",
           FRAME_CLASS[target.kind],
           isDragging && "bg-highlight",
           isUploading && "opacity-60"

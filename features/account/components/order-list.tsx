@@ -35,8 +35,8 @@ const ACTIVE_STATUSES: ReadonlyArray<OrderSummary["status"]> = [
 export function OrderList({ orders }: OrderListProps) {
   if (orders.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-3 border-2 border-dashed border-inverted bg-dots px-4 py-10 text-center">
-        <p className="font-display text-2xl uppercase">No orders yet</p>
+      <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-default bg-dots px-4 py-10 text-center">
+        <p className="font-display text-2xl tracking-tight">No orders yet</p>
         <p className="text-sm text-muted">
           Your first plate is a few taps away.
         </p>
@@ -55,13 +55,13 @@ export function OrderList({ orders }: OrderListProps) {
           <li key={order.id}>
             <Link
               href={`/account/orders/${order.id}`}
-              className="group flex items-center gap-3 border-2 border-inverted bg-default p-3 transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-brutal"
+              className="group flex items-center gap-3 rounded-lg border border-default bg-default p-3 transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-soft"
             >
               <span
                 aria-hidden
                 className={cn(
-                  "grid size-10 shrink-0 place-items-center border-2 border-inverted font-display text-xl",
-                  isLive ? "bg-highlight text-neutral-950" : "bg-elevated"
+                  "grid size-10 shrink-0 place-items-center rounded-lg border border-default font-display text-xl tracking-tight",
+                  isLive ? "bg-highlight text-highlighted" : "bg-elevated"
                 )}
               >
                 {order.restaurantName.charAt(0).toUpperCase()}

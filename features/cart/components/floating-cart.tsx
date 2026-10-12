@@ -56,13 +56,13 @@ export function FloatingCart() {
       <Link
         href="/cart"
         aria-label={`View cart, ${summary}`}
-        className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] z-30 mx-auto flex max-w-xl items-center gap-3 border-2 border-inverted bg-default p-2 shadow-[4px_4px_0_var(--ui-border)] motion-safe:transition-transform lg:hidden motion-safe:starting:translate-y-[150%]"
+        className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] z-30 mx-auto flex max-w-xl items-center gap-3 rounded-lg border border-default bg-default p-2 shadow-soft-lg motion-safe:transition-transform lg:hidden motion-safe:starting:translate-y-[150%]"
       >
-        <span className="flex size-10 shrink-0 items-center justify-center border-2 border-inverted bg-highlight">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-default bg-highlight">
           <ShoppingBagIcon aria-hidden className="size-5" />
         </span>
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate font-display text-lg leading-tight tracking-tight uppercase">
+          <span className="truncate font-display text-lg leading-tight tracking-tight">
             {title}
           </span>
           <span className="font-mono text-[11px] tracking-wider uppercase">

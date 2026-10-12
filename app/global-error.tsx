@@ -35,7 +35,7 @@ export default function GlobalError({
           <button
             type="button"
             onClick={() => retry()}
-            className="cursor-pointer border-2 border-inverted px-4 py-2 text-xs font-medium uppercase"
+            className="cursor-pointer rounded-lg border border-default px-4 py-2 text-xs font-medium uppercase"
           >
             Try again
           </button>

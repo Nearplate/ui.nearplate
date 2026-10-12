@@ -10,11 +10,9 @@ interface CategoryRailProps {
 }
 
 const CHIP =
-  "shrink-0 snap-start border-2 border-inverted px-3 py-1.5 font-mono text-[11px] font-medium tracking-wider uppercase transition-[background-color,color,box-shadow,transform] duration-150"
-const ACTIVE =
-  "bg-inverted text-inverted shadow-[2px_2px_0_var(--ui-highlight)]"
-const IDLE =
-  "bg-default hover:-translate-y-0.5 hover:bg-highlight hover:text-neutral-950 hover:shadow-brutal-sm"
+  "shrink-0 snap-start rounded-full border border-default px-3.5 py-1.5 text-[13px] font-medium transition-colors duration-150"
+const ACTIVE = "border-inverted bg-inverted text-inverted"
+const IDLE = "bg-default hover:border-success hover:bg-tint-mint"
 
 function Chip({
   href,
@@ -44,7 +42,7 @@ export function CategoryRail({ cuisines, filters }: CategoryRailProps) {
   return (
     <nav
       aria-label="Categories"
-      className="no-scrollbar flex snap-x scroll-px-4 gap-2 overflow-x-auto border-b-2 border-inverted px-4 py-2.5 md:px-6"
+      className="no-scrollbar flex snap-x scroll-px-4 gap-2 overflow-x-auto border-b border-default px-4 py-2.5 md:px-6"
     >
       <Chip href="/" active={showingAll}>
         All

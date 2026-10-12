@@ -56,8 +56,8 @@ function Section({
 }) {
   return (
     <Card>
-      <CardHeader className="flex items-center justify-between gap-2 border-b-2 border-default">
-        <h2 className="font-display text-lg uppercase">{title}</h2>
+      <CardHeader className="flex items-center justify-between gap-2 border-b border-default">
+        <h2 className="font-display text-lg tracking-tight">{title}</h2>
         {editStep ? (
           <Link
             href={stepHref(editStep)}

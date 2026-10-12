@@ -54,7 +54,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 
   return (
     <>
-      <div className="border-b-2 border-inverted px-4 py-1.5 md:px-6">
+      <div className="border-b border-default px-4 py-1.5 md:px-6">
         <BackLink href="/#restaurants">All restaurants</BackLink>
       </div>
       <RestaurantHero restaurant={restaurant} />

@@ -23,15 +23,15 @@ export function FairShare() {
   return (
     <section
       aria-labelledby="fair-title"
-      className="grid border-b-2 border-inverted lg:grid-cols-[1fr_1.4fr]"
+      className="grid border-b border-default lg:grid-cols-[1fr_1.4fr]"
     >
-      <div className="flex flex-col gap-3 border-b-2 border-inverted bg-inverted p-4 text-inverted md:p-8 lg:border-r-2 lg:border-b-0">
+      <div className="flex flex-col gap-3 border-b border-inverted bg-inverted p-4 text-inverted md:p-8 lg:border-r lg:border-b-0">
         <p className="font-mono text-[11px] tracking-wider text-highlight uppercase">
           Where your money goes
         </p>
         <h2
           id="fair-title"
-          className="font-display text-5xl leading-[0.9] uppercase md:text-6xl"
+          className="font-display text-5xl leading-[1.05] font-light tracking-tight md:text-6xl"
         >
           Every rupee
           <br />
@@ -46,7 +46,7 @@ export function FairShare() {
         {BARS.map((bar) => (
           <div key={bar.label} className="flex flex-col gap-2">
             <div className="flex items-baseline justify-between gap-3">
-              <span className="font-display text-2xl uppercase">
+              <span className="font-display text-2xl tracking-tight">
                 {bar.label}
               </span>
               <span className="font-mono text-[11px] tracking-wider text-muted uppercase">
@@ -56,13 +56,13 @@ export function FairShare() {
             <div
               role="img"
               aria-label={`${bar.label}: the kitchen keeps ${bar.tone === "highlight" ? "all" : "part"} of the order value`}
-              className="flex h-12 border-2 border-inverted"
+              className="flex h-12 rounded-lg border border-default"
             >
               <div
                 className={cn(
                   "flex items-center px-3 font-mono text-[11px] font-medium tracking-wider uppercase",
                   bar.tone === "highlight"
-                    ? "bg-highlight text-neutral-950"
+                    ? "bg-highlight text-highlighted"
                     : "bg-accented text-default"
                 )}
                 style={{ width: `${bar.kitchenShare}%` }}

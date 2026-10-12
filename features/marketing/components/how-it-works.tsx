@@ -34,12 +34,12 @@ export function HowItWorks() {
     <section
       id="how"
       aria-labelledby="how-title"
-      className="scroll-mt-(--ui-header-height) border-b-2 border-inverted"
+      className="scroll-mt-(--ui-header-height) border-b border-default"
     >
-      <div className="flex flex-wrap items-end justify-between gap-2 border-b-2 border-inverted px-4 py-5 md:px-6">
+      <div className="flex flex-wrap items-end justify-between gap-2 border-b border-default px-4 py-5 md:px-6">
         <h2
           id="how-title"
-          className="font-display text-4xl leading-none uppercase md:text-5xl"
+          className="font-display text-4xl leading-none font-light tracking-tight md:text-5xl"
         >
           How it works
         </h2>
@@ -53,18 +53,20 @@ export function HowItWorks() {
           return (
             <li
               key={step.title}
-              className="group flex flex-col gap-4 border-b-2 border-inverted p-4 transition-colors hover:bg-highlight hover:text-neutral-950 sm:odd:border-r-2 md:p-6 lg:border-r-2 lg:border-b-0 lg:last:border-r-0"
+              className="group flex flex-col gap-4 border-b border-default p-4 transition-colors hover:bg-highlight hover:text-highlighted sm:odd:border-r md:p-6 lg:border-r lg:border-b-0 lg:last:border-r-0"
             >
               <div className="flex items-start justify-between">
-                <span className="font-display text-6xl leading-none text-default group-hover:text-neutral-950">
+                <span className="font-display text-6xl leading-none font-light tracking-tight text-default group-hover:text-highlighted">
                   0{index + 1}
                 </span>
-                <span className="grid size-10 place-items-center border-2 border-inverted bg-default">
+                <span className="grid size-10 place-items-center rounded-lg border border-default bg-default">
                   <Icon aria-hidden className="size-5" />
                 </span>
               </div>
-              <h3 className="font-display text-2xl uppercase">{step.title}</h3>
-              <p className="text-sm text-toned group-hover:text-neutral-950">
+              <h3 className="font-display text-2xl tracking-tight">
+                {step.title}
+              </h3>
+              <p className="text-sm text-toned group-hover:text-highlighted">
                 {step.body}
               </p>
             </li>

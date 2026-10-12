@@ -42,7 +42,7 @@ export function CuisineMarquee({
   return (
     <div
       className={cn(
-        "overflow-hidden border-b-2 border-inverted bg-inverted py-2.5 font-display text-2xl text-inverted uppercase md:text-3xl",
+        "overflow-hidden border-b border-inverted bg-inverted py-2.5 font-display text-2xl tracking-tight text-inverted md:text-3xl",
         className
       )}
     >

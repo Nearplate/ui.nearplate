@@ -26,11 +26,13 @@ export function CartsView() {
 
   if (carts.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-3 border-2 border-dashed border-inverted bg-dots px-4 py-16 text-center">
-        <span className="grid size-14 place-items-center border-2 border-inverted bg-highlight text-neutral-950 shadow-brutal">
+      <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-default bg-dots px-4 py-16 text-center">
+        <span className="grid size-14 place-items-center rounded-lg border border-default bg-highlight text-highlighted shadow-soft">
           <ShoppingBagIcon aria-hidden className="size-7" />
         </span>
-        <p className="font-display text-4xl uppercase">Your cart is empty</p>
+        <p className="font-display text-4xl font-light tracking-tight">
+          Your cart is empty
+        </p>
         <p className="max-w-xs text-sm text-muted">
           Find a kitchen near you and add a dish or two.
         </p>
@@ -59,11 +61,11 @@ export function CartsView() {
         {carts.map((cart) => {
           const reason = blockedReason(cart)
           return (
-            <Card key={cart.restaurantId} className="shadow-brutal">
-              <CardHeader className="flex items-center justify-between gap-2 border-b-2 border-default bg-inverted text-inverted">
+            <Card key={cart.restaurantId} className="shadow-soft">
+              <CardHeader className="flex items-center justify-between gap-2 border-b border-default bg-inverted text-inverted">
                 <Link
                   href={`/r/${cart.restaurant.slug}`}
-                  className="font-display text-2xl uppercase hover:text-highlight"
+                  className="font-display text-2xl tracking-tight hover:text-highlight"
                 >
                   {cart.restaurant.name}
                 </Link>
@@ -80,9 +82,9 @@ export function CartsView() {
               </CardHeader>
               <CardBody className="flex flex-col gap-3">
                 <CartLines cart={cart} editable />
-                <div className="flex items-end justify-between border-t-2 border-dashed border-default pt-3 font-mono text-sm">
+                <div className="flex items-end justify-between border-t border-dashed border-default pt-3 font-mono text-sm">
                   <span className="tracking-wider uppercase">Subtotal</span>
-                  <span className="font-display text-2xl leading-none">
+                  <span className="font-display text-2xl leading-none tracking-tight">
                     {formatPaise(cart.subtotalInPaise)}
                   </span>
                 </div>
@@ -96,12 +98,12 @@ export function CartsView() {
         })}
       </div>
 
-      <aside className="flex flex-col gap-3 self-start border-2 border-inverted bg-highlight p-4 text-neutral-950 lg:sticky lg:top-[calc(var(--ui-header-height)+1.5rem)]">
+      <aside className="flex flex-col gap-3 self-start rounded-lg border border-default bg-highlight p-4 text-highlighted lg:sticky lg:top-[calc(var(--ui-header-height)+1.5rem)]">
         <p className="font-mono text-[11px] tracking-wider uppercase">
           {carts.length} {carts.length === 1 ? "restaurant" : "restaurants"} ·{" "}
           {itemCount} {itemCount === 1 ? "item" : "items"}
         </p>
-        <p className="font-display text-5xl leading-none">
+        <p className="font-display text-5xl leading-none font-light tracking-tight">
           {formatPaise(subtotal)}
         </p>
         <p className="text-sm">

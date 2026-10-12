@@ -119,7 +119,7 @@ export default async function RestaurantOverviewPage() {
           kind="banner"
           name={restaurant.name}
           currentUrl={restaurant.bannerUrl}
-          className="h-28 border-b-2 border-inverted bg-elevated md:h-40"
+          className="h-28 border-b border-default bg-elevated md:h-40"
         />
         <div className="flex flex-wrap items-end gap-4 px-4 pb-4 md:px-6">
           <InlineImageEditor
@@ -127,13 +127,13 @@ export default async function RestaurantOverviewPage() {
             kind="logo"
             name={restaurant.name}
             currentUrl={restaurant.logoUrl}
-            className="relative -mt-10 size-20 shrink-0 border-2 border-inverted bg-default shadow-brutal md:size-24"
+            className="relative -mt-10 size-20 shrink-0 rounded-lg border border-default bg-default shadow-soft md:size-24"
           />
           <div className="flex min-w-0 flex-1 flex-col gap-1 pt-2">
             <p className="font-mono text-[11px] tracking-wider text-muted uppercase">
               {greeting(now)}
             </p>
-            <h1 className="truncate font-display text-4xl leading-none uppercase md:text-5xl">
+            <h1 className="truncate font-display text-4xl leading-none font-light tracking-tight md:text-5xl">
               {restaurant.name}
             </h1>
             <div className="flex flex-wrap items-center gap-1.5">
@@ -150,7 +150,7 @@ export default async function RestaurantOverviewPage() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <div className="border-2 border-inverted px-3 py-2 shadow-brutal-sm">
+            <div className="rounded-lg border border-default px-3 py-2 shadow-soft-sm">
               <StatusToggle
                 restaurantId={restaurant.id}
                 initialStatus={restaurant.status}
@@ -168,24 +168,24 @@ export default async function RestaurantOverviewPage() {
         </div>
       </div>
 
-      <dl className="grid grid-cols-2 border-y-2 border-inverted lg:grid-cols-4">
+      <dl className="grid grid-cols-2 border-y border-default lg:grid-cols-4">
         {stats.map((stat, index) => {
           const body = (
             <>
               <dt className="font-mono text-[11px] tracking-wider uppercase opacity-80">
                 {stat.label}
               </dt>
-              <dd className="font-display text-3xl leading-none md:text-5xl">
+              <dd className="font-display text-3xl leading-none font-light tracking-tight md:text-5xl">
                 {stat.value}
               </dd>
             </>
           )
           const className = cn(
             "flex flex-col-reverse justify-end gap-2 p-4 md:p-6",
-            index % 2 === 1 && "border-l-2 border-inverted",
-            index >= 2 && "border-t-2 border-inverted lg:border-t-0",
-            index === 2 && "lg:border-l-2",
-            stat.tone === "highlight" && "bg-highlight text-neutral-950",
+            index % 2 === 1 && "border-l border-default",
+            index >= 2 && "border-t border-default lg:border-t-0",
+            index === 2 && "lg:border-l",
+            stat.tone === "highlight" && "bg-highlight text-highlighted",
             stat.tone === "dark" && "bg-inverted text-inverted"
           )
           return "href" in stat ? (
@@ -205,9 +205,11 @@ export default async function RestaurantOverviewPage() {
       </dl>
 
       <div className="grid gap-6 p-4 md:p-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-        <section className="flex flex-col border-2 border-inverted">
-          <header className="flex items-center justify-between gap-2 border-b-2 border-inverted px-4 py-3">
-            <h2 className="font-display text-2xl uppercase">Live orders</h2>
+        <section className="flex flex-col rounded-lg border border-default">
+          <header className="flex items-center justify-between gap-2 border-b border-default px-4 py-3">
+            <h2 className="font-display text-2xl tracking-tight">
+              Live orders
+            </h2>
             <Link
               href="/restaurant/orders"
               className="inline-flex items-center gap-1 font-mono text-[11px] font-medium tracking-wider uppercase hover:underline"
@@ -218,7 +220,7 @@ export default async function RestaurantOverviewPage() {
           </header>
           {liveOrders.length === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-1 bg-dots p-10 text-center">
-              <p className="font-display text-2xl uppercase">All quiet</p>
+              <p className="font-display text-2xl tracking-tight">All quiet</p>
               <p className="text-sm text-muted">
                 {restaurant.status === "online"
                   ? "New orders show up here the moment they come in."
@@ -230,13 +232,13 @@ export default async function RestaurantOverviewPage() {
               {liveOrders.slice(0, LIVE_PREVIEW).map((order) => (
                 <li
                   key={order.id}
-                  className="flex items-center gap-3 border-b-2 border-muted px-4 py-3 last:border-b-0"
+                  className="flex items-center gap-3 border-b border-muted px-4 py-3 last:border-b-0"
                 >
                   <span
                     className={cn(
                       "px-1.5 py-0.5 font-mono text-[10px] tracking-wider uppercase",
                       order.status === "placed"
-                        ? "bg-highlight text-neutral-950"
+                        ? "bg-highlight text-highlighted"
                         : "bg-inverted text-inverted"
                     )}
                   >
@@ -264,16 +266,16 @@ export default async function RestaurantOverviewPage() {
 
         <div className="flex flex-col gap-6">
           {doneCount < checklist.length ? (
-            <section className="border-2 border-inverted">
-              <header className="flex items-center justify-between gap-2 border-b-2 border-inverted px-4 py-3">
-                <h2 className="font-display text-2xl uppercase">
+            <section className="rounded-lg border border-default">
+              <header className="flex items-center justify-between gap-2 border-b border-default px-4 py-3">
+                <h2 className="font-display text-2xl tracking-tight">
                   Finish setting up
                 </h2>
                 <span className="font-mono text-xs">
                   {doneCount}/{checklist.length}
                 </span>
               </header>
-              <div className="h-2 border-b-2 border-inverted bg-elevated">
+              <div className="h-2 border-b border-default bg-elevated">
                 <div
                   className="h-full bg-highlight"
                   style={{
@@ -286,13 +288,13 @@ export default async function RestaurantOverviewPage() {
                   <li key={task.label}>
                     <Link
                       href={task.href}
-                      className="flex items-center gap-3 border-b-2 border-muted px-4 py-2.5 font-mono text-xs uppercase last:border-b-0 hover:bg-elevated"
+                      className="flex items-center gap-3 border-b border-muted px-4 py-2.5 text-sm last:border-b-0 hover:bg-elevated"
                     >
                       <span
                         aria-hidden
                         className={cn(
-                          "grid size-5 place-items-center border-2 border-inverted",
-                          task.done && "bg-highlight text-neutral-950"
+                          "grid size-5 place-items-center rounded-lg border border-default",
+                          task.done && "bg-highlight text-highlighted"
                         )}
                       >
                         {task.done ? <CheckIcon className="size-3.5" /> : null}
@@ -315,9 +317,11 @@ export default async function RestaurantOverviewPage() {
             </section>
           ) : null}
 
-          <section className="border-2 border-inverted">
-            <header className="flex items-center justify-between gap-2 border-b-2 border-inverted px-4 py-3">
-              <h2 className="font-display text-2xl uppercase">Your menu</h2>
+          <section className="rounded-lg border border-default">
+            <header className="flex items-center justify-between gap-2 border-b border-default px-4 py-3">
+              <h2 className="font-display text-2xl tracking-tight">
+                Your menu
+              </h2>
               <Link
                 href="/restaurant/menu"
                 className="inline-flex items-center gap-1 font-mono text-[11px] font-medium tracking-wider uppercase hover:underline"
@@ -332,7 +336,7 @@ export default async function RestaurantOverviewPage() {
                 <img
                   src={qrCode.pngDataUrl}
                   alt="QR code for the public menu"
-                  className="size-28 shrink-0 border-2 border-inverted"
+                  className="size-28 shrink-0 rounded-lg border border-default"
                 />
               ) : null}
               <div className="flex min-w-0 flex-col gap-3">

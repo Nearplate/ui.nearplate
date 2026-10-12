@@ -39,7 +39,7 @@ export function MobileNav({ account, className }: MobileNavProps) {
         aria-controls="mobile-nav"
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen(!open)}
-        className="flex h-full cursor-pointer items-center border-l-2 border-inverted px-3.5 hover:bg-inverted hover:text-inverted"
+        className="flex cursor-pointer items-center rounded-md p-2 text-highlighted hover:bg-elevated"
       >
         {open ? (
           <XIcon aria-hidden className="size-5" />
@@ -51,7 +51,7 @@ export function MobileNav({ account, className }: MobileNavProps) {
         id="mobile-nav"
         aria-label="Main"
         hidden={!open}
-        className="absolute inset-x-0 top-full z-40 border-b-2 border-inverted bg-default motion-safe:animate-rise"
+        className="absolute inset-x-0 top-full z-40 border-b border-default bg-default motion-safe:animate-rise"
       >
         <ul className="flex flex-col">
           {SITE_NAV_ITEMS.map((item, index) => (
@@ -59,7 +59,7 @@ export function MobileNav({ account, className }: MobileNavProps) {
               <Link
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-between border-b-2 border-inverted px-4 py-4 font-display text-3xl uppercase hover:bg-highlight hover:text-neutral-950"
+                className="flex items-center justify-between border-b border-default px-4 py-4 text-2xl font-light tracking-tight hover:bg-tint-mint"
               >
                 {item.label}
                 <span className="font-mono text-xs text-muted">
@@ -73,7 +73,7 @@ export function MobileNav({ account, className }: MobileNavProps) {
               href={account.href}
               onClick={() => setOpen(false)}
               className={cn(
-                "flex items-center justify-between bg-inverted px-4 py-4 font-mono text-sm font-medium tracking-wider text-inverted uppercase"
+                "flex items-center justify-between bg-inverted px-4 py-4 text-sm font-medium text-inverted"
               )}
             >
               {account.label}

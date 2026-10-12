@@ -18,15 +18,17 @@ export function ReceiptCard({ className }: { className?: string }) {
     <figure
       aria-label="Example order: you pay the menu price, the restaurant keeps all of it"
       className={cn(
-        "flex w-72 flex-col gap-3 border-2 border-inverted bg-default p-4 font-mono text-[11px] tracking-wider text-default uppercase shadow-brutal-lg",
+        "flex w-72 flex-col gap-3 rounded-lg border border-default bg-default p-4 font-mono text-[11px] tracking-wider text-default uppercase shadow-soft-lg",
         className
       )}
     >
       <div className="flex items-center justify-between">
-        <span className="font-display text-xl tracking-normal">Your order</span>
+        <span className="font-display text-xl tracking-normal tracking-tight">
+          Your order
+        </span>
         <span className="text-muted">#NP-0427</span>
       </div>
-      <ul className="flex flex-col gap-1.5 border-y-2 border-dashed border-inverted py-3">
+      <ul className="flex flex-col gap-1.5 border-y border-dashed border-default py-3">
         {LINES.map((line) => (
           <li key={line.name} className="flex justify-between gap-3">
             <span className="truncate">
@@ -43,11 +45,11 @@ export function ReceiptCard({ className }: { className?: string }) {
         </div>
         <div className="flex justify-between">
           <dt className="text-muted">Restaurant commission</dt>
-          <dd className="bg-highlight px-1 text-neutral-950">₹0.00</dd>
+          <dd className="bg-highlight px-1 text-highlighted">₹0.00</dd>
         </div>
-        <div className="mt-1 flex items-end justify-between border-t-2 border-inverted pt-2">
+        <div className="mt-1 flex items-end justify-between border-t border-default pt-2">
           <dt>You pay</dt>
-          <dd className="font-display text-3xl leading-none tracking-normal">
+          <dd className="font-display text-3xl leading-none tracking-normal tracking-tight">
             {formatPaise(TOTAL_IN_PAISE)}
           </dd>
         </div>

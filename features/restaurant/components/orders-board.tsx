@@ -21,10 +21,10 @@ const DONE_LIMIT = 12
 const SHORT_ID_LENGTH = 8
 
 const LANE_ACCENT: Record<LaneId, string> = {
-  new: "bg-highlight text-neutral-950",
-  accepted: "bg-inverted text-inverted",
-  kitchen: "bg-inverted text-inverted",
-  delivery: "bg-inverted text-inverted",
+  new: "bg-inverted text-inverted",
+  accepted: "bg-tint-mint text-highlighted",
+  kitchen: "bg-tint-peach text-highlighted",
+  delivery: "bg-tint-sky text-highlighted",
   done: "bg-elevated text-default",
 }
 
@@ -57,8 +57,8 @@ function OrderCard({
   return (
     <li
       className={cn(
-        "flex flex-col gap-3 border-2 border-inverted bg-default p-3 shadow-brutal-sm",
-        order.status === "placed" && "shadow-[3px_3px_0_var(--ui-highlight)]",
+        "flex flex-col gap-3 rounded-lg border border-default bg-default p-3 shadow-soft-sm",
+        order.status === "placed" && "shadow-soft",
         isPending && "opacity-60"
       )}
     >
@@ -74,11 +74,11 @@ function OrderCard({
             {timeAgo(order.createdAt, now)}
           </time>
         </div>
-        <span className="font-display text-2xl leading-none">
+        <span className="font-display text-2xl leading-none tracking-tight">
           {formatPaise(order.totalInPaise)}
         </span>
       </div>
-      <div className="flex flex-col gap-1 border-t-2 border-dashed border-muted pt-2 text-xs">
+      <div className="flex flex-col gap-1 border-t border-dashed border-muted pt-2 text-xs">
         <span className="flex items-start gap-1.5">
           <MapPinIcon aria-hidden className="mt-0.5 size-3.5 shrink-0" />
           <span>
@@ -190,22 +190,22 @@ export function OrdersBoard({ restaurantId, orders }: OrdersBoardProps) {
           <section
             key={lane.id}
             aria-labelledby={`lane-${lane.id}`}
-            className="flex w-72 shrink-0 snap-start flex-col border-2 border-inverted bg-muted xl:w-auto"
+            className="flex w-72 shrink-0 snap-start flex-col overflow-hidden rounded-lg border border-default bg-muted xl:w-auto"
           >
             <h2
               id={`lane-${lane.id}`}
               className={cn(
-                "flex items-center justify-between border-b-2 border-inverted px-3 py-2 font-mono text-xs font-medium tracking-wider uppercase",
+                "flex items-center justify-between border-b border-default px-3 py-2 font-mono text-xs font-medium tracking-wider uppercase",
                 LANE_ACCENT[lane.id]
               )}
             >
               {lane.title}
-              <span className="grid min-w-6 place-items-center border-2 border-current px-1 text-[10px]">
+              <span className="grid min-w-6 place-items-center rounded-lg border border-current px-1 text-[10px]">
                 {lane.orders.length}
               </span>
             </h2>
             {lane.orders.length === 0 ? (
-              <p className="m-3 border-2 border-dashed border-muted p-4 text-center font-mono text-[10px] tracking-wider text-muted uppercase">
+              <p className="m-3 rounded-lg border border-dashed border-muted p-4 text-center font-mono text-[10px] tracking-wider text-muted uppercase">
                 Nothing here
               </p>
             ) : (

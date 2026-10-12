@@ -40,7 +40,7 @@ export default async function OnboardingReviewPage() {
     <OnboardingShell aside={null}>
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-3xl uppercase">
+          <h1 className="font-display text-3xl tracking-tight">
             Application status
           </h1>
           <Badge color={isRejected ? "error" : "neutral"} variant="solid">

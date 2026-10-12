@@ -27,7 +27,7 @@ export function CartLink({ className }: CartLinkProps) {
       {itemCount > 0 ? (
         <span
           aria-hidden
-          className="grid min-w-5 place-items-center bg-highlight px-1 text-[10px] leading-5 text-neutral-950"
+          className="grid min-w-5 place-items-center rounded-full bg-highlight px-1 text-[10px] leading-5 font-medium text-highlighted"
         >
           {itemCount}
         </span>

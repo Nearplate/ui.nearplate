@@ -37,7 +37,7 @@ export function trackerSteps(
 export function OrderTracker({ status }: { status: OrderStatus }) {
   if (status === "cancelled") {
     return (
-      <p className="flex items-center gap-2 border-2 border-inverted bg-error/10 p-3 text-sm text-error">
+      <p className="flex items-center gap-2 rounded-lg border border-default bg-error/10 p-3 text-sm text-error">
         <XIcon aria-hidden className="size-4" />
         This order was cancelled.
       </p>
@@ -46,22 +46,22 @@ export function OrderTracker({ status }: { status: OrderStatus }) {
 
   const steps = trackerSteps(status)
   return (
-    <ol className="grid grid-cols-5 border-2 border-inverted">
+    <ol className="grid grid-cols-5 rounded-lg border border-default">
       {steps.map((step, index) => (
         <li
           key={step.status}
           aria-current={step.state === "current" ? "step" : undefined}
           className={cn(
             "flex flex-col gap-2 p-2 sm:p-3",
-            index > 0 && "border-l-2 border-inverted",
+            index > 0 && "border-l border-default",
             step.state === "done" && "bg-inverted text-inverted",
-            step.state === "current" && "bg-highlight text-neutral-950"
+            step.state === "current" && "bg-highlight text-highlighted"
           )}
         >
           <span
             aria-hidden
             className={cn(
-              "grid size-6 place-items-center border-2 font-mono text-[10px]",
+              "grid size-6 place-items-center rounded-lg border font-mono text-[10px]",
               step.state === "done"
                 ? "border-highlight text-highlight"
                 : "border-current"

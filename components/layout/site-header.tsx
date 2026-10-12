@@ -8,9 +8,10 @@ import { CartLink } from "@/features/cart/components/cart-link"
 import { MobileNav } from "./mobile-nav"
 import { SITE_NAV_ITEMS } from "./nav-items"
 
-const CELL =
-  "flex items-center border-l-2 border-inverted px-3.5 font-mono text-[11px] font-medium tracking-wider uppercase transition-colors"
-const HOVER = "hover:bg-inverted hover:text-inverted"
+const LINK =
+  "flex items-center rounded-md px-3 py-1.5 text-sm text-muted transition-colors hover:bg-elevated hover:text-highlighted"
+const CTA =
+  "flex items-center gap-1.5 rounded-md bg-inverted px-3.5 py-1.5 text-sm font-medium text-inverted transition-colors hover:bg-inverted/90"
 
 /** Sticky site header: wordmark, main nav, cart and the account entry point. */
 export async function SiteHeader() {
@@ -23,56 +24,48 @@ export async function SiteHeader() {
     : { href: "/auth", label: "Log in" }
 
   return (
-    <header className="sticky top-0 z-40 flex h-(--ui-header-height) border-b-2 border-inverted bg-default">
-      <Link
-        href="/"
-        className="flex items-center gap-2 px-3 font-display text-2xl tracking-tight uppercase"
-      >
-        <span
-          aria-hidden
-          className="ring-inverted grid size-7 place-items-center bg-highlight text-lg text-neutral-950 ring-2"
+    <header className="bg-page/90 sticky top-0 z-40 h-(--ui-header-height) border-b border-default backdrop-blur">
+      <div className="mx-auto flex h-full max-w-7xl items-center gap-2 px-4">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-base font-semibold tracking-tight text-highlighted"
         >
-          N
-        </span>
-        {siteConfig.name}
-      </Link>
-      <div className="ml-auto flex">
-        <nav aria-label="Main" className="hidden md:flex">
+          <span
+            aria-hidden
+            className="grid size-7 place-items-center rounded-md bg-inverted text-sm font-semibold text-highlight"
+          >
+            N
+          </span>
+          {siteConfig.name}
+        </Link>
+        <nav aria-label="Main" className="ml-6 hidden gap-1 md:flex">
           {SITE_NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`${CELL} ${HOVER}`}
-            >
+            <Link key={item.href} href={item.href} className={LINK}>
               {item.label}
             </Link>
           ))}
         </nav>
-        {/* Below lg the cart lives in the floating bar at the bottom. */}
-        <CartLink className={`${CELL} ${HOVER} hidden lg:flex`} />
-        {user ? (
-          <Link
-            href={account.href}
-            className={`${CELL} hidden gap-1.5 bg-highlight text-neutral-950 hover:bg-inverted hover:text-inverted md:flex`}
-          >
-            {account.label}
-            <ArrowUpRightIcon aria-hidden className="size-3.5" />
-          </Link>
-        ) : (
-          <>
-            <Link href="/auth" className={`${CELL} ${HOVER} hidden md:flex`}>
-              Log in
-            </Link>
-            <Link
-              href="/#restaurants"
-              className={`${CELL} gap-1.5 bg-highlight text-neutral-950 hover:bg-inverted hover:text-inverted`}
-            >
-              Order now
+        <div className="ml-auto flex items-center gap-1.5">
+          {/* Below lg the cart lives in the floating bar at the bottom. */}
+          <CartLink className={`${LINK} hidden lg:flex`} />
+          {user ? (
+            <Link href={account.href} className={`${CTA} hidden md:flex`}>
+              {account.label}
               <ArrowUpRightIcon aria-hidden className="size-3.5" />
             </Link>
-          </>
-        )}
-        <MobileNav account={account} className="flex md:hidden" />
+          ) : (
+            <>
+              <Link href="/auth" className={`${LINK} hidden md:flex`}>
+                Log in
+              </Link>
+              <Link href="/#restaurants" className={CTA}>
+                Order now
+                <ArrowUpRightIcon aria-hidden className="size-3.5" />
+              </Link>
+            </>
+          )}
+          <MobileNav account={account} className="flex md:hidden" />
+        </div>
       </div>
     </header>
   )

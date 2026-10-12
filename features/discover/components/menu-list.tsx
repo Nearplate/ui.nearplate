@@ -25,7 +25,7 @@ const FILTER_ORDER: FoodType[] = ["veg", "non-veg", "egg"]
 const SPY_ROOT_MARGIN = "-25% 0px -65% 0px"
 
 const PILL =
-  "flex shrink-0 cursor-pointer items-center gap-2 border-2 border-inverted px-3 py-1.5 font-mono text-[11px] font-medium tracking-wider uppercase transition-colors"
+  "flex shrink-0 cursor-pointer items-center gap-2 rounded-full border border-default px-3 py-1.5 text-[13px] font-medium transition-colors"
 
 function categoryId(category: string): string {
   return `menu-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`
@@ -41,7 +41,7 @@ function MenuRow({
   return (
     <li
       className={cn(
-        "flex gap-4 border-b-2 border-muted py-5 last:border-b-0",
+        "flex gap-4 border-b border-muted py-5 last:border-b-0",
         !item.isAvailable && "opacity-60"
       )}
     >
@@ -66,7 +66,7 @@ function MenuRow({
       </div>
       <div className="relative flex w-28 shrink-0 flex-col items-center sm:w-32">
         {item.imageUrl ? (
-          <div className="size-28 overflow-hidden border-2 border-inverted bg-elevated sm:size-32">
+          <div className="size-28 overflow-hidden rounded-lg border border-default bg-elevated sm:size-32">
             <DishImage src={item.imageUrl} name={item.name} />
           </div>
         ) : null}
@@ -74,7 +74,7 @@ function MenuRow({
           restaurant={restaurant}
           item={item}
           className={cn(
-            "w-24 shadow-brutal-sm",
+            "w-24 shadow-soft-sm",
             item.imageUrl ? "-mt-4" : "mt-auto"
           )}
         />
@@ -146,8 +146,8 @@ export function MenuList({ restaurant, items, aside }: MenuListProps) {
 
   if (items.length === 0) {
     return (
-      <div className="m-4 border-2 border-dashed border-inverted bg-dots p-10 text-center md:m-6">
-        <p className="font-display text-3xl uppercase">Menu coming soon</p>
+      <div className="m-4 rounded-lg border border-dashed border-default bg-dots p-10 text-center md:m-6">
+        <p className="font-display text-3xl tracking-tight">Menu coming soon</p>
         <p className="mt-1 text-sm text-muted">
           This kitchen hasn&apos;t added any dishes yet.
         </p>
@@ -167,15 +167,13 @@ export function MenuList({ restaurant, items, aside }: MenuListProps) {
             variant === "pill"
               ? cn(
                   PILL,
-                  active
-                    ? "bg-inverted text-inverted"
-                    : "hover:bg-highlight hover:text-neutral-950"
+                  active ? "bg-inverted text-inverted" : "hover:bg-tint-mint"
                 )
               : cn(
-                  "flex items-center justify-between border-l-4 px-3 py-2 font-mono text-xs font-medium tracking-wider uppercase transition-colors",
+                  "flex items-center justify-between rounded-md px-3 py-2 text-sm transition-colors",
                   active
-                    ? "border-highlight bg-inverted text-inverted"
-                    : "border-transparent hover:bg-elevated"
+                    ? "bg-inverted text-inverted"
+                    : "text-muted hover:bg-elevated hover:text-highlighted"
                 )
           }
         >
@@ -198,7 +196,7 @@ export function MenuList({ restaurant, items, aside }: MenuListProps) {
           : "xl:grid-cols-[13rem_minmax(0,1fr)]"
       )}
     >
-      <div className="hidden border-r-2 border-inverted xl:block">
+      <div className="hidden border-r border-default xl:block">
         <nav
           aria-label="Menu categories"
           className="sticky top-(--ui-header-height) flex max-h-[calc(100svh-var(--ui-header-height))] flex-col gap-0.5 overflow-y-auto py-4 pr-2"
@@ -211,7 +209,7 @@ export function MenuList({ restaurant, items, aside }: MenuListProps) {
       </div>
 
       <div className="min-w-0">
-        <div className="sticky top-(--ui-header-height) z-10 flex flex-col gap-2 border-b-2 border-inverted bg-default px-4 py-3 md:px-6">
+        <div className="sticky top-(--ui-header-height) z-10 flex flex-col gap-2 border-b border-default bg-default px-4 py-3 md:px-6">
           <div className="flex flex-wrap items-center gap-2">
             <label className="relative min-w-48 flex-1">
               <span className="sr-only">Search this menu</span>
@@ -224,7 +222,7 @@ export function MenuList({ restaurant, items, aside }: MenuListProps) {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search dishes"
-                className="w-full border-2 border-inverted bg-default py-1.5 pr-8 pl-9 text-sm placeholder:text-dimmed focus:shadow-brutal-sm focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+                className="w-full rounded-lg border border-default bg-default py-1.5 pr-8 pl-9 text-sm placeholder:text-dimmed focus:shadow-soft-sm focus:outline-none [&::-webkit-search-cancel-button]:hidden"
               />
               {query ? (
                 <button
@@ -252,7 +250,7 @@ export function MenuList({ restaurant, items, aside }: MenuListProps) {
                     PILL,
                     foodFilter === option
                       ? "bg-inverted text-inverted"
-                      : "hover:bg-highlight hover:text-neutral-950"
+                      : "hover:bg-highlight hover:text-highlighted"
                   )}
                 >
                   {option === "all" ? (
@@ -277,8 +275,10 @@ export function MenuList({ restaurant, items, aside }: MenuListProps) {
 
         <div className="flex flex-col gap-8 p-4 md:p-6">
           {groups.length === 0 ? (
-            <div className="border-2 border-dashed border-inverted bg-dots p-8 text-center">
-              <p className="font-display text-2xl uppercase">No dishes found</p>
+            <div className="rounded-lg border border-dashed border-default bg-dots p-8 text-center">
+              <p className="font-display text-2xl tracking-tight">
+                No dishes found
+              </p>
               <p className="mt-1 text-sm text-muted">
                 Try another search or filter.
               </p>
@@ -291,7 +291,7 @@ export function MenuList({ restaurant, items, aside }: MenuListProps) {
               data-category={category}
               className="scroll-mt-44 xl:scroll-mt-32"
             >
-              <h2 className="flex items-baseline gap-3 border-b-2 border-inverted pb-2 font-display text-3xl leading-none uppercase md:text-4xl">
+              <h2 className="flex items-baseline gap-3 border-b border-default pb-2 font-display text-3xl leading-none font-light tracking-tight md:text-4xl">
                 {category}
                 <span className="font-mono text-xs tracking-wider text-muted">
                   {groupItems.length}{" "}
@@ -309,7 +309,7 @@ export function MenuList({ restaurant, items, aside }: MenuListProps) {
       </div>
 
       {aside ? (
-        <div className="hidden border-l-2 border-inverted lg:block">
+        <div className="hidden border-l border-default lg:block">
           <div className="sticky top-(--ui-header-height) p-4">{aside}</div>
         </div>
       ) : null}

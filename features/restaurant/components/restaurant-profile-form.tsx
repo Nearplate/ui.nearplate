@@ -80,7 +80,7 @@ export function RestaurantProfileForm({
             <Switch name="isPureVeg" defaultChecked={restaurant.isPureVeg} />
             Pure veg
           </label>
-          <div className="flex flex-col gap-1 border-t-2 border-muted pt-3">
+          <div className="flex flex-col gap-1 border-t border-muted pt-3">
             <span className="font-mono text-[11px] text-muted uppercase">
               Public URL (slug never changes)
             </span>

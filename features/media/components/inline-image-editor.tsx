@@ -78,7 +78,7 @@ export function InlineImageEditor({
           onClick={() => inputRef.current?.click()}
           className="bg-inverted/60 absolute inset-0 flex cursor-pointer items-center justify-center text-inverted opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-highlight disabled:cursor-not-allowed"
         >
-          <span className="flex size-9 items-center justify-center border-2 border-inverted bg-highlight text-neutral-950">
+          <span className="flex size-9 items-center justify-center rounded-lg border border-default bg-highlight text-highlighted">
             <PencilIcon aria-hidden className="size-4" />
           </span>
         </button>
@@ -87,7 +87,7 @@ export function InlineImageEditor({
           type="button"
           disabled={isUploading}
           onClick={() => inputRef.current?.click()}
-          className="absolute top-2 right-2 inline-flex cursor-pointer items-center gap-1.5 border-2 border-inverted bg-default px-2.5 py-1 font-mono text-[11px] font-medium tracking-wider uppercase hover:bg-highlight focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed"
+          className="absolute top-2 right-2 inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-default bg-default px-2.5 py-1 font-mono text-[11px] font-medium tracking-wider uppercase hover:bg-highlight focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed"
         >
           <ImageUpIcon aria-hidden className="size-3.5" />
           {isUploading ? "Uploading…" : `${label} banner`}

@@ -22,7 +22,7 @@ function MenuContent({
         <MenuPrimitive.Popup
           data-slot="menu-content"
           className={cn(
-            "z-50 min-w-40 border-2 border-inverted bg-default p-1 shadow-[4px_4px_0_var(--ui-border)] data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+            "z-50 min-w-40 rounded-lg border border-default bg-default p-1 shadow-soft-lg data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
             className
           )}
           {...props}
@@ -42,7 +42,7 @@ function MenuItem({
     <MenuPrimitive.Item
       data-slot="menu-item"
       className={cn(
-        "flex cursor-pointer items-center gap-2 px-2.5 py-1.5 font-mono text-xs font-medium tracking-wider uppercase outline-none data-[highlighted]:bg-inverted data-[highlighted]:text-inverted",
+        "flex cursor-pointer items-center gap-2 rounded-sm px-2.5 py-1.5 text-sm outline-none data-[highlighted]:bg-elevated data-[highlighted]:text-highlighted",
         className
       )}
       {...props}

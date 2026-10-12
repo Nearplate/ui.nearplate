@@ -25,10 +25,10 @@ const COLUMNS = [
 /** Site footer: oversized wordmark, link columns and the commission promise. */
 export function SiteFooter() {
   return (
-    <footer className="border-t-2 border-inverted bg-inverted text-inverted">
+    <footer className="border-t border-inverted bg-inverted text-inverted">
       <div className="grid gap-8 px-4 py-10 md:grid-cols-[1.5fr_1fr_1fr] md:px-6">
         <div className="flex flex-col gap-3">
-          <p className="max-w-sm font-display text-4xl leading-[0.95] uppercase">
+          <p className="max-w-sm font-display text-4xl leading-[1.05] font-light tracking-tight">
             Order local.
             <br />
             <span className="text-highlight">Pay menu price.</span>
@@ -60,11 +60,11 @@ export function SiteFooter() {
       </div>
       <p
         aria-hidden
-        className="overflow-hidden px-2 font-display text-[25.5vw] leading-[0.85] tracking-tighter whitespace-nowrap uppercase select-none"
+        className="overflow-hidden px-2 font-display text-[23vw] leading-none font-light tracking-tighter whitespace-nowrap select-none"
       >
         {siteConfig.name}
       </p>
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t-2 border-inverted bg-highlight px-4 py-2 font-mono text-[11px] tracking-wider text-neutral-950 uppercase md:px-6">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-default bg-highlight px-4 py-2 font-mono text-[11px] tracking-wider text-highlighted uppercase md:px-6">
         <span>
           © {new Date().getFullYear()} {siteConfig.name}
         </span>

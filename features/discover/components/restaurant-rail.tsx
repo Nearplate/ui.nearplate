@@ -20,16 +20,16 @@ export function RestaurantRail({
   if (restaurants.length === 0) return null
 
   return (
-    <section className="flex flex-col gap-3 border-b-2 border-inverted px-4 py-5 md:px-6">
+    <section className="flex flex-col gap-3 border-b border-default px-4 py-5 md:px-6">
       <div className="flex items-end justify-between gap-2">
-        <h2 className="font-display text-3xl leading-none uppercase md:text-4xl">
+        <h2 className="font-display text-3xl leading-none font-light tracking-tight md:text-4xl">
           {title}
         </h2>
         {seeAllHref ? (
           <Link
             href={seeAllHref}
             scroll={false}
-            className="inline-flex items-center gap-1 border-2 border-inverted px-2 py-1 font-mono text-[11px] font-medium tracking-wider uppercase hover:bg-inverted hover:text-inverted"
+            className="inline-flex items-center gap-1 rounded-lg border border-inverted px-2 py-1 font-mono text-[11px] font-medium tracking-wider uppercase hover:bg-inverted hover:text-inverted"
           >
             See all
             <ArrowUpRightIcon aria-hidden className="size-3.5" />

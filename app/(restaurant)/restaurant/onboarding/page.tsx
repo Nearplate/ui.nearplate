@@ -60,7 +60,9 @@ export default async function RestaurantOnboardingPage({
       }
     >
       <WizardStepper variant="inline" current={step} completed={completed} />
-      <h1 className="font-display text-3xl uppercase">{STEP_LABELS[step]}</h1>
+      <h1 className="font-display text-3xl tracking-tight">
+        {STEP_LABELS[step]}
+      </h1>
 
       {restaurant?.verificationStatus === "rejected" ? (
         <Alert tone="error">

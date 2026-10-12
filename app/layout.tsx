@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Anton, Geist, JetBrains_Mono } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
 import { GlobalErrorListener } from "@/components/layout/global-error-listener"
@@ -8,15 +8,7 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 
 const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" })
-const fontMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
-const fontDisplay = Anton({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-display",
-})
+const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
 export const metadata: Metadata = {
   title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
@@ -31,12 +23,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(
-        "antialiased",
-        fontSans.variable,
-        fontMono.variable,
-        fontDisplay.variable
-      )}
+      className={cn("antialiased", fontSans.variable, fontMono.variable)}
     >
       <body>
         {children}

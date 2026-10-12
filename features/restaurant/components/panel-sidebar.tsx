@@ -67,7 +67,7 @@ function Logo({
     <RestaurantLogo
       src={logoUrl}
       name={restaurantName}
-      className="size-7 shrink-0 border-2 border-inverted text-sm"
+      className="size-7 shrink-0 rounded-lg border border-default text-sm"
     />
   )
 }
@@ -92,11 +92,11 @@ function NavLinks({
             href={item.href}
             onClick={onNavigate}
             className={cn(
-              "flex items-center gap-2.5 border-l-4 py-1.5 font-mono text-xs font-medium tracking-wider uppercase",
+              "flex items-center gap-2.5 rounded-md py-2 text-sm font-medium",
               collapsed ? "justify-center px-0" : "px-2.5",
               active
-                ? "border-highlight bg-inverted text-inverted"
-                : "border-transparent hover:bg-elevated"
+                ? "bg-inverted text-inverted [&_svg]:text-highlight"
+                : "text-muted hover:bg-elevated hover:text-highlighted"
             )}
           >
             <Icon className="size-4 shrink-0" />
@@ -120,7 +120,7 @@ function NavLinks({
 function TabBar({ pathname }: { pathname: string }) {
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 flex border-t-2 border-inverted bg-default md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 flex border-t border-default bg-default md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       {NAV_ITEMS.map((item) => {
@@ -131,7 +131,7 @@ function TabBar({ pathname }: { pathname: string }) {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex flex-1 flex-col items-center gap-0.5 border-t-4 py-1.5 font-mono text-[10px] font-medium tracking-wider uppercase",
+              "flex flex-1 flex-col items-center gap-0.5 border-t-2 py-1.5 text-[11px] font-medium",
               active
                 ? "border-highlight bg-inverted text-inverted"
                 : "border-transparent"
@@ -198,7 +198,7 @@ function SidebarFooter({
   collapsed: boolean
 }) {
   return (
-    <div className="border-t-2 border-inverted">
+    <div className="border-t border-default">
       <Menu>
         <MenuTrigger
           aria-label="Account menu"
@@ -216,7 +216,7 @@ function SidebarFooter({
               <span className="flex items-center gap-1 font-mono text-[10px] text-muted uppercase">
                 <span
                   className={cn(
-                    "size-2 rounded-full border border-inverted",
+                    "size-2 rounded-full border border-default",
                     isOnline ? "bg-highlight" : "bg-accented"
                   )}
                   aria-hidden
@@ -255,24 +255,24 @@ export function PanelSidebar({
     <>
       <aside
         className={cn(
-          "sticky top-0 hidden h-svh shrink-0 flex-col border-r-2 border-inverted bg-default transition-[width] duration-150 md:flex",
+          "sticky top-0 hidden h-svh shrink-0 flex-col border-r border-default bg-default transition-[width] duration-150 md:flex",
           collapsed ? "w-16" : "w-52"
         )}
       >
         <div
           className={cn(
-            "flex items-center border-b-2 border-inverted px-3 py-2",
+            "flex items-center border-b border-default px-3 py-2",
             collapsed ? "justify-center" : "justify-between"
           )}
         >
           {!collapsed && (
             <Link
               href="/"
-              className="flex items-center gap-1.5 font-display text-lg uppercase"
+              className="flex items-center gap-1.5 font-display text-lg tracking-tight"
             >
               <span
                 aria-hidden
-                className="ring-inverted grid size-6 place-items-center bg-highlight text-sm text-neutral-950 ring-2"
+                className="grid size-6 place-items-center bg-highlight text-sm text-highlighted ring-1 ring-default"
               >
                 N
               </span>
@@ -303,7 +303,7 @@ export function PanelSidebar({
         />
       </aside>
 
-      <div className="sticky top-0 z-30 flex items-center justify-between border-b-2 border-inverted bg-default px-3 py-2 md:hidden">
+      <div className="sticky top-0 z-30 flex items-center justify-between border-b border-default bg-default px-3 py-2 md:hidden">
         <Link href="/" className="flex min-w-0 items-center gap-2">
           <Logo logoUrl={logoUrl} restaurantName={restaurantName} />
           <span className="truncate font-mono text-xs font-medium uppercase">
