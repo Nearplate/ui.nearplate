@@ -4,6 +4,8 @@ import type { MenuItem } from "@/features/restaurant/schemas"
 
 import {
   buildFeed,
+  featuredRails,
+  filterMenu,
   formatDistance,
   groupMenuByCategory,
   rankCuisines,
@@ -138,6 +140,59 @@ describe("buildFeed", () => {
   })
 })
 
+describe("featuredRails", () => {
+  function titles(list: NearbyRestaurant[]): string[] {
+    return featuredRails(buildFeed(list, NOW), list.length).map(
+      (rail) => rail.title
+    )
+  }
+
+  it("drops rails that would just repeat the full results grid", () => {
+    const list = ["a", "b", "c"].map((id) => restaurant(id))
+    expect(titles(list)).toEqual([])
+  })
+
+  it("keeps a closest rail once there are more results than fit in it", () => {
+    const list = Array.from({ length: 10 }, (_, i) => restaurant(`r${i}`))
+    expect(titles(list)).toEqual(["Closest to you"])
+  })
+
+  it("drops rails with fewer than two restaurants", () => {
+    const list = [
+      restaurant("veg", { isPureVeg: true, cuisines: ["dosa"] }),
+      restaurant("b", { cuisines: ["pizza"] }),
+      restaurant("c", { cuisines: ["pizza"] }),
+    ]
+    expect(titles(list)).toEqual(["Best of pizza"])
+  })
+
+  it("drops a rail with the same restaurants as one already shown", () => {
+    const fresh = new Date(NOW.getTime() - DAY_MS).toISOString()
+    const list = Array.from({ length: 10 }, (_, i) =>
+      restaurant(`r${i}`, { createdAt: fresh })
+    )
+    expect(titles(list)).toEqual(["Closest to you"])
+  })
+
+  it("links pure veg and cuisine rails to their filtered feed", () => {
+    const list = [
+      restaurant("a", { isPureVeg: true, cuisines: ["thai"] }),
+      restaurant("b", { isPureVeg: true }),
+      restaurant("c", { cuisines: ["thai"] }),
+      restaurant("d"),
+    ]
+    expect(
+      featuredRails(buildFeed(list, NOW), list.length).map((rail) => [
+        rail.title,
+        rail.seeAllHref,
+      ])
+    ).toEqual([
+      ["Pure veg picks", "/?veg=1"],
+      ["Best of thai", "/?cuisine=thai"],
+    ])
+  })
+})
+
 describe("groupMenuByCategory", () => {
   function item(id: string, category: string): MenuItem {
     return {
@@ -167,5 +222,55 @@ describe("groupMenuByCategory", () => {
 
   it("returns no groups for an empty menu", () => {
     expect(groupMenuByCategory([])).toEqual([])
+  })
+})
+
+describe("filterMenu", () => {
+  function dish(overrides: Partial<MenuItem>): MenuItem {
+    return {
+      id: overrides.name ?? "x",
+      restaurantId: "r",
+      name: "x",
+      category: "Mains",
+      description: null,
+      imageUrl: null,
+      priceInPaise: 1000,
+      foodType: "veg",
+      isAvailable: true,
+      createdAt: NOW.toISOString(),
+      updatedAt: NOW.toISOString(),
+      ...overrides,
+    }
+  }
+  const MENU = [
+    dish({ name: "Paneer Tikka", foodType: "veg" }),
+    dish({ name: "Chicken Tikka", foodType: "non-veg" }),
+    dish({
+      name: "Egg Curry",
+      foodType: "egg",
+      description: "Boiled eggs in a tangy masala",
+    }),
+  ]
+  const names = (items: MenuItem[]) => items.map((item) => item.name)
+
+  it("returns everything for an empty query and the all filter", () => {
+    expect(names(filterMenu(MENU, { query: "  ", foodType: "all" }))).toEqual(
+      names(MENU)
+    )
+  })
+
+  it("matches the name or description, ignoring case and spaces", () => {
+    expect(
+      names(filterMenu(MENU, { query: " TIKKA", foodType: "all" }))
+    ).toEqual(["Paneer Tikka", "Chicken Tikka"])
+    expect(
+      names(filterMenu(MENU, { query: "masala", foodType: "all" }))
+    ).toEqual(["Egg Curry"])
+  })
+
+  it("combines the query with the food type", () => {
+    expect(
+      names(filterMenu(MENU, { query: "tikka", foodType: "non-veg" }))
+    ).toEqual(["Chicken Tikka"])
   })
 })

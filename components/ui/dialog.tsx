@@ -45,14 +45,14 @@ function DialogContent({
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 flex max-h-[85vh] w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col gap-4 overflow-y-auto border-2 border-inverted bg-default p-6 shadow-[6px_6px_0_var(--ui-border)] data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+          "fixed top-1/2 left-1/2 z-50 flex max-h-[85vh] w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col gap-4 overflow-y-auto rounded-lg border border-default bg-default p-6 shadow-soft-lg data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
           className
         )}
         {...props}
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-1">
-            <DialogPrimitive.Title className="font-display text-2xl uppercase">
+            <DialogPrimitive.Title className="font-display text-2xl tracking-tight">
               {title}
             </DialogPrimitive.Title>
             {description ? (

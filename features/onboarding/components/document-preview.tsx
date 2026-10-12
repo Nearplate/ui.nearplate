@@ -20,7 +20,7 @@ export function DocumentPreview({
   return (
     <div
       className={cn(
-        "flex size-16 shrink-0 items-center justify-center overflow-hidden border-2 border-inverted bg-elevated",
+        "flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-default bg-elevated",
         className
       )}
     >

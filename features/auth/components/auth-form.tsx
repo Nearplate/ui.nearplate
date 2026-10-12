@@ -59,7 +59,9 @@ function AuthFormBody({
   if (state.status === "sent") {
     return (
       <div className="flex flex-col gap-3">
-        <h1 className="font-display text-4xl uppercase">Check your inbox</h1>
+        <h1 className="font-display text-4xl font-light tracking-tight">
+          Check your inbox
+        </h1>
         <Alert tone="highlight">
           We sent a sign-in link to {state.email}. It expires in 15 minutes.
         </Alert>
@@ -73,7 +75,9 @@ function AuthFormBody({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <h1 className="font-display text-4xl uppercase">Sign in or sign up</h1>
+        <h1 className="font-display text-4xl font-light tracking-tight">
+          Sign in or sign up
+        </h1>
         <p className="text-sm text-muted">
           Enter your email. We&apos;ll send a link, no password needed.
         </p>

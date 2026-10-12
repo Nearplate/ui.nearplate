@@ -14,9 +14,9 @@ const NAME_TONES: readonly NameTone[] = [
   { avatarClass: "bg-secondary text-inverted", cssVar: "--ui-secondary" },
   { avatarClass: "bg-success text-inverted", cssVar: "--ui-success" },
   { avatarClass: "bg-info text-inverted", cssVar: "--ui-info" },
-  { avatarClass: "bg-warning text-neutral-950", cssVar: "--ui-warning" },
+  { avatarClass: "bg-warning text-highlighted", cssVar: "--ui-warning" },
   { avatarClass: "bg-error text-inverted", cssVar: "--ui-error" },
-  { avatarClass: "bg-highlight text-neutral-950", cssVar: "--ui-highlight" },
+  { avatarClass: "bg-highlight text-highlighted", cssVar: "--ui-highlight" },
 ]
 
 const HASH_MULTIPLIER = 31
@@ -48,7 +48,7 @@ export function DefaultAvatar({ name, className }: DefaultAvatarProps) {
     <span
       aria-hidden
       className={cn(
-        "flex size-full items-center justify-center font-display uppercase",
+        "flex size-full items-center justify-center font-display tracking-tight",
         tone.avatarClass,
         className
       )}
@@ -58,17 +58,29 @@ export function DefaultAvatar({ name, className }: DefaultAvatarProps) {
   )
 }
 
-/** Banner fallback: diagonal stripes tinted with the name's colour. */
+/**
+ * Banner fallback: a flat wash of the name's colour on a dotted paper
+ * texture, with an oversized initial bleeding off the bottom-right corner.
+ */
 export function DefaultBanner({ name }: { name: string }) {
   const { cssVar } = pickColorForName(name)
   return (
     <div
       aria-hidden
-      className="size-full"
+      className="relative size-full overflow-hidden bg-dots"
       style={{
-        backgroundImage: `repeating-linear-gradient(135deg, color-mix(in srgb, var(${cssVar}) ${BANNER_TINT_PERCENT}%, var(--ui-bg-elevated)) 0 12px, var(--ui-bg-elevated) 12px 24px)`,
+        backgroundColor: `color-mix(in srgb, var(${cssVar}) ${BANNER_TINT_PERCENT}%, var(--ui-bg-elevated))`,
       }}
-    />
+    >
+      <span
+        className="absolute right-3 bottom-0 font-display text-[9rem] leading-[1.05] tracking-tight select-none"
+        style={{
+          color: `color-mix(in srgb, var(${cssVar}) 45%, transparent)`,
+        }}
+      >
+        {initialOf(name)}
+      </span>
+    </div>
   )
 }
 

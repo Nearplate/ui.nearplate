@@ -23,7 +23,7 @@ export function FoodTypeMark({ foodType }: FoodTypeMarkProps) {
       role="img"
       aria-label={FOOD_TYPE_LABELS[foodType]}
       className={cn(
-        "inline-flex size-3.5 shrink-0 items-center justify-center ring-2 ring-inset",
+        "inline-flex size-3.5 shrink-0 items-center justify-center ring-1 ring-inset",
         FOOD_TYPE_RING[foodType]
       )}
     >

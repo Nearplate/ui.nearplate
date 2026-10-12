@@ -6,6 +6,7 @@ import {
   getMenuBySlug,
   getRestaurantBySlug,
 } from "@/features/discover/api/discover-api"
+import { RestaurantCartPanel } from "@/features/cart/components/restaurant-cart-panel"
 import { MenuList } from "@/features/discover/components/menu-list"
 import { RestaurantHero } from "@/features/discover/components/restaurant-hero"
 import type { MenuItem, Restaurant } from "@/features/restaurant/schemas"
@@ -53,7 +54,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 
   return (
     <>
-      <div className="border-b-2 border-inverted px-4 py-1.5">
+      <div className="border-b border-default px-4 py-1.5 md:px-6">
         <BackLink href="/#restaurants">All restaurants</BackLink>
       </div>
       <RestaurantHero restaurant={restaurant} />
@@ -65,6 +66,12 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
           status: restaurant.status,
         }}
         items={menu}
+        aside={
+          <RestaurantCartPanel
+            restaurantId={restaurant.id}
+            restaurantName={restaurant.name}
+          />
+        }
       />
     </>
   )

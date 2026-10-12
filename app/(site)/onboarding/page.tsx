@@ -16,7 +16,9 @@ export default async function OnboardingPage() {
   return (
     <section className="mx-auto flex w-full max-w-md flex-col gap-4 p-6">
       <div className="flex flex-col gap-1">
-        <h1 className="font-display text-4xl uppercase">One last thing</h1>
+        <h1 className="font-display text-4xl font-light tracking-tight">
+          One last thing
+        </h1>
         <p className="text-sm text-muted">
           Tell us your name so restaurants know who to call.
         </p>

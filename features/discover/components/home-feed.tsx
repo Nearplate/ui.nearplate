@@ -1,7 +1,7 @@
 import { ApiError } from "@/lib/api/client"
 
 import { listNearby } from "../api/discover-api"
-import { buildFeed } from "../feed"
+import { buildFeed, featuredRails } from "../feed"
 import type { FeedFilters } from "../location"
 import type { FeedLocation } from "../schemas"
 import { CategoryRail } from "./category-rail"
@@ -13,10 +13,6 @@ import { RestaurantRail } from "./restaurant-rail"
 interface HomeFeedProps {
   location: FeedLocation
   filters: FeedFilters
-}
-
-function cuisineHref(cuisine: string): string {
-  return `/?cuisine=${encodeURIComponent(cuisine)}`
 }
 
 /** The discover feed for one location: category chips, featured rails, results grid. */
@@ -53,46 +49,42 @@ export async function HomeFeed({ location, filters }: HomeFeedProps) {
   }
 
   const feed = buildFeed(all, new Date())
+  const rails = isFiltered ? [] : featuredRails(feed, all.length)
   const shown = results ?? all
 
   return (
     <>
-      <div className="sticky top-0 z-20 bg-default">
+      <div className="sticky top-(--ui-header-height) z-20 bg-default">
         <LocationBar label={location.label} openCount={all.length} />
         <CategoryRail cuisines={feed.cuisines} filters={filters} />
       </div>
 
-      {isFiltered ? null : (
-        <>
-          <RestaurantRail title="Closest to you" restaurants={feed.closest} />
-          <RestaurantRail title="New on NearPlate" restaurants={feed.fresh} />
-          <RestaurantRail
-            title="Pure veg picks"
-            restaurants={feed.pureVeg}
-            seeAllHref="/?veg=1"
-          />
-          {feed.cuisineRails.map(({ cuisine, restaurants }) => (
-            <RestaurantRail
-              key={cuisine}
-              title={`Best of ${cuisine}`}
-              restaurants={restaurants}
-              seeAllHref={cuisineHref(cuisine)}
-            />
-          ))}
-        </>
-      )}
+      {rails.map((rail) => (
+        <RestaurantRail
+          key={rail.key}
+          title={rail.title}
+          restaurants={rail.restaurants}
+          seeAllHref={rail.seeAllHref}
+        />
+      ))}
 
       <section
         id="restaurants"
-        className="scroll-mt-32 border-b-2 border-inverted"
+        className="scroll-mt-40 border-b border-default"
       >
-        <h2 className="px-4 pt-3 font-display text-2xl leading-none uppercase md:text-3xl">
-          {filters.cuisine
-            ? `${filters.cuisine} near you`
-            : filters.veg
-              ? "Pure veg near you"
-              : "Open now near you"}
-        </h2>
+        <div className="flex flex-wrap items-end justify-between gap-2 px-4 pt-6 md:px-6">
+          <h2 className="font-display text-4xl leading-none font-light tracking-tight md:text-5xl">
+            {filters.cuisine
+              ? `${filters.cuisine} near you`
+              : filters.veg
+                ? "Pure veg near you"
+                : "Open now near you"}
+          </h2>
+          <p className="font-mono text-[11px] tracking-wider text-muted uppercase">
+            {shown.length} {shown.length === 1 ? "kitchen" : "kitchens"} ·
+            nearest first
+          </p>
+        </div>
         {shown.length === 0 ? (
           <FeedEmpty
             title="Nothing open here yet"
@@ -104,7 +96,7 @@ export async function HomeFeed({ location, filters }: HomeFeedProps) {
             showReset={isFiltered}
           />
         ) : (
-          <div className="p-3">
+          <div className="p-4 md:p-6">
             <RestaurantGrid restaurants={shown} />
           </div>
         )}

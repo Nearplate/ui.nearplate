@@ -17,7 +17,7 @@ interface RoleToggleProps {
 /** Segmented control backed by native radios, so the value posts with the form. */
 export function RoleToggle({ value, onChange }: RoleToggleProps) {
   return (
-    <fieldset className="grid grid-cols-2 border-2 border-inverted">
+    <fieldset className="grid grid-cols-2 rounded-lg border border-default">
       <legend className="sr-only">Account type</legend>
       {OPTIONS.map((option) => (
         <label

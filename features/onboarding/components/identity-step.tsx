@@ -45,8 +45,8 @@ export function IdentityStep({
     <form action={formAction} className="flex flex-col gap-8">
       <input type="hidden" name="restaurantId" value={restaurantId} />
 
-      <fieldset className="flex flex-col gap-3">
-        <legend className="mb-1 font-mono text-xs tracking-wider uppercase">
+      <fieldset className="flex flex-col gap-4 rounded-lg border border-default p-4 sm:p-5">
+        <legend className="-ml-1 bg-default px-1 font-display text-2xl tracking-tight">
           Aadhaar card
         </legend>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -55,8 +55,8 @@ export function IdentityStep({
         </div>
       </fieldset>
 
-      <fieldset className="flex flex-col gap-3">
-        <legend className="mb-1 font-mono text-xs tracking-wider uppercase">
+      <fieldset className="flex flex-col gap-4 rounded-lg border border-default p-4 sm:p-5">
+        <legend className="-ml-1 bg-default px-1 font-display text-2xl tracking-tight">
           PAN card
         </legend>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -86,8 +86,8 @@ export function IdentityStep({
         </Field>
       </fieldset>
 
-      <fieldset className="flex flex-col gap-3">
-        <legend className="mb-1 font-mono text-xs tracking-wider uppercase">
+      <fieldset className="flex flex-col gap-4 rounded-lg border border-default p-4 sm:p-5">
+        <legend className="-ml-1 bg-default px-1 font-display text-2xl tracking-tight">
           FSSAI licence
         </legend>
         {uploader(FSSAI)}

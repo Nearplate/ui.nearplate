@@ -55,7 +55,7 @@ function LocationPin({
         if (latLng) onDragEnd(latLng.lat(), latLng.lng())
       }}
     >
-      <span className="block size-[18px] border-[3px] border-highlight bg-neutral-950" />
+      <span className="block size-[18px] border-[3px] border-highlight bg-inverted" />
     </AdvancedMarker>
   )
 }
@@ -189,7 +189,7 @@ export function LocationPicker({
 }: LocationPickerProps) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="relative h-80 border-2 border-inverted">
+      <div className="relative h-80 rounded-lg border border-default">
         <MapContents
           pin={pin}
           onPlace={onLocationChange}

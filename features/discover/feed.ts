@@ -1,4 +1,4 @@
-import type { MenuItem } from "@/features/restaurant/schemas"
+import type { FoodType, MenuItem } from "@/features/restaurant/schemas"
 
 import type { NearbyRestaurant } from "./schemas"
 
@@ -24,6 +24,17 @@ export interface Feed {
   /** Cuisines nearby, most served first (the category chips). */
   cuisines: string[]
 }
+
+export interface FeaturedRail {
+  key: string
+  title: string
+  restaurants: NearbyRestaurant[]
+  /** The filtered feed behind "See all", when there is one. */
+  seeAllHref?: string
+}
+
+/** A rail needs at least this many restaurants to be worth a row. */
+export const MIN_RAIL_SIZE = 2
 
 export interface MenuGroup {
   category: string
@@ -79,6 +90,45 @@ export function buildFeed(
   }
 }
 
+function idsOf(restaurants: readonly NearbyRestaurant[]): string {
+  return restaurants.map((restaurant) => restaurant.id).join(",")
+}
+
+/**
+ * The rails worth showing above the results grid. A rail is dropped when it
+ * is nearly empty, when it holds every result (it would repeat the grid), or
+ * when an earlier rail already shows the same restaurants.
+ */
+export function featuredRails(feed: Feed, total: number): FeaturedRail[] {
+  const candidates: FeaturedRail[] = [
+    { key: "closest", title: "Closest to you", restaurants: feed.closest },
+    { key: "fresh", title: "New on NearPlate", restaurants: feed.fresh },
+    {
+      key: "veg",
+      title: "Pure veg picks",
+      restaurants: feed.pureVeg,
+      seeAllHref: "/?veg=1",
+    },
+    ...feed.cuisineRails.map(({ cuisine, restaurants }) => ({
+      key: `cuisine-${cuisine}`,
+      title: `Best of ${cuisine}`,
+      restaurants,
+      seeAllHref: `/?cuisine=${encodeURIComponent(cuisine)}`,
+    })),
+  ]
+
+  const seen = new Set<string>()
+  return candidates.filter(({ restaurants }) => {
+    const ids = idsOf(restaurants)
+    const keep =
+      restaurants.length >= MIN_RAIL_SIZE &&
+      restaurants.length < total &&
+      !seen.has(ids)
+    if (keep) seen.add(ids)
+    return keep
+  })
+}
+
 /** Groups a menu by category, keeping the order categories first appear in. */
 export function groupMenuByCategory(items: readonly MenuItem[]): MenuGroup[] {
   const groups = new Map<string, MenuItem[]>()
@@ -89,4 +139,26 @@ export function groupMenuByCategory(items: readonly MenuItem[]): MenuGroup[] {
     category,
     items: grouped,
   }))
+}
+
+export interface MenuFilter {
+  /** Free text matched against dish names and descriptions. */
+  query: string
+  foodType: "all" | FoodType
+}
+
+/** The dishes matching a search and a veg / egg / non-veg filter. */
+export function filterMenu(
+  items: readonly MenuItem[],
+  { query, foodType }: MenuFilter
+): MenuItem[] {
+  const needle = query.trim().toLowerCase()
+  return items.filter((item) => {
+    if (foodType !== "all" && item.foodType !== foodType) return false
+    if (!needle) return true
+    return (
+      item.name.toLowerCase().includes(needle) ||
+      (item.description?.toLowerCase().includes(needle) ?? false)
+    )
+  })
 }

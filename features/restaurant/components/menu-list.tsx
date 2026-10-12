@@ -179,8 +179,8 @@ export function MenuList({ restaurantId, items }: MenuListProps) {
       </div>
 
       {grouped.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 border-2 border-dashed border-accented p-8 text-center">
-          <p className="font-display text-2xl uppercase">No dishes yet</p>
+        <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-accented p-8 text-center">
+          <p className="font-display text-2xl tracking-tight">No dishes yet</p>
           <p className="text-sm text-muted">
             Add your first dish to start building your menu.
           </p>
@@ -193,7 +193,7 @@ export function MenuList({ restaurantId, items }: MenuListProps) {
         <div className="flex flex-col gap-4">
           {grouped.map(([groupCategory, groupItems]) => (
             <div key={groupCategory}>
-              <h2 className="sticky top-0 border-b-2 border-inverted bg-default py-1.5 font-mono text-xs font-medium tracking-wider uppercase">
+              <h2 className="sticky top-0 border-b border-default bg-default py-1.5 font-mono text-xs font-medium tracking-wider uppercase">
                 {groupCategory}
                 <span className="ml-1.5 text-muted">({groupItems.length})</span>
               </h2>

@@ -15,7 +15,7 @@ export function Pagination({ page, totalPages }: PaginationProps) {
   const hasNext = page < totalPages
 
   return (
-    <div className="flex items-center justify-between border-t-2 border-muted pt-2">
+    <div className="flex items-center justify-between border-t border-muted pt-2">
       {hasPrevious ? (
         <Button
           render={<Link href={`?tab=orders&page=${page - 1}`} scroll={false} />}

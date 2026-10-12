@@ -99,7 +99,7 @@ export function PlaceSearch({
         autoComplete="off"
       />
       {searchable && suggestions.length > 0 ? (
-        <ul className="absolute top-full right-0 left-0 z-10 mt-1 max-h-64 overflow-auto border-2 border-inverted bg-default">
+        <ul className="absolute top-full right-0 left-0 z-10 mt-1 max-h-64 overflow-auto rounded-lg border border-default bg-default">
           {suggestions.map((suggestion, index) => {
             const prediction = suggestion.placePrediction
             if (!prediction) return null

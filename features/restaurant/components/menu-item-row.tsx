@@ -53,11 +53,11 @@ export function MenuItemRow({
   }
 
   return (
-    <li className="flex items-center gap-2 border-b-2 border-muted px-2 py-1.5 last:border-b-0">
+    <li className="flex items-center gap-2 border-b border-muted px-2 py-1.5 last:border-b-0">
       <RemoteImage
         src={item.imageUrl}
         alt=""
-        className="size-9 shrink-0 border-2 border-inverted bg-elevated"
+        className="size-9 shrink-0 rounded-lg border border-default bg-elevated"
         fallback={
           <span
             className={cn(
@@ -72,7 +72,7 @@ export function MenuItemRow({
         <div className="flex items-center gap-2">
           <span
             className={cn(
-              "size-2.5 shrink-0 ring-2 ring-inset",
+              "size-2.5 shrink-0 ring-1 ring-inset",
               FOOD_TYPE_RING[item.foodType]
             )}
             aria-hidden

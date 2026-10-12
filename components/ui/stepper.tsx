@@ -8,7 +8,7 @@ export const stepperTheme = tv({
     list: "flex font-mono text-xs tracking-wider uppercase",
     item: "flex items-center gap-2",
     badge:
-      "flex size-6 shrink-0 items-center justify-center border-2 text-[10px]",
+      "flex size-6 shrink-0 items-center justify-center border text-[10px] rounded-full",
   },
   variants: {
     orientation: {
@@ -16,7 +16,7 @@ export const stepperTheme = tv({
       vertical: { list: "flex-col gap-2", item: "" },
     },
     tone: {
-      light: { badge: "border-inverted" },
+      light: { badge: "border-default" },
       dark: { badge: "border-current" },
     },
   },
@@ -85,7 +85,7 @@ function Stepper({
               <span
                 className={cn(
                   theme.badge(),
-                  isDone && !isCurrent && "bg-highlight text-neutral-950",
+                  isDone && !isCurrent && "bg-highlight text-highlighted",
                   isCurrent && "bg-inverted text-inverted"
                 )}
               >

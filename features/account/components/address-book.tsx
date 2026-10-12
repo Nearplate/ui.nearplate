@@ -60,7 +60,7 @@ export function AddressBook({ addresses }: AddressBookProps) {
           {addresses.map((address) => (
             <div
               key={address.id}
-              className="flex flex-col gap-1.5 border-2 border-accented p-3"
+              className="flex flex-col gap-1.5 rounded-lg border border-accented p-3"
             >
               <div className="flex items-center gap-1.5">
                 <Badge color="neutral" variant="soft">

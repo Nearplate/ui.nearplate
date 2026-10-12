@@ -78,7 +78,7 @@ export function DocumentUploader({
       <p className="font-mono text-xs tracking-wider uppercase">{label}</p>
 
       {file ? (
-        <div className="flex items-center gap-3 border-2 border-inverted p-2">
+        <div className="flex items-center gap-3 rounded-lg border border-default p-2">
           <DocumentPreview
             contentType={file.contentType}
             url={file.url}
@@ -104,7 +104,7 @@ export function DocumentUploader({
           </div>
         </div>
       ) : disabled ? (
-        <p className="border-2 border-dashed border-accented p-3 font-mono text-xs text-muted">
+        <p className="rounded-lg border border-dashed border-accented p-3 font-mono text-xs text-muted">
           Not uploaded
         </p>
       ) : (
@@ -120,8 +120,8 @@ export function DocumentUploader({
             pick(event.dataTransfer.files[0])
           }}
           className={cn(
-            "flex min-h-24 flex-col items-center justify-center gap-1 border-2 border-dashed border-inverted p-3 text-center",
-            isDragging && "bg-highlight text-neutral-950"
+            "flex min-h-24 flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-default p-3 text-center",
+            isDragging && "bg-highlight text-highlighted"
           )}
         >
           <FileUpIcon aria-hidden className="size-5" />

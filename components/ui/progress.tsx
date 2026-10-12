@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 
 export const progressTheme = tv({
   slots: {
-    root: "w-full border-2 border-inverted bg-default",
+    root: "w-full border border-default bg-elevated rounded-full overflow-hidden",
     bar: "h-full bg-highlight transition-[width]",
   },
   variants: {

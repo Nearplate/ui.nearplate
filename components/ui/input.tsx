@@ -4,7 +4,7 @@ import { tv, type VariantProps } from "tailwind-variants"
 import { cn } from "@/lib/utils"
 
 export const inputTheme = tv({
-  base: "w-full rounded-md border-0 bg-default text-highlighted placeholder:text-dimmed ring-2 ring-accented ring-inset transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-(--input-color) disabled:cursor-not-allowed disabled:opacity-75 aria-invalid:ring-error",
+  base: "w-full rounded-md border-0 bg-default text-highlighted placeholder:text-dimmed ring-1 ring-accented ring-inset transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-(--input-color) disabled:cursor-not-allowed disabled:opacity-75 aria-invalid:ring-error",
   variants: {
     color: {
       primary: "[--input-color:var(--ui-primary)]",

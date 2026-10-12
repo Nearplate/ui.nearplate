@@ -22,7 +22,7 @@ function TooltipContent({
         <TooltipPrimitive.Popup
           data-slot="tooltip-content"
           className={cn(
-            "border-2 border-inverted bg-inverted px-2 py-1 font-mono text-[10px] font-medium tracking-wider text-inverted uppercase data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+            "rounded-lg border border-inverted bg-inverted px-2 py-1 text-xs text-inverted data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
             className
           )}
           {...props}

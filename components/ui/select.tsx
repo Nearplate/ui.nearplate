@@ -92,7 +92,7 @@ function ComboboxContent({
         <SelectPrimitive.Popup
           data-slot="combobox-content"
           className={cn(
-            "max-h-64 w-(--anchor-width) overflow-y-auto border-2 border-inverted bg-default p-1 shadow-[4px_4px_0_var(--ui-border)] data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+            "max-h-64 w-(--anchor-width) overflow-y-auto rounded-lg border border-default bg-default p-1 shadow-soft-lg data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
             className
           )}
           {...props}
@@ -113,7 +113,7 @@ function ComboboxItem({
     <SelectPrimitive.Item
       data-slot="combobox-item"
       className={cn(
-        "flex cursor-pointer items-center justify-between gap-2 px-2.5 py-1.5 font-mono text-xs font-medium tracking-wider uppercase outline-none data-[highlighted]:bg-inverted data-[highlighted]:text-inverted",
+        "flex cursor-pointer items-center justify-between gap-2 rounded-sm px-2.5 py-1.5 text-sm outline-none data-[highlighted]:bg-elevated data-[highlighted]:text-highlighted",
         className
       )}
       {...props}

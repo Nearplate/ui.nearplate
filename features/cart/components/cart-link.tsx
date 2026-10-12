@@ -1,6 +1,9 @@
 "use client"
 
+import { ShoppingBagIcon } from "lucide-react"
 import Link from "next/link"
+
+import { cn } from "@/lib/utils"
 
 import { useCart } from "../cart-context"
 
@@ -16,10 +19,19 @@ export function CartLink({ className }: CartLinkProps) {
   return (
     <Link
       href="/cart"
-      className={className}
+      className={cn("gap-2", className)}
       aria-label={`Cart, ${itemCount} ${itemCount === 1 ? "item" : "items"}`}
     >
-      Cart{itemCount > 0 ? ` (${itemCount})` : ""}
+      <ShoppingBagIcon aria-hidden className="size-4" />
+      <span className="max-sm:sr-only">Cart</span>
+      {itemCount > 0 ? (
+        <span
+          aria-hidden
+          className="grid min-w-5 place-items-center rounded-full bg-highlight px-1 text-[10px] leading-5 font-medium text-highlighted"
+        >
+          {itemCount}
+        </span>
+      ) : null}
     </Link>
   )
 }

@@ -4,11 +4,11 @@ import { tv, type VariantProps } from "tailwind-variants"
 import { cn } from "@/lib/utils"
 
 export const alertTheme = tv({
-  base: "border-2 px-3 py-2 font-mono text-xs",
+  base: "border px-3 py-2 text-sm rounded-lg",
   variants: {
     tone: {
-      neutral: "border-inverted bg-default text-default",
-      highlight: "border-inverted bg-highlight text-neutral-950",
+      neutral: "border-default bg-default text-default",
+      highlight: "border-success/30 bg-tint-mint text-highlighted",
       error: "border-error bg-default text-error",
     },
   },

@@ -34,7 +34,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
         <Alert tone="highlight">Profile updated.</Alert>
       ) : null}
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 @md:grid-cols-2">
         <Field label="First name" htmlFor="firstName">
           <Input
             id="firstName"

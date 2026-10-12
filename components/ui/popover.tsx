@@ -22,7 +22,7 @@ function PopoverContent({
         <PopoverPrimitive.Popup
           data-slot="popover-content"
           className={cn(
-            "z-50 min-w-56 border-2 border-inverted bg-default p-3 shadow-[4px_4px_0_var(--ui-border)] data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+            "z-50 min-w-56 rounded-lg border border-default bg-default p-3 shadow-soft-lg data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
             className
           )}
           {...props}
